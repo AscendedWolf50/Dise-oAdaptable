@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import Inicio from './components/Inicio';
-import Login from './components/Login';
-import SelectorNiveles from './components/SelectorNiveles';
-import Configuracion from './components/Configuracion';
-import Perfil from './components/Perfil';
+import Inicio from './pages/inicio/Inicio.jsx';
+import Login from './pages/login/Login.jsx';
+import SelectorNiveles from './pages/selectorNiveles/SelectorNiveles.jsx';
+import Configuracion from './pages/configuracion/Configuracion.jsx';
+import Perfil from './pages/perfil/Perfil.jsx';
 // Importamos las nuevas pantallas
-import Derrota from './components/Derrota';
-import Gameplay from './components/Gameplay';
-import Pausa from './components/Pausa';
-import Tutorial from './components/Tutorial';
-import Victoria from './components/Victoria';
+import Derrota from './pages/derrota/Derrota.jsx';
+import Gameplay from './pages/gameplay/Gameplay.jsx';
+import Pausa from './pages/pausa/Pausa.jsx';
+import Tutorial from './pages/tutorial/Tutorial.jsx';
+import Victoria from './pages/victoria/Victoria.jsx';
 
 import './App.css'; 
 
