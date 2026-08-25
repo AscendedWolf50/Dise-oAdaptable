@@ -2,10 +2,44 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router'
 import './index.css'
-import App from './App.jsx'
+import './App.css' // Lo mantenemos aquí por si tienes estilos de layout general
+
+
+import Inicio from './pages/inicio/Inicio.jsx';
+import Login from './pages/login/Login.jsx';
+import SelectorNiveles from './pages/selectorNiveles/SelectorNiveles.jsx';
+import Configuracion from './pages/configuracion/Configuracion.jsx';
+import Perfil from './pages/perfil/Perfil.jsx';
+import Derrota from './pages/derrota/Derrota.jsx';
+import Gameplay from './pages/gameplay/Gameplay.jsx';
+import Pausa from './pages/pausa/Pausa.jsx';
+import Tutorial from './pages/tutorial/Tutorial.jsx';
+import Victoria from './pages/victoria/Victoria.jsx';
+
+
+import Menu from './components/ui/menu/Menu.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      {/* El menú de navegación global */}
+      <Menu />
+      
+      {/* El gestor de pantallas */}
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/niveles" element={<SelectorNiveles />} />
+        <Route path="/configuracion" element={<Configuracion />} />
+        <Route path="/perfil" element={<Perfil />} />
+        
+        {/* Nuevas Rutas de tu juego */}
+        <Route path="/tutorial" element={<Tutorial />} />
+        <Route path="/gameplay" element={<Gameplay />} />
+        <Route path="/pausa" element={<Pausa />} />
+        <Route path="/victoria" element={<Victoria />} />
+        <Route path="/derrota" element={<Derrota />} />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>,
 )
