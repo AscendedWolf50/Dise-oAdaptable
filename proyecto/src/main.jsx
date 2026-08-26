@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import './App.css'
 
@@ -20,7 +20,7 @@ import Menu from './components/ui/Menu.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Menu />
       <Routes>
         <Route path="/" element={<Inicio />} />
@@ -34,6 +34,6 @@ createRoot(document.getElementById('root')).render(
         <Route path="/victoria" element={<Victoria />} />
         <Route path="/derrota" element={<Derrota />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>,
 )
