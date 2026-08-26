@@ -1,10 +1,8 @@
-export default function Login({ alNavegar }) {
+export default function Login() {
   return (
     <div>
       <h1>Pantalla de Registro</h1>
-      <button onClick={() => alNavegar('inicio')}>
-        Ingresar al juego
-      </button>
+      
     </div>
   );
 }
