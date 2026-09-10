@@ -1,20 +1,16 @@
 export default function Menu() {
   return (
-    <nav style={{
-      display: 'flex', flexWrap: 'wrap', gap: '15px', padding: '15px',
-      background: '#111', justifyContent: 'center', borderBottom: '3px solid #aa3bff',
-      marginBottom: '20px'
-    }}>
-      <a href="#/" style={{ color: 'white', fontWeight: 'bold' }}>Inicio</a>
-      <a href="#/login" style={{ color: 'white', fontWeight: 'bold' }}>Registro</a>
-      <a href="#/niveles" style={{ color: 'white', fontWeight: 'bold' }}>Niveles</a>
-      <a href="#/perfil" style={{ color: 'white', fontWeight: 'bold' }}>Perfil</a>
-      <a href="#/configuracion" style={{ color: 'white', fontWeight: 'bold' }}>Configuración</a>
-      <a href="#/tutorial" style={{ color: 'white', fontWeight: 'bold' }}>Tutorial</a>
-      <a href="#/gameplay" style={{ color: 'white', fontWeight: 'bold' }}>Gameplay</a>
-      <a href="#/pausa" style={{ color: 'white', fontWeight: 'bold' }}>Pausa</a>
-      <a href="#/victoria" style={{ color: 'white', fontWeight: 'bold' }}>Victoria</a>
-      <a href="#/derrota" style={{ color: 'white', fontWeight: 'bold' }}>Derrota</a>
+    <nav className="flex flex-wrap gap-4 p-4 bg-[#111] justify-center border-b-[3px] border-[#aa3bff] mb-5">
+      <a href="#/" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Inicio</a>
+      <a href="#/login" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Registro</a>
+      <a href="#/niveles" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Niveles</a>
+      <a href="#/perfil" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Perfil</a>
+      <a href="#/configuracion" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Configuración</a>
+      <a href="#/tutorial" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Tutorial</a>
+      <a href="#/gameplay" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Gameplay</a>
+      <a href="#/pausa" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Pausa</a>
+      <a href="#/victoria" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Victoria</a>
+      <a href="#/derrota" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Derrota</a>
     </nav>
   );
 }
