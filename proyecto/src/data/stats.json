@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "valor": "+100",
+    "etiqueta": "JUGADORES"
+  },
+  {
+    "id": 2,
+    "valor": "+50",
+    "etiqueta": "NIVELES COMPLETO"
+  },
+  {
+    "id": 3,
+    "valor": "+300",
+    "etiqueta": "MONEDAS"
+  }
+]
