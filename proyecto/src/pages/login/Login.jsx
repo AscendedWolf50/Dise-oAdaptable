@@ -53,7 +53,7 @@ export default function Login() {
 
         {/* Botón Ingresar */}
         <button 
-          onClick={() => window.location.href = '#/niveles'}
+          onClick={() => window.location.href = '#/'}
           className="w-full bg-[#c4c4c4] border-2 border-black p-4 font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:shadow-none active:translate-x-[4px] active:translate-y-[4px] mb-12"
         >
           Ingresar
