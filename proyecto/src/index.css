@@ -115,7 +115,7 @@
       transparent 6px
     );
     background-size: 100% 6px;
-    animation: crt-scan 6s steps(160, end) infinite;
+    animation: crt-scan 7s linear infinite;
   }
 
   .crt-overlay::after {
@@ -125,7 +125,7 @@
 
   @keyframes crt-scan {
     from { background-position: 0 0; }
-    to { background-position: 0 960px; }
+    to { background-position: 0 96px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
