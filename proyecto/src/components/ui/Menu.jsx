@@ -1,16 +1,40 @@
+import { useNavigate, useLocation } from 'react-router-dom';
+
+const NAV_ITEMS = [
+  { path: '/', label: 'INICIO' },
+  { path: '/login', label: 'REGISTRO' },
+  { path: '/niveles', label: 'NIVELES' },
+  { path: '/perfil', label: 'PERFIL' },
+  { path: '/configuracion', label: 'CONFIG' },
+  { path: '/tutorial', label: 'TUTORIAL' },
+  { path: '/gameplay', label: 'JUEGO' },
+  { path: '/pausa', label: 'PAUSA' },
+  { path: '/victoria', label: 'VICTORIA' },
+  { path: '/derrota', label: 'DERROTA' },
+];
+
 export default function Menu() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
-    <nav className="flex flex-wrap gap-4 p-4 bg-[#111] justify-center border-b-[3px] border-[#aa3bff] mb-5">
-      <a href="#/" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Inicio</a>
-      <a href="#/login" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Registro</a>
-      <a href="#/niveles" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Niveles</a>
-      <a href="#/perfil" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Perfil</a>
-      <a href="#/configuracion" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Configuración</a>
-      <a href="#/tutorial" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Tutorial</a>
-      <a href="#/gameplay" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Gameplay</a>
-      <a href="#/pausa" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Pausa</a>
-      <a href="#/victoria" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Victoria</a>
-      <a href="#/derrota" className="text-white font-bold hover:text-[#aa3bff] transition-colors">Derrota</a>
+    <nav className="flex flex-wrap gap-2 p-3 bg-[#0D0D0D] justify-center border-b-[3px] border-[#FF7800]">
+      {NAV_ITEMS.map((item) => {
+        const isActive = location.pathname === item.path;
+        return (
+          <button
+            key={item.path}
+            onClick={() => navigate(item.path)}
+            className={`text-xs font-bold tracking-widest uppercase px-3 py-1 border-2 transition-all duration-150 cursor-pointer
+              ${isActive
+                ? 'bg-[#FF7800] text-[#0D0D0D] border-[#FF7800]'
+                : 'bg-transparent text-white border-[#8BA3A7] hover:border-[#FF7800] hover:text-[#FF7800]'
+              }`}
+          >
+            {item.label}
+          </button>
+        );
+      })}
     </nav>
   );
 }

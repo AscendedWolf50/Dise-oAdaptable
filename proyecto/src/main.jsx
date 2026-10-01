@@ -2,8 +2,6 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
-import './App.css'
-
 
 import Inicio from './pages/inicio/Inicio.jsx';
 import Login from './pages/login/Login.jsx';

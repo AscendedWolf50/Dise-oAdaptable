@@ -1,100 +1,131 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import gsap from 'gsap';
 
-export default function Inicio() {
+const Inicio = () => {
+  const navigate = useNavigate();
+  const containerRef = useRef(null);
+  const elementsRef = useRef([]);
+
+  useEffect(() => {
+    // Fade in container
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }
+    );
+
+    // Stagger inner elements
+    gsap.fromTo(
+      elementsRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out', delay: 0.2 }
+    );
+  }, []);
+
+  const addToRefs = (el) => {
+    if (el && !elementsRef.current.includes(el)) {
+      elementsRef.current.push(el);
+    }
+  };
+
+  const buttonPressStyle = "active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-100";
+
   return (
-    <div className="min-h-screen bg-[#e8e8e8] flex items-center justify-center p-4 font-sans text-black">
-      
-      {/* Contenedor Principal (Simulando la pantalla del móvil) */}
-      <div className="bg-white w-full max-w-sm border-[3px] border-black rounded-[2rem] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.8)] relative overflow-hidden flex flex-col gap-4">
-        
-        {/* Barra superior (Buscador falso) */}
-        <div className="border-[2px] border-black rounded px-3 py-1 flex justify-between items-center mb-1">
-          <span className="text-xs tracking-widest text-gray-400">WWW.</span>
-          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+    <div className="min-h-screen bg-[#1B384B] flex items-center justify-center p-4 font-sans">
+      <div 
+        ref={containerRef}
+        className="bg-white w-full max-w-md mx-auto border-2 border-[#0D0D0D] p-6 shadow-[6px_6px_0px_0px_#0D0D0D] flex flex-col gap-4"
+      >
+        {/* Top Decorative Bar */}
+        <div ref={addToRefs} className="flex justify-between items-center border-b-2 border-[#0D0D0D] pb-2">
+          <span className="font-bold tracking-widest text-[#0D0D0D]">WWW.</span>
+          <svg className="w-6 h-6 text-[#0D0D0D]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
 
-        {/* Caja de Ilustración */}
-        <div className="border-[2px] border-black h-32 relative flex items-center justify-center mb-2">
-          {/* Esquinas decorativas tipo retícula */}
-          <div className="absolute top-1 left-1 w-2 h-2 border-t-2 border-l-2 border-gray-400"></div>
-          <div className="absolute top-1 right-1 w-2 h-2 border-t-2 border-r-2 border-gray-400"></div>
-          <div className="absolute bottom-1 left-1 w-2 h-2 border-b-2 border-l-2 border-gray-400"></div>
-          <div className="absolute bottom-1 right-1 w-2 h-2 border-b-2 border-r-2 border-gray-400"></div>
-          
-          <p className="text-xs font-bold tracking-widest text-gray-400 uppercase">
-            ILUSTRACIÓN
-          </p>
+        {/* Illustration Box */}
+        <div ref={addToRefs} className="relative w-full h-40 bg-[#FF7800] border-2 border-[#0D0D0D] flex items-center justify-center overflow-hidden">
+          <div className="absolute top-2 left-2 w-2 h-2 bg-[#0D0D0D]"></div>
+          <div className="absolute top-2 right-2 w-2 h-2 bg-[#0D0D0D]"></div>
+          <div className="absolute bottom-2 left-2 w-2 h-2 bg-[#0D0D0D]"></div>
+          <div className="absolute bottom-2 right-2 w-2 h-2 bg-[#0D0D0D]"></div>
+          <span className="font-black text-[#0D0D0D] text-xl tracking-widest">ILUSTRACIÓN</span>
         </div>
 
-        {/* Título Voxel Drift (Bloque negro) */}
-        <div className="bg-[#111] text-white border-[2px] border-black p-4 text-center font-black text-2xl tracking-widest uppercase mb-2">
+        {/* Big Banner */}
+        <div ref={addToRefs} className="bg-[#0D0D0D] text-white p-4 text-center font-black text-2xl tracking-widest uppercase border-2 border-[#0D0D0D]">
           VOXEL DRIFT
         </div>
 
-        {/* Botón Jugar */}
+        {/* Main Buttons */}
         <button 
-          onClick={() => window.location.href = '#/niveles'}
-          className="w-full bg-[#111] text-white border-[2px] border-black p-4 font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:shadow-none active:translate-x-[4px] active:translate-y-[4px] flex items-center justify-start gap-3"
+          ref={addToRefs}
+          onClick={() => navigate('/niveles')}
+          className={`flex items-center justify-center gap-2 bg-[#0D0D0D] text-white border-2 border-[#0D0D0D] p-4 font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-gray-800 ${buttonPressStyle}`}
         >
-          <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
+          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M4 4l12 6-12 6z" />
           </svg>
           JUGAR
         </button>
 
-        {/* Botón Perfil */}
         <button 
-          onClick={() => window.location.href = '#/perfil'}
-          className="w-full bg-white text-black border-[2px] border-black p-4 font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:shadow-none active:translate-x-[4px] active:translate-y-[4px] flex items-center justify-start gap-3"
+          ref={addToRefs}
+          onClick={() => navigate('/perfil')}
+          className={`flex items-center justify-center gap-2 bg-white text-[#0D0D0D] border-2 border-[#0D0D0D] p-4 font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-gray-50 ${buttonPressStyle}`}
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
           PERFIL
         </button>
 
-        {/* Botón Configuración */}
         <button 
-          onClick={() => window.location.href = '#/configuracion'}
-          className="w-full bg-white text-black border-[2px] border-black p-4 font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:shadow-none active:translate-x-[4px] active:translate-y-[4px] flex items-center justify-start gap-3"
+          ref={addToRefs}
+          onClick={() => navigate('/configuracion')}
+          className={`flex items-center justify-center gap-2 bg-white text-[#0D0D0D] border-2 border-[#0D0D0D] p-4 font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-gray-50 ${buttonPressStyle}`}
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
           CONFIGURACIÓN
         </button>
 
-        {/* Divisor "MÁS" */}
-        <div className="flex items-center justify-center gap-3 my-2 opacity-50">
-          <div className="h-[1px] flex-1 bg-transparent border-t-2 border-dashed border-black"></div>
-          <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">MÁS</span>
-          <div className="h-[1px] flex-1 bg-transparent border-t-2 border-dashed border-black"></div>
+        {/* Separator */}
+        <div ref={addToRefs} className="flex items-center gap-4 my-2">
+          <div className="flex-1 border-b-2 border-dashed border-[#0D0D0D]"></div>
+          <span className="font-bold tracking-widest text-sm text-[#0D0D0D] uppercase">MÁS</span>
+          <div className="flex-1 border-b-2 border-dashed border-[#0D0D0D]"></div>
         </div>
 
-        {/* Botones Inferiores (Créditos y Tutorial) */}
-        <div className="grid grid-cols-2 gap-4">
-          {/* Créditos */}
-          <button className="bg-[#c4c4c4] border-[2px] border-black p-3 font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:shadow-none active:translate-x-[4px] active:translate-y-[4px] flex flex-col items-center justify-center gap-2">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span className="text-[10px] tracking-widest">CRÉDITOS</span>
-          </button>
-          
-          {/* Tutorial */}
+        {/* Bottom Grid */}
+        <div ref={addToRefs} className="grid grid-cols-2 gap-4">
           <button 
-            onClick={() => window.location.href = '#/tutorial'}
-            className="bg-[#c4c4c4] border-[2px] border-black p-3 font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:shadow-none active:translate-x-[4px] active:translate-y-[4px] flex flex-col items-center justify-center gap-2"
+            className={`flex flex-col items-center justify-center gap-2 bg-[#8BA3A7] text-[#0D0D0D] border-2 border-[#0D0D0D] p-3 font-bold tracking-widest text-sm uppercase shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#7a9296] ${buttonPressStyle}`}
           >
-            <span className="font-black text-lg leading-none">?</span>
-            <span className="text-[10px] tracking-widest">TUTORIAL</span>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            CRÉDITOS
+          </button>
+
+          <button 
+            onClick={() => navigate('/tutorial')}
+            className={`flex flex-col items-center justify-center gap-2 bg-[#8BA3A7] text-[#0D0D0D] border-2 border-[#0D0D0D] p-3 font-bold tracking-widest text-sm uppercase shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#7a9296] ${buttonPressStyle}`}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            TUTORIAL
           </button>
         </div>
 
       </div>
     </div>
   );
-}
+};
+
+export default Inicio;

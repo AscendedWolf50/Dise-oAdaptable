@@ -1,3 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-[#1B384B] text-[#0D0D0D] font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Scrollbar styling for neo-brutalist feel */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-[#1B384B];
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[#8BA3A7] border border-[#0D0D0D];
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#FF7800];
+  }
+}
+
+@layer components {
+  /* Neo-brutalist button base */
+  .btn-brutal {
+    @apply border-2 border-[#0D0D0D] font-bold tracking-widest uppercase 
+           shadow-[4px_4px_0px_0px_#0D0D0D] 
+           hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#0D0D0D] 
+           active:shadow-none active:translate-x-[4px] active:translate-y-[4px] 
+           transition-all duration-150 cursor-pointer select-none;
+  }
+
+  /* Card base */
+  .card-brutal {
+    @apply border-2 border-[#0D0D0D] shadow-[6px_6px_0px_0px_#0D0D0D];
+  }
+}
