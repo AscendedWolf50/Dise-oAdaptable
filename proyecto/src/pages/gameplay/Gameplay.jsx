@@ -77,18 +77,6 @@ export default function Gameplay() {
         ref={containerRef}
         className="bg-white w-full max-w-md mx-auto border-2 border-[#0D0D0D] shadow-[6px_6px_0px_0px_#0D0D0D] flex flex-col relative h-[85vh] min-h-[650px] overflow-hidden"
       >
-        {/* Browser Bar */}
-        <div className="bg-[#8BA3A7] border-b-2 border-[#0D0D0D] p-2 flex items-center shrink-0">
-          <div className="flex gap-2 mr-4">
-            <div className="w-3 h-3 rounded-full border-2 border-[#0D0D0D] bg-white"></div>
-            <div className="w-3 h-3 rounded-full border-2 border-[#0D0D0D] bg-white"></div>
-            <div className="w-3 h-3 rounded-full border-2 border-[#0D0D0D] bg-white"></div>
-          </div>
-          <div className="bg-white border-2 border-[#0D0D0D] flex-1 h-6 rounded-sm flex items-center px-2 shadow-[2px_2px_0px_0px_#0D0D0D]">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#0D0D0D]">WWW.VOXELDRIFT.COM</span>
-          </div>
-        </div>
-
         {/* HUD Area */}
         <div ref={hudRef} className="p-4 shrink-0 flex flex-col gap-3 bg-white z-10 relative shadow-[0px_4px_0px_0px_rgba(13,13,13,0.1)]">
           {/* Row 1: Pause, Progress */}

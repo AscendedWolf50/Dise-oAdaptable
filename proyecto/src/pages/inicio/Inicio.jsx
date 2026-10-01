@@ -37,14 +37,6 @@ const Inicio = () => {
         ref={containerRef}
         className="bg-white w-full max-w-md mx-auto border-2 border-[#0D0D0D] p-6 shadow-[6px_6px_0px_0px_#0D0D0D] flex flex-col gap-4"
       >
-        {/* Top Decorative Bar */}
-        <div ref={addToRefs} className="flex justify-between items-center border-b-2 border-[#0D0D0D] pb-2">
-          <span className="font-bold tracking-widest text-[#0D0D0D]">WWW.</span>
-          <svg className="w-6 h-6 text-[#0D0D0D]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
-
         {/* Illustration Box */}
         <div ref={addToRefs} className="relative w-full h-40 bg-[#FF7800] border-2 border-[#0D0D0D] flex items-center justify-center overflow-hidden">
           <div className="absolute top-2 left-2 w-2 h-2 bg-[#0D0D0D]"></div>

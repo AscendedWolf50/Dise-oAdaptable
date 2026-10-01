@@ -14,12 +14,10 @@ import Pausa from './pages/pausa/Pausa.jsx';
 import Tutorial from './pages/tutorial/Tutorial.jsx';
 import Victoria from './pages/victoria/Victoria.jsx';
 
-import Menu from './components/ui/Menu.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HashRouter>
-      <Menu />
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/login" element={<Login />} />

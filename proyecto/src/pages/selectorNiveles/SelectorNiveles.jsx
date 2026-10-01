@@ -73,12 +73,6 @@ const SelectorNiveles = () => {
         ref={containerRef}
         className="bg-[#FFFFFF] w-full max-w-md mx-auto border-2 border-[#0D0D0D] p-5 shadow-[6px_6px_0px_0px_#0D0D0D] overflow-hidden"
       >
-        {/* Browser bar mock */}
-        <div className="flex justify-between items-center border-b-2 border-[#0D0D0D] pb-2 mb-4">
-          <span className="font-bold text-sm tracking-widest">WWW.</span>
-          <span className="text-xl">🔍</span>
-        </div>
-
         {/* Header row */}
         <div className="flex items-center gap-3 mb-6">
           <button

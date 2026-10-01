@@ -37,16 +37,6 @@ const Login = () => {
         ref={containerRef}
         className="bg-[#FFFFFF] w-full max-w-md mx-auto border-2 border-[#0D0D0D] p-6 shadow-[6px_6px_0px_0px_#0D0D0D] flex flex-col relative"
       >
-        {/* Browser Bar (Decorative) */}
-        <div className="flex items-center justify-between border-b-2 border-[#0D0D0D] pb-3 mb-4">
-          <div className="flex items-center gap-2 font-black text-[#0D0D0D] tracking-tighter">
-            <span>WWW.</span>
-          </div>
-          <svg className="w-6 h-6 text-[#0D0D0D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
-
         {/* Version Label */}
         <div className="text-right text-[#FF7800] font-black tracking-widest text-sm mb-2">
           V 1.0

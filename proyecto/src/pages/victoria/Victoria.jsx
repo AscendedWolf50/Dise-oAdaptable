@@ -44,14 +44,6 @@ const Victoria = () => {
         ref={containerRef}
         className="bg-white w-full max-w-md mx-auto border-2 border-[#0D0D0D] p-6 shadow-[6px_6px_0px_0px_#0D0D0D] flex flex-col items-center gap-6"
       >
-        {/* Header/Browser bar mock */}
-        <div className="w-full flex justify-between items-center border-b-2 border-[#0D0D0D] pb-2">
-          <div className="font-black text-[#0D0D0D] tracking-widest">WWW.</div>
-          <svg className="w-6 h-6 text-[#0D0D0D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
-
         {/* Illustration placeholder */}
         <div className="w-full h-36 border-2 border-[#0D0D0D] bg-[#8BA3A7] relative flex items-center justify-center">
           <div className="absolute top-0 left-0 w-2 h-2 bg-[#0D0D0D]"></div>
