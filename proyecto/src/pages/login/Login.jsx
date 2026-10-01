@@ -35,7 +35,7 @@ const Login = () => {
     <div className="bg-[#1B384B] flex justify-center p-4 font-sans">
       <div 
         ref={containerRef}
-        className="relative flex w-full max-w-md flex-col border-2 border-[#0D0D0D] bg-[#FFFFFF] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-xl md:p-8"
+        className="relative flex w-full max-w-md flex-col border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-xl md:p-8"
       >
         {/* Version Label */}
         <div className="text-right text-[#FF7800] font-black tracking-widest text-sm mb-2">
@@ -77,7 +77,7 @@ const Login = () => {
           />
           <button 
             type="submit"
-            className="w-full bg-[#8BA3A7] text-[#0D0D0D] border-2 border-[#0D0D0D] py-4 font-black tracking-widest uppercase shadow-[4px_4px_0px_0px_#0D0D0D] transition-all hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_#0D0D0D] active:translate-y-2 active:translate-x-2 active:shadow-none"
+            className="button-primary w-full py-4 font-black tracking-widest uppercase transition-all"
           >
             INGRESAR
           </button>
@@ -89,7 +89,7 @@ const Login = () => {
             <div 
               key={stat.id}
               ref={el => statsRef.current[index] = el}
-              className="border-2 border-[#0D0D0D] bg-[#FFFFFF] p-2 flex flex-col items-center justify-center text-center"
+              className="border-2 border-[#0D0D0D] bg-[#8BA3A7] p-2 flex flex-col items-center justify-center text-center"
             >
               <div className="text-[#FF7800] font-black text-lg mb-1">{stat.valor}</div>
               <div className="text-[#0D0D0D] font-bold text-[9px] uppercase tracking-widest leading-tight">{stat.etiqueta}</div>

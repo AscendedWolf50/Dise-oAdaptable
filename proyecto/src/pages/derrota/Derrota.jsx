@@ -29,8 +29,8 @@ export default function Derrota() {
         </div>
         <p data-defeat-enter className="text-xs font-bold tracking-[0.2em] text-[#8BA3A7]">0/3 ESTRELLAS</p>
         <div className="mt-2 grid w-full grid-cols-2 gap-3">
-          <button {...gsapButtonMotion} data-defeat-enter onClick={() => navigate('/')} className="flex min-h-16 flex-col items-center justify-center gap-1 border-2 border-[#0D0D0D] bg-[#8BA3A7] text-xs font-black tracking-widest shadow-[4px_4px_0px_0px_#0D0D0D]">≡<span>MENÚ</span></button>
-          <button {...gsapButtonMotion} data-defeat-enter onClick={() => navigate('/gameplay')} className="flex min-h-16 flex-col items-center justify-center gap-1 border-2 border-[#0D0D0D] bg-[#FF7800] text-xs font-black tracking-widest shadow-[4px_4px_0px_0px_#0D0D0D]">↻<span>REINTENTAR</span></button>
+          <button {...gsapButtonMotion} data-defeat-enter onClick={() => navigate('/')} className="button-secondary flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-black tracking-widest">≡<span>MENÚ</span></button>
+          <button {...gsapButtonMotion} data-defeat-enter onClick={() => navigate('/gameplay')} className="button-primary flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-black tracking-widest">↻<span>REINTENTAR</span></button>
         </div>
       </section>
     </ModalOverlay>

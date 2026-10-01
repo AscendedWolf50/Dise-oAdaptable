@@ -75,15 +75,15 @@ export default function Gameplay() {
       {/* Main Container */}
       <div 
         ref={containerRef}
-        className="relative flex h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-white shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl"
+        className="relative flex h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl"
       >
         {/* HUD Area */}
-        <div ref={hudRef} className="relative z-10 flex shrink-0 flex-col gap-3 bg-white p-4 shadow-[0px_4px_0px_0px_#0D0D0D]">
+        <div ref={hudRef} className="relative z-10 flex shrink-0 flex-col gap-3 bg-[#8BA3A7] p-4 shadow-[0px_4px_0px_0px_#0D0D0D]">
           {/* Row 1: Pause, Progress */}
           <div className="flex items-center gap-3">
             <button 
               onClick={() => navigate('/pausa')}
-              className="flex h-10 w-10 items-center justify-center border-2 border-[#0D0D0D] bg-[#8BA3A7] shadow-[2px_2px_0px_0px_#0D0D0D] transition-all hover:bg-[#FF7800] active:translate-y-[2px] active:shadow-none"
+              className="button-secondary flex h-10 w-10 items-center justify-center p-0 transition-all"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="2" y="1" width="3" height="12" fill="#0D0D0D"/>
@@ -161,21 +161,21 @@ export default function Gameplay() {
         </div>
 
         {/* Bottom Controls */}
-        <div ref={controlsRef} className="z-10 flex shrink-0 gap-3 bg-white p-4 shadow-[0px_-4px_0px_0px_#0D0D0D]">
+        <div ref={controlsRef} className="z-10 flex shrink-0 gap-3 bg-[#8BA3A7] p-4 shadow-[0px_-4px_0px_0px_#0D0D0D]">
           {/* Left Arrow */}
-          <button className="flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
+          <button className="voxel-grid-surface flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
           </button>
 
           {/* Action Button */}
-          <button className="flex h-14 flex-1 items-center justify-center border-2 border-[#0D0D0D] bg-[#FF7800] text-lg font-black uppercase tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:text-xl">
+          <button className="button-primary flex h-14 flex-1 items-center justify-center text-lg font-black uppercase tracking-widest transition-all md:h-16 md:text-xl">
             ACCIÓN
           </button>
 
           {/* Right Arrow */}
-          <button className="flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
+          <button className="voxel-grid-surface flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>

@@ -21,7 +21,8 @@ export default function ModalOverlay({ title, children, panelClassName = '' }) {
 
     const context = gsap.context(() => {
       gsap.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'power1.out' });
-      gsap.fromTo(panelRef.current, { scale: 0.85, y: 24, opacity: 0 }, { scale: 1, y: 0, opacity: 1, duration: 0.35, ease: 'back.out(1.5)' });
+      gsap.fromTo(panelRef.current, { scale: 0.9, opacity: 0, y: 20 }, { scale: 1, opacity: 1, y: 0, duration: 0.32, ease: 'back.out(1.7)' });
+      gsap.from('[data-modal-enter]', { opacity: 0, y: 12, duration: 0.3, stagger: 0.055, delay: 0.12, ease: 'power2.out' });
     });
 
     const handleKeyDown = (event) => {
@@ -47,16 +48,16 @@ export default function ModalOverlay({ title, children, panelClassName = '' }) {
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`relative max-h-full w-full max-w-[360px] overflow-y-auto border-2 border-[#0D0D0D] bg-[#FFFFFF] p-5 pt-14 shadow-[6px_6px_0px_0px_#0D0D0D] md:max-w-[640px] md:p-8 md:pt-16 ${panelClassName}`}
+        className={`relative max-h-full w-full max-w-[360px] overflow-y-auto border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 pt-14 shadow-[6px_6px_0px_0px_#0D0D0D] md:max-w-[640px] md:p-8 md:pt-16 ${panelClassName}`}
       >
-        <h1 className="absolute left-5 right-16 top-4 truncate text-base font-black uppercase tracking-widest md:left-8 md:top-5 md:text-lg">{title}</h1>
+        <h1 data-modal-enter className="voxel-grid-surface absolute left-5 right-16 top-3 w-fit max-w-[calc(100%-5rem)] truncate border-2 border-[#0D0D0D] bg-[#FF7800] px-3 py-2 text-sm font-black uppercase tracking-widest shadow-[3px_3px_0px_0px_#0D0D0D] [text-shadow:1px_1px_0px_#FFFFFF] md:left-8 md:top-4 md:text-base">{title}</h1>
         <button
           {...gsapButtonMotion}
           ref={closeButtonRef}
           type="button"
           aria-label="Cerrar ventana"
           onClick={() => dismissRef.current()}
-          className="absolute right-4 top-3 grid h-8 w-8 place-items-center border-2 border-[#0D0D0D] bg-[#8BA3A7] text-lg font-black shadow-[2px_2px_0px_0px_#0D0D0D] md:right-6 md:top-4"
+          className="button-secondary absolute right-4 top-3 grid h-8 w-8 place-items-center p-0 text-lg font-black md:right-6 md:top-4"
         >
           ×
         </button>

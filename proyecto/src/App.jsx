@@ -20,8 +20,8 @@ export default function App() {
     : location;
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-[#1B384B] p-4">
-      <div className="relative flex h-[800px] w-full max-w-[390px] shrink-0 flex-col overflow-hidden rounded-2xl border-[3px] border-[#0D0D0D] bg-[#FFFFFF] shadow-[6px_6px_0px_0px_#0D0D0D] md:h-[960px] md:max-w-[768px]">
+    <div className="voxel-grid-surface flex min-h-screen w-full flex-col items-center justify-center bg-[#1B384B] p-4">
+      <div className="pixel-edge relative flex h-[800px] w-full max-w-[390px] shrink-0 flex-col overflow-hidden border-[3px] border-[#0D0D0D] bg-[#8BA3A7] shadow-[6px_6px_0px_0px_#0D0D0D] md:h-[960px] md:max-w-[768px]">
         <Menu />
         <div className="relative min-h-0 flex-1 overflow-y-auto">
           <Routes location={backgroundLocation}>
@@ -30,7 +30,6 @@ export default function App() {
             <Route path="/niveles" element={<SelectorNiveles />} />
             <Route path="/configuracion" element={<Configuracion />} />
             <Route path="/perfil" element={<Perfil />} />
-            <Route path="/tutorial" element={<Tutorial />} />
             <Route path="/gameplay" element={<Gameplay />} />
             <Route path="/pausa" element={<Inicio />} />
             <Route path="/victoria" element={<Inicio />} />
@@ -41,11 +40,13 @@ export default function App() {
           <Routes location={location}>
             <Route path="/configuracion" element={<Configuracion />} />
             <Route path="/perfil" element={<Perfil />} />
+            <Route path="/tutorial" element={<Tutorial />} />
             <Route path="/pausa" element={<Pausa />} />
             <Route path="/victoria" element={<Victoria />} />
             <Route path="/derrota" element={<Derrota />} />
           </Routes>
         )}
+        <div aria-hidden="true" className="crt-overlay pointer-events-none absolute inset-0 z-50" />
       </div>
     </div>
   );

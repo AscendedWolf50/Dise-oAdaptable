@@ -30,7 +30,7 @@ export default function Perfil() {
       <div ref={containerRef} className="flex flex-col gap-3 font-sans text-[#0D0D0D] md:gap-4">
         {/* Header */}
         <div data-profile-enter className="flex items-center gap-2">
-          <button {...gsapButtonMotion} aria-label="Compartir perfil" onClick={() => { navigator.clipboard?.writeText(window.location.href); setCopied(true); }} className="ml-auto border-2 border-[#0D0D0D] px-3 py-2 font-bold shadow-[2px_2px_0px_0px_#0D0D0D]">{copied ? '✓' : '↗'}</button>
+          <button {...gsapButtonMotion} aria-label="Compartir perfil" onClick={() => { navigator.clipboard?.writeText(window.location.href); setCopied(true); }} className="button-secondary ml-auto px-3 py-2 font-bold">{copied ? '✓' : '↗'}</button>
         </div>
 
         <div data-profile-enter className="border-2 border-[#0D0D0D] p-3">

@@ -19,8 +19,8 @@ export default {
         'brutal-lg': '6px 6px 0px 0px #0D0D0D',
       },
       fontFamily: {
-        sans: ['"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['"JetBrains Mono"', '"Fira Code"', 'monospace'],
+        sans: ['"Silkscreen"', 'cursive', 'sans-serif'],
+        mono: ['"Silkscreen"', 'cursive', 'sans-serif'],
       },
     },
   },

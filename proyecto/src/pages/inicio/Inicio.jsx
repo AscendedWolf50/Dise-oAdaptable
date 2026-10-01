@@ -35,7 +35,7 @@ const Inicio = () => {
     <div className="bg-[#1B384B] flex justify-center p-4 font-sans">
       <div 
         ref={containerRef}
-        className="grid w-full max-w-md grid-cols-1 gap-4 border-2 border-[#0D0D0D] bg-white p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:grid-cols-2 md:gap-5 md:p-8"
+        className="grid w-full max-w-md grid-cols-1 gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:grid-cols-2 md:gap-5 md:p-8"
       >
         {/* Illustration Box */}
         <div ref={addToRefs} className="relative h-40 w-full overflow-hidden border-2 border-[#0D0D0D] bg-[#FF7800] flex items-center justify-center md:col-span-2 md:h-52">
@@ -47,7 +47,7 @@ const Inicio = () => {
         </div>
 
         {/* Big Banner */}
-        <div ref={addToRefs} className="border-2 border-[#0D0D0D] bg-[#0D0D0D] p-4 text-center font-black text-2xl tracking-widest uppercase text-white md:col-span-2">
+        <div ref={addToRefs} className="voxel-grid-surface border-2 border-[#0D0D0D] bg-[#0D0D0D] p-4 text-center font-black text-2xl tracking-widest uppercase text-white md:col-span-2">
           VOXEL DRIFT
         </div>
 
@@ -55,7 +55,7 @@ const Inicio = () => {
         <button 
           ref={addToRefs}
           onClick={() => navigate('/niveles')}
-          className={`flex items-center justify-center gap-2 border-2 border-[#0D0D0D] bg-[#FF7800] p-4 font-bold tracking-widest uppercase text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] md:text-lg ${buttonPressStyle}`}
+          className={`button-primary flex items-center justify-center gap-2 p-4 font-bold tracking-widest uppercase md:text-lg ${buttonPressStyle}`}
         >
           <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
             <path d="M4 4l12 6-12 6z" />
@@ -66,7 +66,7 @@ const Inicio = () => {
         <button 
           ref={addToRefs}
           onClick={() => navigate('/perfil')}
-          className={`flex items-center justify-center gap-2 border-2 border-[#0D0D0D] bg-white p-4 font-bold tracking-widest uppercase text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] md:text-lg ${buttonPressStyle}`}
+          className={`button-secondary flex items-center justify-center gap-2 p-4 font-bold tracking-widest uppercase md:text-lg ${buttonPressStyle}`}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -77,7 +77,7 @@ const Inicio = () => {
         <button 
           ref={addToRefs}
           onClick={() => navigate('/configuracion')}
-          className={`flex items-center justify-center gap-2 border-2 border-[#0D0D0D] bg-white p-4 font-bold tracking-widest uppercase text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] md:col-span-2 md:text-lg ${buttonPressStyle}`}
+          className={`button-secondary flex items-center justify-center gap-2 p-4 font-bold tracking-widest uppercase md:col-span-2 md:text-lg ${buttonPressStyle}`}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -96,7 +96,7 @@ const Inicio = () => {
         {/* Bottom Grid */}
         <div ref={addToRefs} className="grid grid-cols-2 gap-4 md:col-span-2">
           <button 
-            className={`flex flex-col items-center justify-center gap-2 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-3 font-bold tracking-widest text-sm uppercase text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] ${buttonPressStyle}`}
+            className={`button-secondary flex flex-col items-center justify-center gap-2 p-3 text-sm font-bold tracking-widest uppercase ${buttonPressStyle}`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -106,7 +106,7 @@ const Inicio = () => {
 
           <button 
             onClick={() => navigate('/tutorial')}
-            className={`flex flex-col items-center justify-center gap-2 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-3 font-bold tracking-widest text-sm uppercase text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] ${buttonPressStyle}`}
+            className={`button-secondary flex flex-col items-center justify-center gap-2 p-3 text-sm font-bold tracking-widest uppercase ${buttonPressStyle}`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

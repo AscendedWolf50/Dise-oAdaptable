@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 
-const animate = (element, vars) => gsap.to(element, { duration: 0.14, ease: 'power2.out', ...vars });
+const animate = (element, vars) => gsap.to(element, { duration: 0.08, ease: 'steps(2)', ...vars });
 
 export const gsapButtonMotion = {
   onPointerEnter: ({ currentTarget }) => animate(currentTarget, { x: -1, y: -1 }),

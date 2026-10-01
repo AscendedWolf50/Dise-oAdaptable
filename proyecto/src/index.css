@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,9 +9,21 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  * {
+    font-family: 'Silkscreen', cursive, sans-serif !important;
+  }
+
   body {
     @apply bg-[#1B384B] text-[#0D0D0D] font-sans antialiased;
     overflow-x: hidden;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+    margin: 0;
+    background-color: #1B384B;
   }
 
   /* Scrollbar styling for neo-brutalist feel */
@@ -33,6 +45,26 @@
 }
 
 @layer components {
+  button {
+    @apply font-black tracking-widest transition-all duration-150;
+  }
+
+  button:not(:disabled) {
+    @apply shadow-[4px_4px_0px_0px_#0D0D0D]
+           hover:translate-x-[2px] hover:translate-y-[2px]
+           hover:shadow-[2px_2px_0px_0px_#0D0D0D]
+           active:translate-x-[4px] active:translate-y-[4px] active:shadow-none;
+  }
+
+  button:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-[#FF7800];
+  }
+
+  h1,
+  h2 {
+    text-shadow: 1px 1px 0 #8BA3A7;
+  }
+
   /* Neo-brutalist button base */
   .btn-brutal {
     @apply border-2 border-[#0D0D0D] font-bold tracking-widest uppercase 
@@ -45,5 +77,68 @@
   /* Card base */
   .card-brutal {
     @apply border-2 border-[#0D0D0D] shadow-[6px_6px_0px_0px_#0D0D0D];
+  }
+
+  .voxel-grid-surface {
+    background-image:
+      linear-gradient(rgba(139, 163, 167, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 163, 167, 0.09) 1px, transparent 1px),
+      linear-gradient(rgba(13, 13, 13, 0.08) 50%, transparent 50%);
+    background-size: 16px 16px, 16px 16px, 100% 4px;
+  }
+
+  .pixel-edge {
+    border-radius: 0;
+    image-rendering: pixelated;
+  }
+
+  .crt-overlay {
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .crt-overlay::before,
+  .crt-overlay::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    pointer-events: none;
+  }
+
+  .crt-overlay::before {
+    z-index: 1;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(13, 13, 13, 0.22) 0,
+      rgba(13, 13, 13, 0.22) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+    background-size: 100% 6px;
+    animation: crt-scan 6s steps(160, end) infinite;
+  }
+
+  .crt-overlay::after {
+    z-index: 2;
+    background: radial-gradient(ellipse at center, transparent 62%, rgba(13, 13, 13, 0.12) 100%);
+  }
+
+  @keyframes crt-scan {
+    from { background-position: 0 0; }
+    to { background-position: 0 960px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .crt-overlay::before {
+      animation: none;
+    }
+  }
+
+  .button-primary {
+    @apply border-2 border-[#0D0D0D] bg-[#FF7800] text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D];
+  }
+
+  .button-secondary {
+    @apply border-2 border-[#0D0D0D] bg-[#1B384B] text-[#FFFFFF] shadow-[4px_4px_0px_0px_#0D0D0D];
   }
 }

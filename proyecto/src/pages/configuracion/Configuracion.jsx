@@ -26,7 +26,7 @@ export default function Configuracion() {
     <ModalOverlay title="CONFIGURACIÓN">
       <div ref={pageRef} className="flex flex-col gap-4 text-[#0D0D0D] md:gap-6">
 
-        <div data-enter className="relative flex h-24 items-center justify-center border-2 border-[#0D0D0D] bg-white">
+        <div data-enter className="relative flex h-24 items-center justify-center border-2 border-[#0D0D0D] bg-[#8BA3A7]">
           <span className="text-xs font-bold tracking-[0.3em] text-[#8BA3A7]">ILUSTRACIÓN</span>
           <span className="absolute left-1 top-1 text-[#8BA3A7]">┌</span><span className="absolute right-1 top-1 text-[#8BA3A7]">┐</span>
           <span className="absolute bottom-1 left-1 text-[#8BA3A7]">└</span><span className="absolute bottom-1 right-1 text-[#8BA3A7]">┘</span>
@@ -48,7 +48,7 @@ export default function Configuracion() {
           <span className="flex justify-between text-[9px] font-bold text-[#8BA3A7]"><span>0</span><span>50</span><span>100</span></span>
         </label>
 
-        <button {...gsapButtonMotion} data-apply onClick={applySettings} className="border-2 border-[#0D0D0D] bg-[#FF7800] py-3 text-lg font-black tracking-widest shadow-[4px_4px_0px_0px_#0D0D0D]">
+        <button {...gsapButtonMotion} data-apply onClick={applySettings} className="button-primary py-3 text-lg font-black tracking-widest">
           {saved ? 'APLICADO ✓' : 'APLICAR'}
         </button>
       </div>

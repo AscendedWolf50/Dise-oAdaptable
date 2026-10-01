@@ -4,6 +4,7 @@ export const MODAL_PATHS = new Set([
   '/pausa',
   '/configuracion',
   '/perfil',
+  '/tutorial',
   '/victoria',
   '/derrota',
 ]);

@@ -5,34 +5,29 @@ import { useAppNavigation } from '../../utils/useAppNavigation.js';
 
 const Victoria = () => {
   const containerRef = useRef(null);
-  const bannerRef = useRef(null);
   const starsRef = useRef([]);
   const buttonsRef = useRef([]);
   const navigate = useAppNavigation();
 
   useEffect(() => {
-    // Animations
-    const tl = gsap.timeline();
-
-    tl.fromTo(containerRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
-    )
-    .fromTo(bannerRef.current,
-      { scale: 0.5, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.5)' },
-      "-=0.2"
-    )
+    const context = gsap.context(() => {
+      const timeline = gsap.timeline();
+      timeline.fromTo(containerRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+      )
     .fromTo(starsRef.current,
       { scale: 0, rotation: -45, opacity: 0 },
       { scale: 1, rotation: 0, opacity: 1, duration: 0.4, stagger: 0.2, ease: 'back.out(2)' },
-      "-=0.2"
+      '-=0.2'
     )
     .fromTo(buttonsRef.current,
       { y: 20, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: 'power2.out' },
-      "-=0.1"
+      '-=0.1'
     );
+    });
+    return () => context.revert();
   }, []);
 
   const handleMenu = () => navigate('/');
@@ -52,9 +47,8 @@ const Victoria = () => {
         </div>
 
         {/* Victory Banner */}
-        <div 
-          ref={bannerRef}
-          className="bg-[#0D0D0D] text-white w-full p-4 text-center font-black text-3xl tracking-widest uppercase border-2 border-[#0D0D0D]"
+        <div
+          className="voxel-grid-surface w-full border-2 border-[#0D0D0D] bg-[#0D0D0D] p-4 text-center text-3xl font-black uppercase tracking-widest text-white"
         >
           ¡VICTORIA!
         </div>
@@ -92,7 +86,7 @@ const Victoria = () => {
           <button
             ref={el => buttonsRef.current[0] = el}
             onClick={handleMenu}
-            className="bg-[#8BA3A7] text-[#0D0D0D] border-2 border-[#0D0D0D] p-3 flex flex-col items-center justify-center gap-1 font-bold shadow-[4px_4px_0px_0px_#0D0D0D] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#0D0D0D] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all"
+            className="button-secondary flex flex-col items-center justify-center gap-1 p-3 font-bold"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -103,7 +97,7 @@ const Victoria = () => {
           <button
             ref={el => buttonsRef.current[1] = el}
             onClick={handleRestart}
-            className="bg-[#8BA3A7] text-[#0D0D0D] border-2 border-[#0D0D0D] p-3 flex flex-col items-center justify-center gap-1 font-bold shadow-[4px_4px_0px_0px_#0D0D0D] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#0D0D0D] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all"
+            className="button-secondary flex flex-col items-center justify-center gap-1 p-3 font-bold"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -114,7 +108,7 @@ const Victoria = () => {
           <button
             ref={el => buttonsRef.current[2] = el}
             onClick={handleNext}
-            className="bg-[#8BA3A7] text-[#0D0D0D] border-2 border-[#0D0D0D] p-3 flex flex-col items-center justify-center gap-1 font-bold shadow-[4px_4px_0px_0px_#0D0D0D] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#0D0D0D] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all"
+            className="button-primary flex flex-col items-center justify-center gap-1 p-3 font-bold"
           >
             <svg className="w-6 h-6" fill="currentColor" stroke="none" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />

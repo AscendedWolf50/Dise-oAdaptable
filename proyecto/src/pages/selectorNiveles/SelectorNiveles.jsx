@@ -71,13 +71,13 @@ const SelectorNiveles = () => {
     <div className="bg-[#1B384B] flex justify-center p-4 font-sans uppercase tracking-widest text-[#0D0D0D]">
       <div
         ref={containerRef}
-        className="w-full max-w-md overflow-hidden border-2 border-[#0D0D0D] bg-[#FFFFFF] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:p-7"
+        className="w-full max-w-md overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:p-7"
       >
         {/* Header row */}
         <div className="flex items-center gap-3 mb-6">
           <button
             onClick={() => navigate('/')}
-            className="border-2 border-[#0D0D0D] bg-white px-3 py-1 font-bold text-xs hover:shadow-[2px_2px_0px_0px_#0D0D0D] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all"
+            className="button-secondary px-3 py-1 text-xs font-bold transition-all"
           >
             ← VOLVER
           </button>
@@ -86,7 +86,7 @@ const SelectorNiveles = () => {
 
         {/* Stats bar */}
         <div className="flex justify-between items-center mb-6">
-          <div className="bg-[#0D0D0D] text-white px-3 py-1 font-bold text-sm">
+          <div className="voxel-grid-surface bg-[#0D0D0D] px-3 py-1 text-sm font-bold text-white">
             {completedCount}/100 NIVELES
           </div>
           <div className="font-bold text-lg text-[#FF7800]">
@@ -114,27 +114,29 @@ const SelectorNiveles = () => {
                   <div
                     ref={(el) => (cardsRef.current[index] = el)}
                     onClick={() => handleLevelClick(level.status)}
+                    aria-disabled={level.status === 'locked'}
                     className={`
-                      relative p-3 text-center transition-all 
+                      relative flex aspect-square min-w-0 flex-col items-center justify-between border-2 border-[#0D0D0D] p-2 text-center transition-all sm:p-3
                       ${level.status === 'completed'
-                        ? 'border-2 border-[#0D0D0D] bg-white cursor-pointer hover:shadow-[4px_4px_0px_0px_#0D0D0D] hover:-translate-y-[2px] active:translate-y-0 active:shadow-none'
+                        ? 'bg-[#8BA3A7] cursor-pointer hover:shadow-[4px_4px_0px_0px_#0D0D0D] hover:-translate-y-[2px] active:translate-y-0 active:shadow-none'
                         : level.status === 'current'
-                          ? 'border-2 border-dashed border-[#8BA3A7] bg-white cursor-pointer hover:border-[#0D0D0D] hover:shadow-[4px_4px_0px_0px_#0D0D0D] hover:-translate-y-[2px]'
-                          : 'border-2 border-[#8BA3A7] bg-[#FFFFFF] opacity-60 cursor-not-allowed'
+                          ? 'border-dashed bg-[#8BA3A7] cursor-pointer hover:shadow-[4px_4px_0px_0px_#0D0D0D] hover:-translate-y-[2px]'
+                          : 'bg-[#8BA3A7] text-[#1B384B] cursor-not-allowed'
                       }
                     `}
                   >
                     {level.status === 'current' && (
-                      <div className="absolute inset-0 flex justify-between items-center px-1 pointer-events-none text-[#8BA3A7]">
-                        <span>[⋮</span>
-                        <span>⋮]</span>
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-1 text-[#0D0D0D]">
+                        <span aria-hidden="true">[</span>
+                        <span aria-hidden="true">]</span>
                       </div>
                     )}
                     
-                    <div className="font-bold text-xl mb-1">{level.number}</div>
+                    <div className="mb-1 text-lg font-bold leading-none sm:text-xl">{level.number}</div>
                     
-                    <div className={`text-xs ${level.status === 'completed' ? 'text-[#FF7800]' : 'text-[#8BA3A7]'}`}>
-                      {level.status === 'locked' ? <svg aria-label="Nivel bloqueado" className="mx-auto h-4 w-4 text-[#8BA3A7]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="10" width="14" height="11" /><path d="M8 10V7a4 4 0 1 1 8 0v3" /></svg> : renderStars(level.stars)}
+                    <div className={`flex min-h-5 items-center justify-center gap-1 text-[10px] leading-none sm:text-xs ${level.status === 'completed' ? 'text-[#FF7800]' : 'text-[#0D0D0D]'}`}>
+                      {level.status === 'locked' && <svg aria-label="Nivel bloqueado" className="h-3 w-3 shrink-0 sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="10" width="14" height="11" /><path d="M8 10V7a4 4 0 1 1 8 0v3" /></svg>}
+                      {renderStars(level.stars)}
                     </div>
                   </div>
                 </React.Fragment>
