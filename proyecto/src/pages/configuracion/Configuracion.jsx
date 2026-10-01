@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { gsapButtonMotion } from '../../utils/gsapButtonMotion.js';
+import ModalOverlay from '../../components/ui/ModalOverlay.jsx';
 
 export default function Configuracion() {
-  const navigate = useNavigate();
   const pageRef = useRef(null);
   const [music, setMusic] = useState(70);
   const [effects, setEffects] = useState(85);
@@ -24,12 +23,8 @@ export default function Configuracion() {
   };
 
   return (
-    <main className="min-h-screen bg-[#8BA3A7] px-4 py-4 text-[#0D0D0D]">
-      <section ref={pageRef} className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-4 border-2 border-[#0D0D0D] bg-white p-5 shadow-[4px_4px_0px_0px_#0D0D0D]">
-        <header data-enter className="flex items-center gap-3">
-          <button {...gsapButtonMotion} onClick={() => navigate('/')} className="border-2 border-[#0D0D0D] px-3 py-2 text-xs font-black tracking-widest shadow-[3px_3px_0px_0px_#0D0D0D]">◂ VOLVER</button>
-          <h1 className="text-lg font-black uppercase tracking-widest">CONFIGURACIÓN</h1>
-        </header>
+    <ModalOverlay title="CONFIGURACIÓN">
+      <div ref={pageRef} className="flex flex-col gap-4 text-[#0D0D0D] md:gap-6">
 
         <div data-enter className="relative flex h-24 items-center justify-center border-2 border-[#0D0D0D] bg-white">
           <span className="text-xs font-bold tracking-[0.3em] text-[#8BA3A7]">ILUSTRACIÓN</span>
@@ -53,10 +48,10 @@ export default function Configuracion() {
           <span className="flex justify-between text-[9px] font-bold text-[#8BA3A7]"><span>0</span><span>50</span><span>100</span></span>
         </label>
 
-        <button {...gsapButtonMotion} data-apply onClick={applySettings} className="mt-auto border-2 border-[#0D0D0D] bg-white py-3 text-lg font-black tracking-widest shadow-[4px_4px_0px_0px_#0D0D0D]">
+        <button {...gsapButtonMotion} data-apply onClick={applySettings} className="border-2 border-[#0D0D0D] bg-[#FF7800] py-3 text-lg font-black tracking-widest shadow-[4px_4px_0px_0px_#0D0D0D]">
           {saved ? 'APLICADO ✓' : 'APLICAR'}
         </button>
-      </section>
-    </main>
+      </div>
+    </ModalOverlay>
   );
 }

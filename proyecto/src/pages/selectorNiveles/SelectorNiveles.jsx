@@ -68,10 +68,10 @@ const SelectorNiveles = () => {
   const completedCount = levels.filter(l => l.status === 'completed').length;
 
   return (
-    <div className="min-h-screen bg-[#1B384B] flex items-center justify-center p-4 font-sans uppercase tracking-widest text-[#0D0D0D]">
+    <div className="bg-[#1B384B] flex justify-center p-4 font-sans uppercase tracking-widest text-[#0D0D0D]">
       <div
         ref={containerRef}
-        className="bg-[#FFFFFF] w-full max-w-md mx-auto border-2 border-[#0D0D0D] p-5 shadow-[6px_6px_0px_0px_#0D0D0D] overflow-hidden"
+        className="w-full max-w-md overflow-hidden border-2 border-[#0D0D0D] bg-[#FFFFFF] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:p-7"
       >
         {/* Header row */}
         <div className="flex items-center gap-3 mb-6">
@@ -95,8 +95,8 @@ const SelectorNiveles = () => {
         </div>
 
         {/* Level Grid Area */}
-        <div className="overflow-y-auto max-h-[60vh] pr-1 pb-2">
-          <div className="grid grid-cols-3 gap-3">
+        <div className="max-h-[60vh] overflow-y-auto pb-2 pr-1 md:max-h-[70vh]">
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
             {levels.map((level, index) => {
               // Add separator before first locked level
               const isFirstLocked = level.status === 'locked' && levels[index - 1]?.status !== 'locked';
@@ -104,9 +104,9 @@ const SelectorNiveles = () => {
               return (
                 <React.Fragment key={level.id}>
                   {isFirstLocked && (
-                    <div className="col-span-3 flex items-center justify-center gap-2 my-2 opacity-60">
+                    <div className="col-span-3 my-2 flex items-center justify-center gap-2 opacity-60 sm:col-span-4 md:col-span-5">
                       <div className="flex-grow border-t-2 border-dashed border-[#8BA3A7]"></div>
-                      <span className="text-sm">🔒</span>
+                      <svg aria-label="Niveles bloqueados" className="h-4 w-4 text-[#8BA3A7]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="10" width="14" height="11" /><path d="M8 10V7a4 4 0 1 1 8 0v3" /></svg>
                       <div className="flex-grow border-t-2 border-dashed border-[#8BA3A7]"></div>
                     </div>
                   )}
@@ -120,7 +120,7 @@ const SelectorNiveles = () => {
                         ? 'border-2 border-[#0D0D0D] bg-white cursor-pointer hover:shadow-[4px_4px_0px_0px_#0D0D0D] hover:-translate-y-[2px] active:translate-y-0 active:shadow-none'
                         : level.status === 'current'
                           ? 'border-2 border-dashed border-[#8BA3A7] bg-white cursor-pointer hover:border-[#0D0D0D] hover:shadow-[4px_4px_0px_0px_#0D0D0D] hover:-translate-y-[2px]'
-                          : 'border-2 border-[#8BA3A7] bg-[#f5f5f5] opacity-60 cursor-not-allowed'
+                          : 'border-2 border-[#8BA3A7] bg-[#FFFFFF] opacity-60 cursor-not-allowed'
                       }
                     `}
                   >
@@ -134,7 +134,7 @@ const SelectorNiveles = () => {
                     <div className="font-bold text-xl mb-1">{level.number}</div>
                     
                     <div className={`text-xs ${level.status === 'completed' ? 'text-[#FF7800]' : 'text-[#8BA3A7]'}`}>
-                      {level.status === 'locked' ? '🔒' : renderStars(level.stars)}
+                      {level.status === 'locked' ? <svg aria-label="Nivel bloqueado" className="mx-auto h-4 w-4 text-[#8BA3A7]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="10" width="14" height="11" /><path d="M8 10V7a4 4 0 1 1 8 0v3" /></svg> : renderStars(level.stars)}
                     </div>
                   </div>
                 </React.Fragment>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import statsData from '../../data/stats.json';
@@ -32,10 +32,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#1B384B] flex items-center justify-center p-4 font-sans">
+    <div className="bg-[#1B384B] flex justify-center p-4 font-sans">
       <div 
         ref={containerRef}
-        className="bg-[#FFFFFF] w-full max-w-md mx-auto border-2 border-[#0D0D0D] p-6 shadow-[6px_6px_0px_0px_#0D0D0D] flex flex-col relative"
+        className="relative flex w-full max-w-md flex-col border-2 border-[#0D0D0D] bg-[#FFFFFF] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-xl md:p-8"
       >
         {/* Version Label */}
         <div className="text-right text-[#FF7800] font-black tracking-widest text-sm mb-2">
@@ -84,7 +84,7 @@ const Login = () => {
         </form>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-3 mt-auto">
+        <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
           {statsData && statsData.map((stat, index) => (
             <div 
               key={stat.id}

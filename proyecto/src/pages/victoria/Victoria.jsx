@@ -1,13 +1,14 @@
-import React, { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import ModalOverlay from '../../components/ui/ModalOverlay.jsx';
+import { useAppNavigation } from '../../utils/useAppNavigation.js';
 
 const Victoria = () => {
   const containerRef = useRef(null);
   const bannerRef = useRef(null);
   const starsRef = useRef([]);
   const buttonsRef = useRef([]);
-  const navigate = useNavigate();
+  const navigate = useAppNavigation();
 
   useEffect(() => {
     // Animations
@@ -39,11 +40,8 @@ const Victoria = () => {
   const handleNext = () => navigate('/niveles');
 
   return (
-    <div className="min-h-screen bg-[#1B384B] flex items-center justify-center p-4 font-sans">
-      <div 
-        ref={containerRef}
-        className="bg-white w-full max-w-md mx-auto border-2 border-[#0D0D0D] p-6 shadow-[6px_6px_0px_0px_#0D0D0D] flex flex-col items-center gap-6"
-      >
+    <ModalOverlay title="¡VICTORIA!">
+      <div ref={containerRef} className="flex flex-col items-center gap-4 font-sans md:gap-5">
         {/* Illustration placeholder */}
         <div className="w-full h-36 border-2 border-[#0D0D0D] bg-[#8BA3A7] relative flex items-center justify-center">
           <div className="absolute top-0 left-0 w-2 h-2 bg-[#0D0D0D]"></div>
@@ -62,7 +60,7 @@ const Victoria = () => {
         </div>
 
         {/* Stars Section */}
-        <div className="flex flex-col items-center gap-4 py-4">
+        <div className="flex flex-col items-center gap-4 py-2">
           <div className="flex gap-2">
             {[0, 1, 2].map((i) => (
               <div 
@@ -90,7 +88,7 @@ const Victoria = () => {
         </div>
 
         {/* Bottom 3-button row */}
-        <div className="grid grid-cols-3 gap-3 w-full mt-auto">
+        <div className="mt-2 grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
           <button
             ref={el => buttonsRef.current[0] = el}
             onClick={handleMenu}
@@ -125,7 +123,7 @@ const Victoria = () => {
           </button>
         </div>
       </div>
-    </div>
+    </ModalOverlay>
   );
 };
 

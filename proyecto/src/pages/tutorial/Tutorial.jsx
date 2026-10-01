@@ -31,12 +31,12 @@ export default function Tutorial() {
   };
 
   return (
-    <main className="min-h-screen bg-[#8BA3A7] px-4 py-4 text-[#0D0D0D]">
-      <section ref={pageRef} className="mx-auto flex min-h-screen w-full max-w-md flex-col border-2 border-[#0D0D0D] bg-white p-5 shadow-[4px_4px_0px_0px_#0D0D0D]">
+    <main className="bg-[#1B384B] px-4 py-4 text-[#0D0D0D]">
+      <section ref={pageRef} className="mx-auto flex w-full max-w-md flex-col border-2 border-[#0D0D0D] bg-white p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:p-8">
         <div data-tutorial-enter className="mb-4 flex h-32 items-center justify-center border-2 border-[#0D0D0D]">
           <button {...gsapButtonMotion} onClick={() => setDemoPlaying((playing) => !playing)} aria-label={demoPlaying ? 'Pausar demostración' : 'Reproducir demostración'} className="grid h-12 w-12 place-items-center border-2 border-[#0D0D0D] bg-white text-xl shadow-[3px_3px_0px_0px_#0D0D0D]">{demoPlaying ? 'Ⅱ' : '▶'}</button>
         </div>
-        <div data-step-content className="flex flex-1 flex-col">
+        <div data-step-content className="flex flex-col">
           <span data-tutorial-enter className="w-fit border-2 border-[#0D0D0D] px-2 py-1 text-[10px] font-bold tracking-[0.18em]">{step.tag}</span>
           <h1 data-tutorial-enter className="mt-3 text-2xl font-black tracking-wide">{step.title}</h1>
           <p data-tutorial-enter className="mt-4 text-sm leading-6 text-[#8BA3A7]">{step.body}</p>
@@ -45,11 +45,11 @@ export default function Tutorial() {
             {steps.map((item, index) => <span key={item.tag} className={`h-2 flex-1 border border-[#0D0D0D] ${index === stepIndex ? 'bg-[#FF7800]' : 'bg-white'}`} />)}
           </div>
         </div>
-        <div data-tutorial-enter className="mt-6 grid grid-cols-2 gap-3">
+        <div data-tutorial-enter className="mt-6 grid grid-cols-2 gap-3 md:max-w-lg">
           <button {...gsapButtonMotion} onClick={() => changeStep(stepIndex - 1)} disabled={stepIndex === 0} className="border-2 border-[#0D0D0D] bg-[#8BA3A7] px-2 py-3 text-xs font-black tracking-widest shadow-[3px_3px_0px_0px_#0D0D0D] disabled:opacity-50">◂ ANTERIOR</button>
           <button {...gsapButtonMotion} onClick={() => changeStep(stepIndex + 1)} disabled={stepIndex === steps.length - 1} className="border-2 border-[#0D0D0D] bg-[#0D0D0D] px-2 py-3 text-xs font-black tracking-widest text-white shadow-[3px_3px_0px_0px_#0D0D0D] disabled:opacity-50">SIGUIENTE ▸</button>
         </div>
-        <button {...gsapButtonMotion} data-tutorial-enter onClick={() => navigate('/niveles')} className="mt-3 border-2 border-[#0D0D0D] py-2 text-xs font-black tracking-widest shadow-[3px_3px_0px_0px_#0D0D0D]">× CERRAR TUTORIAL</button>
+        <button {...gsapButtonMotion} data-tutorial-enter onClick={() => navigate('/niveles')} className="mt-3 border-2 border-[#0D0D0D] bg-[#8BA3A7] py-2 text-xs font-black tracking-widest shadow-[3px_3px_0px_0px_#0D0D0D] md:max-w-lg">× CERRAR TUTORIAL</button>
       </section>
     </main>
   );

@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { useAppNavigation } from '../../utils/useAppNavigation.js';
 
 export default function Gameplay() {
-  const navigate = useNavigate();
+  const navigate = useAppNavigation();
   const [timeLeft, setTimeLeft] = useState(102); // 102 seconds = 01:42
-  const [progress, setProgress] = useState(62);
-  const [level, setLevel] = useState(22);
+  const progress = 62;
+  const level = 22;
 
   const containerRef = useRef(null);
   const hudRef = useRef(null);
@@ -71,19 +71,19 @@ export default function Gameplay() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#1B384B] flex items-center justify-center p-4 font-sans selection:bg-[#FF7800] selection:text-white">
+    <div className="flex justify-center bg-[#1B384B] p-4 font-sans selection:bg-[#FF7800] selection:text-white">
       {/* Main Container */}
       <div 
         ref={containerRef}
-        className="bg-white w-full max-w-md mx-auto border-2 border-[#0D0D0D] shadow-[6px_6px_0px_0px_#0D0D0D] flex flex-col relative h-[85vh] min-h-[650px] overflow-hidden"
+        className="relative flex h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-white shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl"
       >
         {/* HUD Area */}
-        <div ref={hudRef} className="p-4 shrink-0 flex flex-col gap-3 bg-white z-10 relative shadow-[0px_4px_0px_0px_rgba(13,13,13,0.1)]">
+        <div ref={hudRef} className="relative z-10 flex shrink-0 flex-col gap-3 bg-white p-4 shadow-[0px_4px_0px_0px_#0D0D0D]">
           {/* Row 1: Pause, Progress */}
           <div className="flex items-center gap-3">
             <button 
               onClick={() => navigate('/pausa')}
-              className="w-10 h-10 rounded-full border-2 border-[#0D0D0D] flex items-center justify-center bg-white hover:bg-[#f0f0f0] active:translate-y-[2px] active:shadow-none shadow-[2px_2px_0px_0px_#0D0D0D] transition-all"
+              className="flex h-10 w-10 items-center justify-center border-2 border-[#0D0D0D] bg-[#8BA3A7] shadow-[2px_2px_0px_0px_#0D0D0D] transition-all hover:bg-[#FF7800] active:translate-y-[2px] active:shadow-none"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="2" y="1" width="3" height="12" fill="#0D0D0D"/>
@@ -92,13 +92,13 @@ export default function Gameplay() {
             </button>
             
             <div className="flex-1 flex items-center gap-3">
-              <div className="flex-1 h-5 border-2 border-[#0D0D0D] bg-white relative overflow-hidden shadow-[2px_2px_0px_0px_#0D0D0D]">
+              <div className="relative h-5 flex-1 overflow-hidden border-2 border-[#0D0D0D] bg-white shadow-[2px_2px_0px_0px_#0D0D0D]">
                 <div 
                   className="absolute top-0 left-0 h-full bg-[#FF7800] border-r-2 border-[#0D0D0D] transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 ></div>
                 {/* Highlight/shine effect on bar */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-white/30"></div>
+                <div className="absolute left-0 top-0 h-1 w-full bg-white"></div>
               </div>
               <span className="font-black text-[#0D0D0D] w-10 text-right">{progress}%</span>
             </div>
@@ -118,21 +118,21 @@ export default function Gameplay() {
         </div>
 
         {/* Game Canvas Area */}
-        <div ref={canvasRef} className="flex-1 bg-gradient-to-b from-[#8BA3A7]/30 to-[#1B384B]/10 relative overflow-hidden flex items-center justify-center border-t-2 border-b-2 border-[#0D0D0D]">
+        <div ref={canvasRef} className="relative flex flex-1 items-center justify-center overflow-hidden border-y-2 border-[#0D0D0D] bg-[#8BA3A7]">
           {/* Ground Grid/Lines placeholder for 3D effect */}
-          <div className="absolute bottom-0 w-full h-1/3 border-t-2 border-[#0D0D0D]/20" style={{ backgroundImage: 'linear-gradient(#0D0D0D20 2px, transparent 2px)', backgroundSize: '100% 20px' }}></div>
+          <div className="absolute bottom-0 h-1/3 w-full border-t-2 border-[#0D0D0D] opacity-20" style={{ backgroundImage: 'linear-gradient(#0D0D0D 2px, transparent 2px)', backgroundSize: '100% 20px' }}></div>
           
           {/* Voxel Truck SVG Illustration */}
-          <svg width="200" height="160" viewBox="0 0 200 160" className="relative z-10 drop-shadow-[8px_12px_0px_rgba(13,13,13,0.3)]">
+          <svg width="200" height="160" viewBox="0 0 200 160" className="relative z-10 drop-shadow-[8px_12px_0px_#0D0D0D]">
             {/* Tires */}
             <rect x="20" y="100" width="30" height="40" rx="4" fill="#0D0D0D" />
             <rect x="150" y="100" width="30" height="40" rx="4" fill="#0D0D0D" />
-            <rect x="30" y="105" width="10" height="30" fill="#333" />
-            <rect x="160" y="105" width="10" height="30" fill="#333" />
+            <rect x="30" y="105" width="10" height="30" fill="#0D0D0D" />
+            <rect x="160" y="105" width="10" height="30" fill="#0D0D0D" />
 
             {/* Main Body */}
             <path d="M10 60 L190 60 L190 110 L10 110 Z" fill="#FF7800" stroke="#0D0D0D" strokeWidth="4" strokeLinejoin="round"/>
-            <path d="M10 60 L190 60 L180 80 L20 80 Z" fill="#FF9A40" stroke="#0D0D0D" strokeWidth="2" strokeLinejoin="round"/>
+            <path d="M10 60 L190 60 L180 80 L20 80 Z" fill="#FF7800" stroke="#0D0D0D" strokeWidth="2" strokeLinejoin="round"/>
             
             {/* Cabin */}
             <path d="M40 60 L160 60 L140 20 L60 20 Z" fill="#FFFFFF" stroke="#0D0D0D" strokeWidth="4" strokeLinejoin="round"/>
@@ -150,8 +150,8 @@ export default function Gameplay() {
             {/* Headlights */}
             <circle cx="40" cy="90" r="10" fill="#FFFFFF" stroke="#0D0D0D" strokeWidth="4" />
             <circle cx="160" cy="90" r="10" fill="#FFFFFF" stroke="#0D0D0D" strokeWidth="4" />
-            <circle cx="40" cy="90" r="4" fill="#FFD700" />
-            <circle cx="160" cy="90" r="4" fill="#FFD700" />
+            <circle cx="40" cy="90" r="4" fill="#FF7800" />
+            <circle cx="160" cy="90" r="4" fill="#FF7800" />
             
             {/* Speed Lines */}
             <line x1="220" y1="40" x2="170" y2="40" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" opacity="0.5"/>
@@ -161,21 +161,21 @@ export default function Gameplay() {
         </div>
 
         {/* Bottom Controls */}
-        <div ref={controlsRef} className="p-4 bg-white shrink-0 flex gap-3 z-10 shadow-[0px_-4px_0px_0px_rgba(13,13,13,0.1)]">
+        <div ref={controlsRef} className="z-10 flex shrink-0 gap-3 bg-white p-4 shadow-[0px_-4px_0px_0px_#0D0D0D]">
           {/* Left Arrow */}
-          <button className="w-16 h-16 bg-[#0D0D0D] text-white border-2 border-[#0D0D0D] flex items-center justify-center shadow-[4px_4px_0px_0px_#1B384B] hover:bg-[#1f1f1f] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all">
+          <button className="flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
           </button>
 
           {/* Action Button */}
-          <button className="flex-1 h-16 bg-[#0D0D0D] text-white border-2 border-[#0D0D0D] flex items-center justify-center font-black tracking-widest uppercase text-xl shadow-[4px_4px_0px_0px_#FF7800] hover:bg-[#1f1f1f] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all">
+          <button className="flex h-14 flex-1 items-center justify-center border-2 border-[#0D0D0D] bg-[#FF7800] text-lg font-black uppercase tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:text-xl">
             ACCIÓN
           </button>
 
           {/* Right Arrow */}
-          <button className="w-16 h-16 bg-[#0D0D0D] text-white border-2 border-[#0D0D0D] flex items-center justify-center shadow-[4px_4px_0px_0px_#1B384B] hover:bg-[#1f1f1f] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all">
+          <button className="flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
