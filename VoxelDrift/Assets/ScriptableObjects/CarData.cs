@@ -1,0 +1,29 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "CarData", menuName = "Scriptable Objects/CarData")]
+public class CarData : ScriptableObject
+{
+    public float fuerzaMotor;
+
+    public float fuerzaReversa;
+
+    public float velocidadMaxima;
+    
+    public float velocidadMaximaReversa;
+
+    public float desaceleracionNatural;
+
+    public float torqueEnElAire;
+
+    public float friccionRotacionalAire;
+
+    public float masaVehiculo;
+
+    public Vector3 offsetCentroDeMasa;
+
+    public float gravedad;
+    
+    public float distacionRaycastAlSuelo;
+    
+    public LayerMask layerSuelo;
+}
