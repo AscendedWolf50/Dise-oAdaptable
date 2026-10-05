@@ -25,9 +25,9 @@ public class CarInputHandler : MonoBehaviour
     
     void Update()
     {
-        Vector2 direccionLeida =  inputActions.Player.Move.ReadValue<Vector2>();
+        Vector2 direccionLeida =  inputActions.Player.Move.ReadValue<Vector2>(); // Leer los valores del input system
 
-        inputAcelerador = direccionLeida.x;
+        inputAcelerador = direccionLeida.x; // El input del acelerador es igual a el eje x de la direccion leida (el jugador solo puede acelerar horizontalmente)
         
         
     }

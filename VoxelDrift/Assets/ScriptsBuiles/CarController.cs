@@ -24,18 +24,18 @@ public class CarController : MonoBehaviour
          rb.centerOfMass = data.offsetCentroDeMasa;
     }
 
-    private bool EstaEnSuelo()
+    private bool EstaEnSuelo() //Metodo que retorna un booleano
     {
        bool enSuelo = Physics.Raycast(origenRaycast.position, -origenRaycast.up, data.distacionRaycastAlSuelo, data.layerSuelo); //Un booleano que es true si el raycast golpea el suelo
         
         Debug.DrawRay(origenRaycast.position,  -origenRaycast.up * data.distacionRaycastAlSuelo, Color.red);
 
-        return enSuelo; // Renor
+        return enSuelo; // Retornar el el booleano (si el raycast esta tocando el suelo entonces es true)
     }
 
     void Update()
     {
-        aceleracion = carInputHandler.inputAcelerador;
+        aceleracion = carInputHandler.inputAcelerador; // La variable aceleracion es igual a la variable InputAcelerador en el script del handler (esta variable solo puede ser -1, 0 y 1
         
         Debug.Log($"Input recibido: {aceleracion}");
         
@@ -45,7 +45,7 @@ public class CarController : MonoBehaviour
     void FixedUpdate()
     {
         Debug.Log($"¿En suelo?: {EstaEnSuelo()}");
-        if (EstaEnSuelo() == true)
+        if (EstaEnSuelo() == true) // Si el carro si esta en el suelo
         {
             float velocidadActual = Vector3.Dot(rb.linearVelocity, transform.right);
 
@@ -68,6 +68,24 @@ public class CarController : MonoBehaviour
                 rb.linearDamping = 0;
             }
         }
+
+        else // Si no esta en el suelo
+        {
+            rb.linearDamping = 0; // Para que no pierda velocidad en el aire
+
+            rb.angularDamping = data.friccionRotacionalAire; // Friccion rotacional en el aire para que el jugador no rote sin control en el aire, sino que vaya frenando su rotacion
+
+            if (aceleracion != 0) // Si la aceleracion es distinta a 0 (osea que el jugador esta presionando los controles de direccion
+            {
+                rb.AddTorque(transform.forward * aceleracion * data.torqueEnElAire, ForceMode.Acceleration); //Para girar en el aire tocaria que el carro rote en el eje z, entonces aplicamos torque en el eje frontal (en 3d seria el eje z) lo multiplicamos para la aceleracion (para que gire cuando presiono las teclas de direccion) y por la fuerza de torque en el data
+            }
+
+
+
+
+        }
+        
+        
         
     }
 
