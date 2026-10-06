@@ -16,6 +16,7 @@ MonoBehaviour:
   fuerzaReversa: 1000
   velocidadMaxima: 20
   velocidadMaximaReversa: 10
+  fuerzaSalto: 1500
   desaceleracionNatural: 0.5
   torqueEnElAire: 20
   friccionRotacionalAire: 2

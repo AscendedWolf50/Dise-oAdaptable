@@ -32,7 +32,7 @@ public class CarController : MonoBehaviour
          longitudesAnterioresResorte = new float [origenRaycast.Length];
     }
 
-    private bool EstaEnSuelo() //Metodo que retorna un booleano
+    public bool EstaEnSuelo() //Metodo que retorna un booleano
     {
         bool enSuelo = false;
         foreach ( Transform puntoRaycast in origenRaycast)

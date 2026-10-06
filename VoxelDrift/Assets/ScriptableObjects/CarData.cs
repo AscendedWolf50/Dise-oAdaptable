@@ -11,6 +11,8 @@ public class CarData : ScriptableObject
     
     public float velocidadMaximaReversa;
 
+    public float fuerzaSalto;
+
     public float desaceleracionNatural;
 
     public float torqueEnElAire;
