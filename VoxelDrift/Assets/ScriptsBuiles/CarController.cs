@@ -126,7 +126,7 @@ public class CarController : MonoBehaviour
                 
                 float longitudAnterior = longitudesAnterioresResorte[i];
                 
-                float velocidadResortes = (longitudAnterior - longitudAnterior)/ Time.fixedDeltaTime;
+                float velocidadResortes = (longitudActual - longitudAnterior)/ Time.fixedDeltaTime;
                 
                 float fuerzaAmortiguador = -data.constanteAmortiguador * velocidadResortes;
                 
