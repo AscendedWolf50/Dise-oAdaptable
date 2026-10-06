@@ -102,7 +102,7 @@ public class CarController : MonoBehaviour
 
             if (aceleracion != 0) // Si la aceleracion es distinta a 0 (osea que el jugador esta presionando los controles de direccion
             {
-                rb.AddTorque(transform.forward * aceleracion * data.torqueEnElAire, ForceMode.Acceleration); //Para girar en el aire tocaria que el carro rote en el eje z, entonces aplicamos torque en el eje frontal (en 3d seria el eje z) lo multiplicamos para la aceleracion (para que gire cuando presiono las teclas de direccion) y por la fuerza de torque en el data
+                rb.AddTorque(-transform.forward * aceleracion * data.torqueEnElAire, ForceMode.Acceleration); //Para girar en el aire tocaria que el carro rote en el eje z, entonces aplicamos torque en el eje frontal (en 3d seria el eje z) lo multiplicamos para la aceleracion (para que gire cuando presiono las teclas de direccion) y por la fuerza de torque en el data
             }
 
 
