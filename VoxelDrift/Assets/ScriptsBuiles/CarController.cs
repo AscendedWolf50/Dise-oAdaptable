@@ -115,45 +115,39 @@ public class CarController : MonoBehaviour
             float longitudActual;
             
             if (Physics.Raycast(origenRaycast[i].position, -transform.up, out RaycastHit hit,
-                    data.longitudRaycasts, data.layerSuelo))
+                    data.longitudRaycasts, data.layerSuelo)) // Si el raycast golpea el suelo
                 
             {
-                longitudActual = hit.distance;
+                longitudActual = hit.distance; // La longitud actual de los resortes es la distancia del golpe al inicio del raycast
                 
-                float desplazamiento =  data.distanciaMaxResorteReposo - longitudActual;
+                float desplazamiento =  data.distanciaMaxResorteReposo - longitudActual; // El desplazamiento del resorte al comprimirse es la longitud del resorte en reposo menos el punto del golpe del raycast
                 
-                float fuerzaResorte = data.constanteDeResorte * desplazamiento;
+                float fuerzaResorte = data.constanteDeResorte * desplazamiento; // Para tener la fuerza del resorte, multiplicar ese desplazamiento por la constante del resorte
                 
-                float longitudAnterior = longitudesAnterioresResorte[i];
+                float longitudAnterior = longitudesAnterioresResorte[i]; //Las longitudes anteriores de los resortes
                 
-                float velocidadResortes = (longitudActual - longitudAnterior)/ Time.fixedDeltaTime;
+                float velocidadResortes = (longitudActual - longitudAnterior)/ Time.fixedDeltaTime; //Para tener las velocidades de los resortes se resta la actual con la anterior y se divide por el tiempo
                 
-                float fuerzaAmortiguador = -data.constanteAmortiguador * velocidadResortes;
+                float fuerzaAmortiguador = -data.constanteAmortiguador * velocidadResortes; // Para tener la fuerza del amortiguador se multiplica la constante de amortiguacion (negativa) por las velocidades de los resortes
                 
-                float fuerzaTotal = fuerzaAmortiguador + fuerzaResorte;
+                float fuerzaTotal = fuerzaAmortiguador + fuerzaResorte; //Sumar las fuerzas
                 
-                rb.AddForceAtPosition(transform.up * fuerzaTotal, origenRaycast[i].position, ForceMode.Force);
+                rb.AddForceAtPosition(transform.up * fuerzaTotal, origenRaycast[i].position, ForceMode.Force); //Aplicar la fuerza resultante al rigibody
                 
-                visualesRuedas[i].position = origenRaycast[i].position - (transform.up * longitudActual);
+                visualesRuedas[i].position = hit.point + (transform.up * data.radioRuedas); // Mover las ruedas visuales al punto donde choca el raycast + el radio de sus ruedas (Esto las mueve hacia arriba ya que su origen esta en el centro de las ruedas)
             }
             else
             {
                 longitudActual = data.longitudRaycasts;
                 
-                visualesRuedas[i].position = origenRaycast[i].position - (transform.up * longitudActual);
+                visualesRuedas[i].position = origenRaycast[i].position - (transform.up * (longitudActual - data.radioRuedas)); // Si esta en el aire la posicion de las ruedas se extiende hasta abajo para hacer parecer de que se estira la suspension
             }
 
-            longitudesAnterioresResorte[i] = longitudActual;
+            longitudesAnterioresResorte[i] = longitudActual; // Tomar el antiguo valor actual y guardarlo en el arreglo de longitudes anteriores
         }
         
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    
     
 }

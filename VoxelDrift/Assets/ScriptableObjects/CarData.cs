@@ -20,10 +20,10 @@ public class CarData : ScriptableObject
     public float masaVehiculo;
 
     public Vector3 offsetCentroDeMasa;
-
-    public float gravedad;
     
     public float longitudRaycasts;
+
+    public float radioRuedas;
 
     public float constanteDeResorte;
     
