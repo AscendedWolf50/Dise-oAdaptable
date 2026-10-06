@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Turbo : MonoBehaviour
 {
-    [SerializeField] private float boostForce= 50f;
+    [SerializeField] private float boostForce= 100f;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -12,7 +12,7 @@ public class Turbo : MonoBehaviour
             Rigidbody rbCar = other.attachedRigidbody;
             if (rbCar != null)
             {
-                rbCar.AddForce(transform.forward * boostForce, ForceMode.Impulse); 
+                rbCar.AddForce(transform.right * boostForce, ForceMode.Acceleration); 
             }
             
         }  
