@@ -15,6 +15,8 @@ public class CarController : MonoBehaviour
     
     private CarInputHandler  carInputHandler;
 
+    private float velocidadActual;
+
     private float aceleracion;
 
     private void Awake()
@@ -50,8 +52,12 @@ public class CarController : MonoBehaviour
     void Update()
     {
         aceleracion = carInputHandler.inputAcelerador; // La variable aceleracion es igual a la variable InputAcelerador en el script del handler (esta variable solo puede ser -1, 0 y 1
+
+        AnimarRuedas();
         
         Debug.Log($"Input recibido: {aceleracion}");
+        
+        
         
         
     }
@@ -66,7 +72,7 @@ public class CarController : MonoBehaviour
         {
             
             
-            float velocidadActual = Vector3.Dot(rb.linearVelocity, transform.right);
+            velocidadActual = Vector3.Dot(rb.linearVelocity, transform.right);
 
             if (aceleracion > 0 && velocidadActual < data.velocidadMaxima) // Si el jugador avanza
             {
@@ -107,6 +113,7 @@ public class CarController : MonoBehaviour
         
         
     }
+    
 
     private void ProcesarSuspension()
     {
@@ -146,6 +153,20 @@ public class CarController : MonoBehaviour
             longitudesAnterioresResorte[i] = longitudActual; // Tomar el antiguo valor actual y guardarlo en el arreglo de longitudes anteriores
         }
         
+    }
+
+    private void AnimarRuedas() //Metodo que se encarga de la rotacion de los modelos visuales de las ruedas
+    {
+        float distanciaRecorrida = velocidadActual * Time.deltaTime; //Obtener la distancia (multiplicar la velocidad por el tiempo)
+
+        float anguloRadianes = distanciaRecorrida / data.radioRuedas; // Se obtiene el angulo en radianes dividiendo la distancia por el radio de las ruedas
+        
+        float gradosAGirar = anguloRadianes * Mathf.Rad2Deg; //Convertir los radianes a grados
+
+        for (int i = 0; i < visualesRuedas.Length; i++) //Ciclo para recorrer las ruedas en el arreglo visual
+        {
+            visualesRuedas[i].Rotate(-gradosAGirar, 0, 0); //Rotar las ruedas en el eje x
+        }
     }
 
     

@@ -19,13 +19,13 @@ MonoBehaviour:
   desaceleracionNatural: 0.5
   torqueEnElAire: 20
   friccionRotacionalAire: 2
-  masaVehiculo: 300
+  masaVehiculo: 200
   offsetCentroDeMasa: {x: -0.2, y: 0, z: 0}
-  gravedad: 100
-  longitudRaycasts: 0.7
+  longitudRaycasts: 0.8
+  radioRuedas: 0.3
   constanteDeResorte: 5000
   layerSuelo:
     serializedVersion: 2
     m_Bits: 64
-  distanciaMaxResorteReposo: 0.7
-  constanteAmortiguador: 2000
+  distanciaMaxResorteReposo: 0.8
+  constanteAmortiguador: 400
