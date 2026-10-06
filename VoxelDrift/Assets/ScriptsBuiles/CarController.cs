@@ -9,6 +9,8 @@ public class CarController : MonoBehaviour
 
     [SerializeField] private Transform[] visualesRuedas;
     
+    private float[] longitudesAnterioresResorte;
+    
     private Rigidbody rb;
     
     private CarInputHandler  carInputHandler;
@@ -24,6 +26,8 @@ public class CarController : MonoBehaviour
          rb.mass = data.masaVehiculo;
 
          rb.centerOfMass = data.offsetCentroDeMasa;
+         
+         longitudesAnterioresResorte = new float [origenRaycast.Length];
     }
 
     private bool EstaEnSuelo() //Metodo que retorna un booleano
@@ -31,10 +35,10 @@ public class CarController : MonoBehaviour
         bool enSuelo = false;
         foreach ( Transform puntoRaycast in origenRaycast)
         {
-            Debug.DrawRay(puntoRaycast.position,  -puntoRaycast.up * (data.distanciaMaxResorteReposo + data.radioRueda), Color.red);
+            Debug.DrawRay(puntoRaycast.position,  -puntoRaycast.up * data.longitudRaycasts, Color.red);
             
             if (Physics.Raycast(puntoRaycast.position, -puntoRaycast.up,
-                    data.distanciaMaxResorteReposo + data.radioRueda, data.layerSuelo)) // Para cada punto de origen generar un raycast
+                    data.longitudRaycasts, data.layerSuelo)) // Para cada punto de origen generar un raycast
             {
                 enSuelo = true; // Si cualquiera toca el suelo retornar true
             }
@@ -55,7 +59,9 @@ public class CarController : MonoBehaviour
     void FixedUpdate()
     {
         ProcesarSuspension();
+        
         Debug.Log($"¿En suelo?: {EstaEnSuelo()}");
+        
         if (EstaEnSuelo() == true) // Si el carro si esta en el suelo
         {
             
@@ -106,31 +112,38 @@ public class CarController : MonoBehaviour
     {
         for (int i = 0; i < origenRaycast.Length; i++)
         {
-            if (Physics.Raycast(origenRaycast[i].position, -Vector3.up, out RaycastHit hit,
-                    data.distanciaMaxResorteReposo + data.radioRueda, data.layerSuelo))
+            float longitudActual;
+            
+            if (Physics.Raycast(origenRaycast[i].position, -transform.up, out RaycastHit hit,
+                    data.longitudRaycasts, data.layerSuelo))
+                
             {
-                float distanciaActualResorte = hit.distance - data.radioRueda;
-
-                float compresionResorte = data.distanciaMaxResorteReposo - distanciaActualResorte;
-
-                float fuerzaResorte = compresionResorte * data.fuerzaResorte;
-
-                Vector3 velocidadPunto = rb.GetPointVelocity(origenRaycast[i].position);
-
-                float velocidadVertical = Vector3.Dot(velocidadPunto, transform.up);
+                longitudActual = hit.distance;
                 
-                float fuerzaAmortiguador = velocidadVertical * data.fuerzaAmortiguador;
+                float desplazamiento =  data.distanciaMaxResorteReposo - longitudActual;
                 
-                float fuerzaTotal = Mathf.Max(0f, fuerzaResorte - fuerzaAmortiguador);
+                float fuerzaResorte = data.constanteDeResorte * desplazamiento;
+                
+                float longitudAnterior = longitudesAnterioresResorte[i];
+                
+                float velocidadResortes = (longitudAnterior - longitudAnterior)/ Time.fixedDeltaTime;
+                
+                float fuerzaAmortiguador = -data.constanteAmortiguador * velocidadResortes;
+                
+                float fuerzaTotal = fuerzaAmortiguador + fuerzaResorte;
                 
                 rb.AddForceAtPosition(transform.up * fuerzaTotal, origenRaycast[i].position, ForceMode.Force);
-
-                visualesRuedas[i].position = hit.point + (transform.up * data.radioRueda);
+                
+                visualesRuedas[i].position = origenRaycast[i].position - (transform.up * longitudActual);
             }
             else
             {
-                visualesRuedas[i].position = origenRaycast[i].position - (transform.up * data.distanciaMaxResorteReposo);
+                longitudActual = data.longitudRaycasts;
+                
+                visualesRuedas[i].position = origenRaycast[i].position - (transform.up * longitudActual);
             }
+
+            longitudesAnterioresResorte[i] = longitudActual;
         }
         
     }
