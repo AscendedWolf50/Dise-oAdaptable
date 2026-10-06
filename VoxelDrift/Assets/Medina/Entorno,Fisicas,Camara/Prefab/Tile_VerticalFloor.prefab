@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1903904405557462303}
   - component: {fileID: 7365265264886922709}
+  - component: {fileID: 4044462479470979055}
   m_Layer: 0
   m_Name: Sticky_Trigger
   m_TagString: Untagged
@@ -47,12 +48,27 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.2971946, z: 1}
-  m_Center: {x: 0, y: 0.6484646, z: 0}
+  m_Size: {x: 1, y: 0.35901666, z: 1}
+  m_Center: {x: 0, y: 0.6793759, z: 0}
+--- !u!114 &4044462479470979055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3088991164338036007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da88dc775adf1a94a873cbd7b516cc5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Sticky_Tile
+  stickyForce: 30
+  maxAngleDifference: 25
+  rotationSpeed: 10
 --- !u!1001 &8583123896207730424
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66,12 +82,24 @@ PrefabInstance:
       value: Tile_VerticalFloor
       objectReference: {fileID: 0}
     - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 11.532
+      objectReference: {fileID: 0}
+    - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 25.22
       objectReference: {fileID: 0}
     - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 6.46
       objectReference: {fileID: 0}
     - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
       propertyPath: m_LocalPosition.z
@@ -79,7 +107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
       propertyPath: m_LocalRotation.x
@@ -91,7 +119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -103,7 +131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8648753597526470477, guid: 1504bc24bc2e14745a9fd0f00c2ecb13, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -2,30 +2,30 @@ using UnityEngine;
 
 public class Sticky_Tile : MonoBehaviour
 {
+    [SerializeField] private float stickyForce = 30f; // Fuerza que atrae el carro a la pared
+    [SerializeField] private float maxAngleDifference = 25f; // Rango máximo de alineación
+    [SerializeField] private float rotationSpeed = 10f; // Velocidad de alineación suave
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // La normal de la cara de esta baldosa es su transform.up (flecha verde)
-            Vector3 surfaceNormal = transform.up;
+            Rigidbody rbCar = other.attachedRigidbody;
+            if (rbCar == null) return;
 
-            // Aquí le pasamos la normal al componente del carro que gestiona la gravedad.
-            // (Acuerda con Dev 1 el nombre de esta variable o método)
-            if (other.attachedRigidbody != null)
+            // 1. Cancelar la gravedad global de Unity mientras esté en la pared (evita que caiga)
+            rbCar.AddForce(-Physics.gravity, ForceMode.Acceleration);
+
+            // 2. Aplicar la fuerza de adherencia contra la cara de la baldosa
+            rbCar.AddForce(-transform.up * stickyForce, ForceMode.Acceleration);
+
+            // 3. Alinear el 'up' del carro con la normal de la pared para que la suspensión funcione
+            float angulo = Vector3.Angle(other.transform.up, transform.up);
+            if (angulo <= maxAngleDifference)
             {
-                // Ejemplo de llamada limpia al script de gravedad del carro:
-                // var gravityHandler = other.attachedRigidbody.GetComponent<CarGravity>();
-                // if (gravityHandler != null) gravityHandler.SetTargetNormal(surfaceNormal);
+                Quaternion targetRotation = Quaternion.FromToRotation(other.transform.up, transform.up) * other.transform.rotation;
+                other.transform.rotation = Quaternion.Slerp(other.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // Al salir de la pared, devolvemos la gravedad a la normalidad (hacia arriba)
-            // gravityHandler.SetTargetNormal(Vector3.up);
         }
     }
 }
