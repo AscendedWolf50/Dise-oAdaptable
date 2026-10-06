@@ -26,4 +26,14 @@ public class CarData : ScriptableObject
     public float distacionRaycastAlSuelo;
     
     public LayerMask layerSuelo;
+    
+    public float distanciaMaxResorteReposo;
+    
+    public float fuerzaResorte;
+
+    public float radioRueda;
+
+    public float durezaSuspension;
+
+    public float fuerzaAmortiguador;
 }

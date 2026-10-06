@@ -5,7 +5,9 @@ public class CarController : MonoBehaviour
 {
     [SerializeField] private CarData data;
 
-    [SerializeField] private Transform origenRaycast;
+    [SerializeField] private Transform [] origenRaycast;
+
+    [SerializeField] private Transform[] visualesRuedas;
     
     private Rigidbody rb;
     
@@ -26,11 +28,19 @@ public class CarController : MonoBehaviour
 
     private bool EstaEnSuelo() //Metodo que retorna un booleano
     {
-       bool enSuelo = Physics.Raycast(origenRaycast.position, -origenRaycast.up, data.distacionRaycastAlSuelo, data.layerSuelo); //Un booleano que es true si el raycast golpea el suelo
-        
-        Debug.DrawRay(origenRaycast.position,  -origenRaycast.up * data.distacionRaycastAlSuelo, Color.red);
+        bool enSuelo = false;
+        foreach ( Transform puntoRaycast in origenRaycast)
+        {
+            Debug.DrawRay(puntoRaycast.position,  -puntoRaycast.up * (data.distanciaMaxResorteReposo + data.radioRueda), Color.red);
+            
+            if (Physics.Raycast(puntoRaycast.position, -puntoRaycast.up,
+                    data.distanciaMaxResorteReposo + data.radioRueda, data.layerSuelo)) // Para cada punto de origen generar un raycast
+            {
+                enSuelo = true; // Si cualquiera toca el suelo retornar true
+            }
+        }
 
-        return enSuelo; // Retornar el el booleano (si el raycast esta tocando el suelo entonces es true)
+        return enSuelo;
     }
 
     void Update()
@@ -44,9 +54,12 @@ public class CarController : MonoBehaviour
 
     void FixedUpdate()
     {
+        ProcesarSuspension();
         Debug.Log($"¿En suelo?: {EstaEnSuelo()}");
         if (EstaEnSuelo() == true) // Si el carro si esta en el suelo
         {
+            
+            
             float velocidadActual = Vector3.Dot(rb.linearVelocity, transform.right);
 
             if (aceleracion > 0 && velocidadActual < data.velocidadMaxima) // Si el jugador avanza
@@ -86,6 +99,39 @@ public class CarController : MonoBehaviour
         }
         
         
+        
+    }
+
+    private void ProcesarSuspension()
+    {
+        for (int i = 0; i < origenRaycast.Length; i++)
+        {
+            if (Physics.Raycast(origenRaycast[i].position, -Vector3.up, out RaycastHit hit,
+                    data.distanciaMaxResorteReposo + data.radioRueda, data.layerSuelo))
+            {
+                float distanciaActualResorte = hit.distance - data.radioRueda;
+
+                float compresionResorte = data.distanciaMaxResorteReposo - distanciaActualResorte;
+
+                float fuerzaResorte = compresionResorte * data.fuerzaResorte;
+
+                Vector3 velocidadPunto = rb.GetPointVelocity(origenRaycast[i].position);
+
+                float velocidadVertical = Vector3.Dot(velocidadPunto, transform.up);
+                
+                float fuerzaAmortiguador = velocidadVertical * data.fuerzaAmortiguador;
+                
+                float fuerzaTotal = Mathf.Max(0f, fuerzaResorte - fuerzaAmortiguador);
+                
+                rb.AddForceAtPosition(transform.up * fuerzaTotal, origenRaycast[i].position, ForceMode.Force);
+
+                visualesRuedas[i].position = hit.point + (transform.up * data.radioRueda);
+            }
+            else
+            {
+                visualesRuedas[i].position = origenRaycast[i].position - (transform.up * data.distanciaMaxResorteReposo);
+            }
+        }
         
     }
 
