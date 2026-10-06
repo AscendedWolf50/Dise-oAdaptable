@@ -29,8 +29,13 @@ public class CarJump : MonoBehaviour
     {
         if (carController.EstaEnSuelo() == true)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z); // Resetear la velocidad en y para que las caidas no le quiten potencia al salto
-            
+            // 1. Proyecta y extrae únicamente la velocidad que lleva el carro en su eje 'up' local
+            Vector3 velocidadPerpendicular = Vector3.Project(rb.linearVelocity, transform.up);
+        
+            // 2. Se la resta a la velocidad actual para limpiar fuerzas de caída o pegado sin frenar el avance
+            rb.linearVelocity -= velocidadPerpendicular; 
+        
+            // 3. Aplica el impulso de salto hacia afuera
             rb.AddForce(transform.up * data.fuerzaSalto, ForceMode.Impulse);
         }
     }

@@ -28,4 +28,17 @@ public class Sticky_Tile : MonoBehaviour
             }
         }
     }
+
+    private void OnTriggerExit(Collider other)
+{
+    if (other.CompareTag("Player"))
+    {
+        Rigidbody rbCar = other.attachedRigidbody;
+        if (rbCar != null)
+        {
+            // Conservar el vector de velocidad que traía a lo largo de la pared
+            rbCar.linearVelocity = rbCar.linearVelocity; 
+        }
+    }
+}
 }
