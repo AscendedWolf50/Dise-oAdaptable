@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections;
 
 [System.Serializable]
 public struct partesCarro
@@ -26,6 +28,8 @@ public class CarDeath : MonoBehaviour
     private CarController carController;
     
     private CarJump carJump;
+    
+    public static event Action OnCarroDestruido;
     
 
     void Awake()
@@ -60,16 +64,21 @@ public class CarDeath : MonoBehaviour
                 rb.AddExplosionForce(fuerzaExplosionDesarme, transform.position, radioExplosionDesarme, elevacionExplosionDesarme, ForceMode.Impulse);
             }
         }
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+
+        StartCoroutine(rutinaDestruccion());
+
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator rutinaDestruccion()
     {
+        yield return new WaitForSeconds(2f);
         
+        EnviarEventoAManager();
+    }
+
+    private void EnviarEventoAManager()
+    {
+        OnCarroDestruido?.Invoke();
     }
 }
