@@ -34,4 +34,8 @@ public class CarData : ScriptableObject
     public float distanciaMaxResorteReposo;
     
     public float constanteAmortiguador;
+
+    public float radioParaEngancharse;
+
+    public float fuerzaDeGancho;
 }

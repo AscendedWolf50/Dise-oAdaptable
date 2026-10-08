@@ -14,6 +14,8 @@ public class CarController : MonoBehaviour
     private Rigidbody rb;
     
     private CarInputHandler  carInputHandler;
+    
+    private CarGrapple carGrapple;
 
     private float velocidadActual;
 
@@ -24,6 +26,8 @@ public class CarController : MonoBehaviour
          rb = GetComponent<Rigidbody>();
          
          carInputHandler = GetComponent<CarInputHandler>();
+         
+         carGrapple = GetComponent<CarGrapple>();
 
          rb.mass = data.masaVehiculo;
 
@@ -94,7 +98,7 @@ public class CarController : MonoBehaviour
             }
         }
 
-        else // Si no esta en el suelo
+        else if(EstaEnSuelo() == false && carGrapple.estaEnganchado == false ) // Si no esta en el suelo
         {
             rb.linearDamping = 0; // Para que no pierda velocidad en el aire
 
