@@ -48,6 +48,8 @@ public class CarDeath : MonoBehaviour
             carController.enabled = false;
             
             carJump.enabled = false;
+            
+            StartCoroutine(rutinaDestruccion());
 
             foreach (partesCarro parte in partesDesprendibles)
             {
@@ -65,7 +67,7 @@ public class CarDeath : MonoBehaviour
             }
         }
 
-        StartCoroutine(rutinaDestruccion());
+        
 
 
     }
