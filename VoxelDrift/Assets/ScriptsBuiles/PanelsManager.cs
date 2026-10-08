@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class PanelsManager : MonoBehaviour
 {
+    [SerializeField] private GameObject panelDeVictoria;
     
     [SerializeField] private GameObject panelDeDerrota;
 
@@ -11,16 +12,29 @@ public class PanelsManager : MonoBehaviour
     void Start()
     {
         panelDeDerrota.SetActive(false);
+        
+        panelDeVictoria.SetActive(false);
     }
 
     void OnEnable()
     {
         CarDeath.OnCarroDestruido += ActivarPanelDerrota;
+
+        FinishLine.OnNivelCompletado += ActivarPanelVictoria;
     }
 
     void OnDisable()
     {
         CarDeath.OnCarroDestruido -= ActivarPanelDerrota;
+        
+        FinishLine.OnNivelCompletado -= ActivarPanelVictoria;
+    }
+
+    public void ActivarPanelVictoria()
+    {
+        Time.timeScale = 0;
+        
+        panelDeVictoria.SetActive(true);
     }
 
     public void ActivarPanelDerrota()
