@@ -38,4 +38,6 @@ public class CarData : ScriptableObject
     public float radioParaEngancharse;
 
     public float fuerzaDeGancho;
+
+    public float velocidadDeBalanceo;
 }

@@ -149,13 +149,35 @@ public class CarGrapple : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
         if (estaEnganchado == true)
         {
             rb.linearDamping = 0f;
             
             rb.angularDamping = 0f;
+            
+            Vector3 vectorDeLaCuerda = puntoDeAgarreGancho.position - objetivoDeEnganche.position;
+            
+            Vector3 vectorTangencial = Vector3.Cross(vectorDeLaCuerda, Vector3.forward).normalized;
+            
+            float direccionBalanceoActual = Vector3.Dot(rb.linearVelocity, vectorTangencial);
+            
+            float sentidoBalanceo = Mathf.Sign(direccionBalanceoActual);
 
+            Vector3 direccionPendulo = vectorTangencial * sentidoBalanceo;
 
+            float velocidadActual = rb.linearVelocity.magnitude;
+
+            rb.linearVelocity = direccionPendulo * data.velocidadDeBalanceo;
+            
+            Vector3 direccionCapoAPuntoEnganche = (objetivoDeEnganche.position - puntoDeAgarreGancho.position).normalized;
+            
+            Quaternion rotacionObjetivo = Quaternion.FromToRotation(transform.up, direccionCapoAPuntoEnganche) * rb.rotation;
+            
+            rb.MoveRotation(rotacionObjetivo);
+            
+            
+            
         }
     }
 

@@ -32,3 +32,4 @@ MonoBehaviour:
   constanteAmortiguador: 400
   radioParaEngancharse: 10
   fuerzaDeGancho: 10000
+  velocidadDeBalanceo: 20
