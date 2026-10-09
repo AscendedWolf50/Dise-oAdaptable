@@ -7,17 +7,23 @@ public class LevelManager : MonoBehaviour
 
     public float tiempoActual { get; private set; } = 0f;
     
+    public float puntosTotales {get; private set;} = 0;   
+    
     private bool nivelTerminado = false;
 
 
     void OnEnable()
     {
         FinishLine.OnNivelCompletado += ProcesarCompletacion;
+
+        CarStuntDetector.OnPuntosGanados += SumarPuntos;
     }
 
     void OnDisable()
     {
         FinishLine.OnNivelCompletado -=  ProcesarCompletacion;
+        
+        CarStuntDetector.OnPuntosGanados -= SumarPuntos;
     }
 
 
@@ -42,6 +48,11 @@ public class LevelManager : MonoBehaviour
         if (tiempoActual <= data.tiempoParaEstrella)
         {
             progresoActual.estrellaTiempo = true;
+        }
+
+        if (puntosTotales >= data.puntosParaEstrella)
+        {
+            progresoActual.estrellaPuntos = true;
         }
         
         GuardarDatos(datosGuardados);
@@ -73,6 +84,11 @@ public class LevelManager : MonoBehaviour
         string json = JsonUtility.ToJson(datos);
         PlayerPrefs.SetString("UserProgress", json);
         PlayerPrefs.Save();
+    }
+
+    private void SumarPuntos(float puntajeRecibido)
+    {
+        puntosTotales += puntajeRecibido;
     }
 
     private void Update()

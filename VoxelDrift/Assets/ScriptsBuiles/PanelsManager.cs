@@ -13,6 +13,8 @@ public class PanelsManager : MonoBehaviour
     [SerializeField] private GameObject panelDeDerrota;
     
     [SerializeField] private TextMeshProUGUI textoCronometro;
+    
+    [SerializeField] private TextMeshProUGUI textoPuntos;
 
     
 
@@ -68,5 +70,9 @@ public class PanelsManager : MonoBehaviour
         float tiempoParaMostrar = levelManager.tiempoActual;
         
         textoCronometro.text = "Tiempo:" + tiempoParaMostrar.ToString("F2"); //Mostar solo dos decimales del flotante
+
+        float puntajeParaMostrar = levelManager.puntosTotales;
+        
+        textoPuntos.text = "Puntos:" + puntajeParaMostrar.ToString("F2");
     }
 }

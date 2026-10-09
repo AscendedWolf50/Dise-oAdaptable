@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 2288243797247735547}
   - component: {fileID: 5261043131302158144}
   - component: {fileID: 765133919694338014}
+  - component: {fileID: 6033977860490715338}
   - component: {fileID: 6846351923932939476}
   - component: {fileID: 2287149767680071347}
   - component: {fileID: 708429394860046300}
@@ -402,6 +403,19 @@ MonoBehaviour:
   puntoDeAgarreGancho: {fileID: 8590970302257100245}
   estaEnganchado: 0
   ganchovisual: {fileID: 708429394860046300}
+--- !u!114 &6033977860490715338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7385946846771269672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85069ab6ea97fb94b8ac723fa281d036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarStuntDetector
+  puntosPorGiro: 200
 --- !u!114 &6846351923932939476
 MonoBehaviour:
   m_ObjectHideFlags: 0
