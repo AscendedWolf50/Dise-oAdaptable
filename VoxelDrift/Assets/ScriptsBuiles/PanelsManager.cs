@@ -1,12 +1,20 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
 public class PanelsManager : MonoBehaviour
 {
+    [SerializeField] private LevelManager levelManager;
+    
     [SerializeField] private GameObject panelDeVictoria;
     
     [SerializeField] private GameObject panelDeDerrota;
+    
+    [SerializeField] private TextMeshProUGUI textoCronometro;
+
+    
 
 
     void Start()
@@ -54,7 +62,11 @@ public class PanelsManager : MonoBehaviour
         
         
     }
-    
-    
-    
+
+     void Update()
+    {
+        float tiempoParaMostrar = levelManager.tiempoActual;
+        
+        textoCronometro.text = "Tiempo:" + tiempoParaMostrar.ToString("F2"); //Mostar solo dos decimales del flotante
+    }
 }

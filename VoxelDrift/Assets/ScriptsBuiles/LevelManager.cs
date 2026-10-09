@@ -1,8 +1,13 @@
+using System;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private LevelData data;
+
+    public float tiempoActual { get; private set; } = 0f;
+    
+    private bool nivelTerminado = false;
 
 
     void OnEnable()
@@ -19,6 +24,8 @@ public class LevelManager : MonoBehaviour
 
     private void ProcesarCompletacion()
     {
+        nivelTerminado = true;
+        
         SaveData datosGuardados = CargarDatos();
         
         LevelProgress progresoActual = datosGuardados.niveles.Find(n => n.idNivel == data.idNivel); //Buscar si ya tiene un registro en el nivel
@@ -31,10 +38,19 @@ public class LevelManager : MonoBehaviour
         }
 
         progresoActual.estrellaCompletado = true;
+
+        if (tiempoActual <= data.tiempoParaEstrella)
+        {
+            progresoActual.estrellaTiempo = true;
+        }
         
         GuardarDatos(datosGuardados);
         
-        Debug.Log($"Nivel {data.idNivel} completado. Estrella 1 conseguida.");
+        Debug.Log($"=== RESUMEN NIVEL: {data.idNivel} ===\n" +
+                  $" Estrella 1 (Completar): {(progresoActual.estrellaCompletado ? "CONSEGUIDA" : "NO")}\n" +
+                  $" Estrella 2 (Tiempo): {(progresoActual.estrellaTiempo ? "CONSEGUIDA" : "FALLADA")} " +
+                  $"({tiempoActual:F2}s / {data.tiempoParaEstrella:F2}s Objetivo)\n" +
+                  $" Estrella 3 (Puntos): {(progresoActual.estrellaPuntos ? "CONSEGUIDA" : "NO")}");
         
         
     }
@@ -58,5 +74,12 @@ public class LevelManager : MonoBehaviour
         PlayerPrefs.SetString("UserProgress", json);
         PlayerPrefs.Save();
     }
-    
+
+    private void Update()
+    {
+        if (nivelTerminado == false)
+        {
+            tiempoActual += Time.deltaTime;
+        }
+    }
 }
