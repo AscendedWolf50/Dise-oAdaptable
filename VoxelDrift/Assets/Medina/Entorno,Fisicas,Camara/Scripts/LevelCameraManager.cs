@@ -1,32 +1,36 @@
 using UnityEngine;
-using Unity.Cinemachine; // Namespace para Cinemachine 3
+using Unity.Cinemachine;
 
 public class LevelCameraManager : MonoBehaviour
 {
     [SerializeField] private CinemachineCamera camaraSuelo;
     [SerializeField] private CinemachineCamera camaraPared;
+    [SerializeField] private CinemachineCamera camaraMuerte;
 
     private void OnEnable()
     {
-        Sticky_Tile.OnWallTransition += AlternarCamara;
+        Sticky_Tile.OnWallTransition += AlternarCamaraPared;
+        DeathZone.OnPlayerFall += ActivarCamaraMuerte;
     }
 
     private void OnDisable()
     {
-        Sticky_Tile.OnWallTransition -= AlternarCamara;
+        Sticky_Tile.OnWallTransition -= AlternarCamaraPared;
+        DeathZone.OnPlayerFall -= ActivarCamaraMuerte;
     }
 
-    private void AlternarCamara(bool enPared)
+    private void AlternarCamaraPared(bool enPared)
     {
-        if (enPared)
-        {
-            // Al darle mayor prioridad (20 > 10), Cinemachine hace la transición suave
-            camaraPared.Priority = 20; 
-        }
-        else
-        {
-            // Al volverla a 0, Cinemachine regresa suavemente a la camaraSuelo (10)
-            camaraPared.Priority = 0; 
-        }
+        // La pared tiene prioridad 20 (le gana al 10 del suelo)
+        camaraPared.Priority = enPared ? 20 : 0; 
+    }
+
+    private void ActivarCamaraMuerte()
+    {
+        // La muerte tiene prioridad 30 (le gana a la pared y al suelo)
+        camaraMuerte.Priority = 30;
+        
+        // Opcional: Aquí podrías invocar también un GameManager para 
+        // reiniciar el nivel después de 2 o 3 segundos.
     }
 }
