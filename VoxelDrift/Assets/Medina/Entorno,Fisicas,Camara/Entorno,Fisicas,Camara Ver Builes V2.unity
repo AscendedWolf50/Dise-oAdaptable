@@ -1464,10 +1464,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7385946846771269672, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
-      insertIndex: 7
-      addedObject: {fileID: 1501753242}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
 --- !u!1 &1236561017
 GameObject:
@@ -1788,24 +1785,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 049381e659c5300479fddd60a3374450, type: 3}
---- !u!1 &1501753231 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7385946846771269672, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
-  m_PrefabInstance: {fileID: 1080622104}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1501753242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501753231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85069ab6ea97fb94b8ac723fa281d036, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CarStuntDetector
-  puntosPorGiro: 200
 --- !u!1001 &1656490668
 PrefabInstance:
   m_ObjectHideFlags: 0
