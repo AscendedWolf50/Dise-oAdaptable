@@ -30,3 +30,6 @@ MonoBehaviour:
     m_Bits: 64
   distanciaMaxResorteReposo: 0.8
   constanteAmortiguador: 400
+  radioParaEngancharse: 10
+  fuerzaDeGancho: 10000
+  velocidadDeBalanceo: 20
