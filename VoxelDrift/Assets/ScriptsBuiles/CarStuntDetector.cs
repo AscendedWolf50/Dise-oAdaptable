@@ -4,6 +4,8 @@ using System;
 public class CarStuntDetector : MonoBehaviour
 {
     [SerializeField] private float puntosPorGiro;
+
+    [SerializeField] private float anguloToleraciaTrucos;
     
     private CarController carController;
 
@@ -18,6 +20,8 @@ public class CarStuntDetector : MonoBehaviour
     public static event Action <float> OnPuntosGanados;
     
     public static event Action <int,float> OnTrucoEnProgreso;
+
+    public static event Action OnTrucoFallido;
 
     void Awake()
     {
@@ -58,7 +62,21 @@ public class CarStuntDetector : MonoBehaviour
             {
                 float puntajeObtenido = vueltas * puntosPorGiro; //Cada vuelta otorga los puntos establecidos
                 
-                OnPuntosGanados?.Invoke(puntajeObtenido);
+                float anguloEntreVectores = Vector3.Angle(transform.up, Vector3.up); //Compara el vector de arriba local con el global para saber si el jugador esta en una postura optima para aterrizar
+
+                if (anguloEntreVectores < anguloToleraciaTrucos)
+                {
+                    OnPuntosGanados?.Invoke(puntajeObtenido);
+                }
+                
+                else 
+                {
+                    OnTrucoFallido?.Invoke();
+                }
+                
+                
+                
+                
 
                 
             }
@@ -70,5 +88,20 @@ public class CarStuntDetector : MonoBehaviour
 
         } 
             
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Suelo"))
+        {
+            if (ultimasVueltasDetectadas >= 1) // Si el jugador llevaba minimo una vuelta y se choca con el suelo (no aterriza con las ruedas, el truco falla)
+            {
+                OnTrucoFallido?.Invoke();
+                
+                gradosAcumulados = 0;
+
+                ultimasVueltasDetectadas = 0;
+            }
+        }
     }
 }

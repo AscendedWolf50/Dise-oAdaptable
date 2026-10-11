@@ -1,8 +1,9 @@
-using System;
+
 using UnityEngine;
 using MoreMountains.Feedbacks;
 using TMPro;
 using System.Collections;
+using Random = System.Random;
 
 public class TrickHUD : MonoBehaviour
 {
@@ -13,12 +14,16 @@ public class TrickHUD : MonoBehaviour
 
 [SerializeField] private float tiempoEsperaEnSuelo;
 
+[SerializeField] private string [] opcionesTextoTucoFallido;
+
 [Header("Componentes de feel")]
 [SerializeField] private MMF_Player feedbackGiroEnAire;
 
 [SerializeField] private MMF_Player feedbackAterrizaje;
 
 [SerializeField] private MMF_Player feedbackDesaparecer;
+
+[SerializeField] private MMF_Player feedbackTrucoFallido;
 
 
 private Coroutine rutinaAterrizaje;
@@ -30,6 +35,8 @@ void OnEnable()
 
     CarStuntDetector.OnPuntosGanados += ProcesarAterrizaje;
 
+    CarStuntDetector.OnTrucoFallido += ProcesarFallo;
+
     CarDeath.OnCarroDestruido += CancelarTrucoPorMuerte;
 }
 
@@ -38,6 +45,8 @@ void OnDisable()
     CarStuntDetector.OnTrucoEnProgreso -= ProcesarTruco;
     
     CarStuntDetector.OnPuntosGanados -= ProcesarAterrizaje;
+    
+    CarStuntDetector.OnTrucoFallido -= ProcesarFallo;
     
     CarDeath.OnCarroDestruido -= CancelarTrucoPorMuerte;
 }
@@ -92,6 +101,34 @@ private void CancelarTrucoPorMuerte()
     }
     
     canvasGroupTrucos.alpha = 0;
+}
+
+private void ProcesarFallo()
+{
+    if (rutinaAterrizaje != null)
+    {
+        StopCoroutine(rutinaAterrizaje);
+    }
+    
+    canvasGroupTrucos.alpha = 1;
+    
+    int indiceEscogido = UnityEngine.Random.Range(0, opcionesTextoTucoFallido.Length);
+    
+    string textoSeleccionado = opcionesTextoTucoFallido[indiceEscogido];
+    
+    textoTrucos.text = $"<color=#FF0000>{textoSeleccionado}</color>";
+    
+    feedbackTrucoFallido.PlayFeedbacks();
+    
+    rutinaAterrizaje = StartCoroutine(RutinaFallo());
+    
+}
+
+private IEnumerator RutinaFallo()
+{
+    yield return new WaitForSeconds(tiempoEsperaEnSuelo);
+    
+    feedbackDesaparecer.PlayFeedbacks();
 }
 
 
