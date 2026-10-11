@@ -12,8 +12,12 @@ public class CarStuntDetector : MonoBehaviour
     private float gradosAcumulados;
 
     private bool estabaEnElAire;
+
+    private int ultimasVueltasDetectadas = 0;
     
     public static event Action <float> OnPuntosGanados;
+    
+    public static event Action <int,float> OnTrucoEnProgreso;
 
     void Awake()
     {
@@ -31,6 +35,17 @@ public class CarStuntDetector : MonoBehaviour
             gradosAcumulados +=  diferenciaAngulos;
             
             rotacionAnterior = rotacionActual; //La rotacion anterior pasa a ser la actual
+            
+            int vueltasActuales = Mathf.FloorToInt(Mathf.Abs(gradosAcumulados) / 360); //Calcular las vueltas actuales mientras esta en el aire y no solo cuandoa aterriza
+
+            if (vueltasActuales >= 1 && vueltasActuales != ultimasVueltasDetectadas) //Cuando el jugador empeiza a dar vueltas
+            {
+                ultimasVueltasDetectadas =  vueltasActuales; //La vueltas actuales pasan a ser las anteriores
+                
+                OnTrucoEnProgreso?.Invoke(vueltasActuales,puntosPorGiro); //Invocar el evento para notificar que hay un truco en progreso y pasar las vueltas que lleva y los puntos que dan
+            }
+            
+            
         }
         else
         { 
@@ -49,8 +64,10 @@ public class CarStuntDetector : MonoBehaviour
             }
             
             gradosAcumulados = 0;
-           
-           
+
+            ultimasVueltasDetectadas = 0;
+
+
         } 
             
     }
