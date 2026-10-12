@@ -19,6 +19,8 @@ public class TrickHUD : MonoBehaviour
 [Header("Componentes de feel")]
 [SerializeField] private MMF_Player feedbackGiroEnAire;
 
+private MMF_Sound feedbackSonidoGiro;
+
 [SerializeField] private MMF_Player feedbackAterrizaje;
 
 [SerializeField] private MMF_Player feedbackDesaparecer;
@@ -54,6 +56,11 @@ void OnDisable()
 private void Awake()
 {
     canvasGroupTrucos.alpha = 0;
+
+    if (feedbackGiroEnAire != null)
+    {
+        feedbackSonidoGiro = feedbackGiroEnAire.GetFeedbackOfType<MMF_Sound>();
+    }
 }
 
 private void ProcesarTruco(int vueltas, float puntosPorGiro)
@@ -66,6 +73,17 @@ private void ProcesarTruco(int vueltas, float puntosPorGiro)
     canvasGroupTrucos.alpha = 1;
 
     textoTrucos.text = $"{vueltas * 360}° FLIP x{vueltas}   <color=#FFD700>{vueltas * puntosPorGiro}</color> PTS";
+    
+    if (feedbackSonidoGiro != null)
+    {
+        
+        int semitonos = vueltas - 1; 
+        float nuevoPitch = Mathf.Pow(2f, semitonos / 12f);
+
+        feedbackSonidoGiro.MinPitch = nuevoPitch;
+        
+        feedbackSonidoGiro.MaxPitch = nuevoPitch;
+    }
     
     if (feedbackGiroEnAire != null)
     {
