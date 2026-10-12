@@ -1,6 +1,8 @@
 
 using System;
 using UnityEngine;
+using MoreMountains.Feedbacks;
+
 
 public class CarGrapple : MonoBehaviour
 {
@@ -21,6 +23,10 @@ public class CarGrapple : MonoBehaviour
     private SpringJoint jointActual;
     
     [SerializeField] LineRenderer ganchovisual;
+    
+    [SerializeField] private MMF_Player feedbackGancho;
+
+    
 
     void Awake()
     {
@@ -87,6 +93,8 @@ public class CarGrapple : MonoBehaviour
 
     private void Enganchar(Transform objetivoMasCercano)
     {
+        feedbackGancho.PlayFeedbacks();
+        
         ganchovisual.enabled  = true;
         
         estaEnganchado = true;
