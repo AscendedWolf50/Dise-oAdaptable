@@ -1,11 +1,13 @@
 using UnityEngine;
 using System;
 
+
 public class CarStuntDetector : MonoBehaviour
 {
     [SerializeField] private float puntosPorGiro;
 
     [SerializeField] private float anguloToleraciaTrucos;
+    
     
     private CarController carController;
 

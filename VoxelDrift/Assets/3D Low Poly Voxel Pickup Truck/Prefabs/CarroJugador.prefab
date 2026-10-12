@@ -416,6 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarStuntDetector
   puntosPorGiro: 200
+  anguloToleraciaTrucos: 50
 --- !u!114 &6846351923932939476
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 public class LevelManager : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class LevelManager : MonoBehaviour
     public float puntosTotales {get; private set;} = 0;   
     
     private bool nivelTerminado = false;
+    
+    [Header("Feedback")]
+    
+    [SerializeField] private MMF_Player feedbackObtenerPuntos;
 
 
     void OnEnable()
@@ -88,6 +93,8 @@ public class LevelManager : MonoBehaviour
 
     private void SumarPuntos(float puntajeRecibido)
     {
+        feedbackObtenerPuntos.PlayFeedbacks();
+        
         puntosTotales += puntajeRecibido;
     }
 

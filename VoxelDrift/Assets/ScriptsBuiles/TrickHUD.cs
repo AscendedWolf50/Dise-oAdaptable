@@ -3,7 +3,7 @@ using UnityEngine;
 using MoreMountains.Feedbacks;
 using TMPro;
 using System.Collections;
-using Random = System.Random;
+
 
 public class TrickHUD : MonoBehaviour
 {

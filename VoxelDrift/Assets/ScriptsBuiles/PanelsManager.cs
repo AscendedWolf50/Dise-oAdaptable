@@ -1,7 +1,8 @@
-using System;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 
 
 public class PanelsManager : MonoBehaviour
@@ -15,6 +16,7 @@ public class PanelsManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textoCronometro;
     
     [SerializeField] private TextMeshProUGUI textoPuntos;
+    
 
     
 
