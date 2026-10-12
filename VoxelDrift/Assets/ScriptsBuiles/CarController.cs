@@ -59,7 +59,7 @@ public class CarController : MonoBehaviour
 
         AnimarRuedas();
         
-        Debug.Log($"Input recibido: {aceleracion}");
+        
         
         
         
@@ -70,7 +70,7 @@ public class CarController : MonoBehaviour
     {
         ProcesarSuspension();
         
-        Debug.Log($"¿En suelo?: {EstaEnSuelo()}");
+        
         
         if (EstaEnSuelo() == true) // Si el carro si esta en el suelo
         {

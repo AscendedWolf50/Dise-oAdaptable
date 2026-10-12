@@ -8,8 +8,7 @@ public class LevelCameraManager : MonoBehaviour
     [SerializeField] private CinemachineCamera camaraPared;
     [SerializeField] private CinemachineCamera camaraMuerte;
     
-    [Header("Feedback")]
-    [SerializeField] private MMF_Player feedbackCaida;
+    
     private void OnEnable()
     {
         Sticky_Tile.OnWallTransition += AlternarCamaraPared;
@@ -33,7 +32,7 @@ public class LevelCameraManager : MonoBehaviour
         // La muerte tiene prioridad 30 (le gana a la pared y al suelo)
         camaraMuerte.Priority = 30;
         
-        //feedbackCaida.PlayFeedbacks();
+        
         
         // Opcional: Aquí podrías invocar también un GameManager para 
         // reiniciar el nivel después de 2 o 3 segundos.

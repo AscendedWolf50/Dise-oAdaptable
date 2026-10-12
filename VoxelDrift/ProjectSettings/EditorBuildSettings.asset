@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Medina/Entorno,Fisicas,Camara/Entorno,Fisicas,Camara Ver Builes
       V2.unity
     guid: 7170ed6f8f842264991e89e6384c3cbf
+  - enabled: 1
+    path: Assets/Niveles/Nivel 1.unity
+    guid: 1f1d20c7203f87e47acfc20c289ba87b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
