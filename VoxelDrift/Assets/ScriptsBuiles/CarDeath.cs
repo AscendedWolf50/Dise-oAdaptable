@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using MoreMountains.Feedbacks;
 
 [System.Serializable]
 public struct partesCarro
@@ -18,6 +19,10 @@ public class CarDeath : MonoBehaviour
     [SerializeField] private float radioExplosionDesarme;
     [SerializeField] private float elevacionExplosionDesarme;
     
+    [SerializeField] private MMF_Player feedbackMuerte;
+    
+    [SerializeField] private MMF_Player feedbackCaida;
+    
     private CarController carController;
     private CarJump carJump;
     
@@ -30,7 +35,7 @@ public class CarDeath : MonoBehaviour
         rigibodyCarro = GetComponent<Rigidbody>();
     }
 
-    // 1. Nos suscribimos al evento de caída que creamos en la DeathZone
+    
     void OnEnable()
     {
         DeathZone.OnPlayerFall += ProcesarCaidaAlVacio;
@@ -41,11 +46,13 @@ public class CarDeath : MonoBehaviour
         DeathZone.OnPlayerFall -= ProcesarCaidaAlVacio;
     }
 
-    // 2. Muerte por choque de cabeza (Se mantiene tal como lo programaste)
+   
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Suelo"))
         {
+            feedbackMuerte.PlayFeedbacks();
+            
             carController.enabled = false;
             carJump.enabled = false;
             
@@ -63,14 +70,17 @@ public class CarDeath : MonoBehaviour
         }
     }
 
-    // 3. NUEVO: Muerte por caída al vacío
+    
     private void ProcesarCaidaAlVacio()
     {
-        // Desactivamos los scripts para que el jugador no intente acelerar o saltar mientras cae
+        feedbackCaida.PlayFeedbacks();
+        
+        
+        
         carController.enabled = false;
         carJump.enabled = false;
 
-        // Invocamos la misma espera de 2 segundos para dar tiempo a que actúe la Camara_Muerte
+        
         StartCoroutine(rutinaDestruccion());
     }
 
