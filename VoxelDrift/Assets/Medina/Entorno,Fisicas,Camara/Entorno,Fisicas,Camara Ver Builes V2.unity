@@ -2254,10 +2254,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5764949591909646344, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
-      propertyPath: volumenMotorEnAire
-      value: 0.7
-      objectReference: {fileID: 0}
     - target: {fileID: 7353404011956246953, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -18.8
