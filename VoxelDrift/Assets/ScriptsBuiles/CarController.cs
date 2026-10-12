@@ -17,7 +17,7 @@ public class CarController : MonoBehaviour
     
     private CarGrapple carGrapple;
 
-    private float velocidadActual;
+    public float velocidadActual { get; private set; }
 
     private float aceleracion;
 
