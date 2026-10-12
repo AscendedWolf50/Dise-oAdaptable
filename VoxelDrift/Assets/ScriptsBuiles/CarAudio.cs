@@ -16,8 +16,12 @@ public class CarAudio : MonoBehaviour
     
     [SerializeField] private AudioSource sourceFrenando;
 
-    [Header("Parametros")] [SerializeField]
-    private float suavizadoCambiosVolumen;
+    [Header("Parametros")] 
+    [SerializeField] private float suavizadoCambiosVolumen;
+    
+    [SerializeField] private float volumenMotorEnAire;
+    
+    
     
     private CarInputHandler carInputHandler;
     
@@ -64,9 +68,29 @@ public class CarAudio : MonoBehaviour
         
         sourceAcelerando.pitch = interpolacionPitch;
 
-        sourceIdle.volume = Mathf.Lerp(sourceIdle.volume, 1f - velocidadNormalizada, Time.deltaTime * suavizadoCambiosVolumen); // A medida que la velociad va aumentando, el volumen de idle va disminuyendo
+        float volumenObjetivoIdle = 0f;
+
+        float volumenObjetivoMid = 0f;
+
+        if (carController.EstaEnSuelo()) // Si el carro esta en el suelo el volumen se interpola de forma normal
+        {
+             volumenObjetivoIdle = 1f - velocidadNormalizada; 
+
+             volumenObjetivoMid = velocidadNormalizada;
+        }
+
+        else //Pero si esta en el aire, se interpolapero con menor volumen para que no suene tan duro y constante
+        {
+            volumenObjetivoIdle = (1f - velocidadNormalizada) * volumenMotorEnAire;
+            
+            volumenObjetivoMid = velocidadNormalizada * volumenMotorEnAire;
+        }
         
-        sourceMid.volume = Mathf.Lerp(sourceMid.volume, velocidadNormalizada, Time.deltaTime * suavizadoCambiosVolumen); // A medida que la velocidad aumenta, el volumen del mid tambien
+        sourceIdle.volume = Mathf.Lerp(sourceIdle.volume, volumenObjetivoIdle, Time.deltaTime * suavizadoCambiosVolumen); // A medida que la velociad va aumentando, el volumen de idle va disminuyendo
+        
+        sourceMid.volume = Mathf.Lerp(sourceMid.volume, volumenObjetivoMid, Time.deltaTime * suavizadoCambiosVolumen); // A medida que la velocidad aumenta, el volumen del mid tambien
+
+       
 
        
         

@@ -988,6 +988,7 @@ MonoBehaviour:
   sourceAcelerando: {fileID: 1883882248910460103}
   sourceFrenando: {fileID: 937695450730564838}
   suavizadoCambiosVolumen: 10
+  volumenMotorEnAire: 0.7
 --- !u!114 &6846351923932939476
 MonoBehaviour:
   m_ObjectHideFlags: 0
