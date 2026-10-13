@@ -8,33 +8,35 @@ public class LevelCameraManager : MonoBehaviour
     [SerializeField] private CinemachineCamera camaraPared;
     [SerializeField] private CinemachineCamera camaraMuerte;
     
-    
+    private void Start()
+    {
+        // Forzar la cámara suelo como principal al iniciar o reaparecer
+        camaraSuelo.Priority = 10;
+        camaraPared.Priority = 0;
+        camaraMuerte.Priority = 0;
+    }
+
     private void OnEnable()
     {
         Sticky_Tile.OnWallTransition += AlternarCamaraPared;
         DeathZone.OnPlayerFall += ActivarCamaraMuerte;
+        CarDeath.OnCarImpactDeath += ActivarCamaraMuerte; // Escuchar el choque contra el suelo
     }
 
     private void OnDisable()
     {
         Sticky_Tile.OnWallTransition -= AlternarCamaraPared;
         DeathZone.OnPlayerFall -= ActivarCamaraMuerte;
+        CarDeath.OnCarImpactDeath -= ActivarCamaraMuerte; // Limpiar suscripción
     }
 
     private void AlternarCamaraPared(bool enPared)
     {
-        // La pared tiene prioridad 20 (le gana al 10 del suelo)
         camaraPared.Priority = enPared ? 20 : 0; 
     }
 
     private void ActivarCamaraMuerte()
     {
-        // La muerte tiene prioridad 30 (le gana a la pared y al suelo)
         camaraMuerte.Priority = 30;
-        
-        
-        
-        // Opcional: Aquí podrías invocar también un GameManager para 
-        // reiniciar el nivel después de 2 o 3 segundos.
     }
 }
