@@ -25,6 +25,8 @@ public class CarGrapple : MonoBehaviour
     [SerializeField] LineRenderer ganchovisual;
     
     [SerializeField] private MMF_Player feedbackGancho;
+    
+    [SerializeField] private MMF_Player feedbackDesenganchar;
 
     
 
@@ -128,7 +130,7 @@ public class CarGrapple : MonoBehaviour
     {
         ganchovisual.enabled  = false;
         
-        
+        feedbackDesenganchar.PlayFeedbacks();
         
             Destroy(jointActual);
             
@@ -180,9 +182,13 @@ public class CarGrapple : MonoBehaviour
             
             Vector3 direccionCapoAPuntoEnganche = (objetivoDeEnganche.position - puntoDeAgarreGancho.position).normalized;
             
-            Quaternion rotacionObjetivo = Quaternion.FromToRotation(transform.up, direccionCapoAPuntoEnganche) * rb.rotation;
+            Quaternion rotacionBruta = Quaternion.FromToRotation(transform.up, direccionCapoAPuntoEnganche) * rb.rotation;
             
-            rb.MoveRotation(rotacionObjetivo);
+            float anguloZ = rotacionBruta.eulerAngles.z;
+            
+            Quaternion rotacionLimpia =  Quaternion.Euler(0, 0, anguloZ); //Para evitar rotaciones indeseadas en los otros angulos, los forzamos a 0 y conservamos el eje z
+            
+            rb.MoveRotation(rotacionLimpia);
             
             
             

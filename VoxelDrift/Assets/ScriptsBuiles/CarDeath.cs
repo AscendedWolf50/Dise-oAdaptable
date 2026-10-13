@@ -54,6 +54,8 @@ public class CarDeath : MonoBehaviour
             OnCarImpactDeath?.Invoke(); 
             
             feedbackMuerte.PlayFeedbacks();
+
+            puntoDebil.enabled = false;
             
             carController.enabled = false;
             carJump.enabled = false;
