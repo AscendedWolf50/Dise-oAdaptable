@@ -182,9 +182,13 @@ public class CarGrapple : MonoBehaviour
             
             Vector3 direccionCapoAPuntoEnganche = (objetivoDeEnganche.position - puntoDeAgarreGancho.position).normalized;
             
-            Quaternion rotacionObjetivo = Quaternion.FromToRotation(transform.up, direccionCapoAPuntoEnganche) * rb.rotation;
+            Quaternion rotacionBruta = Quaternion.FromToRotation(transform.up, direccionCapoAPuntoEnganche) * rb.rotation;
             
-            rb.MoveRotation(rotacionObjetivo);
+            float anguloZ = rotacionBruta.eulerAngles.z;
+            
+            Quaternion rotacionLimpia =  Quaternion.Euler(0, 0, anguloZ); //Para evitar rotaciones indeseadas en los otros angulos, los forzamos a 0 y conservamos el eje z
+            
+            rb.MoveRotation(rotacionLimpia);
             
             
             
