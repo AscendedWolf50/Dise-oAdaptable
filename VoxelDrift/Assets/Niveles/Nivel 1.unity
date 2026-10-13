@@ -1122,18 +1122,6 @@ PrefabInstance:
       propertyPath: levelManager
       value: 
       objectReference: {fileID: 664143920}
-    - target: {fileID: 4612456474430177363, guid: d243c636f06439c43ad27f682d66244a, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: d4eb0a6fcddceac45a7a9bbb006be41b, type: 2}
-    - target: {fileID: 4612456474430177363, guid: d243c636f06439c43ad27f682d66244a, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -7047558055015836175, guid: d4eb0a6fcddceac45a7a9bbb006be41b, type: 2}
-    - target: {fileID: 4612456474430177363, guid: d243c636f06439c43ad27f682d66244a, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7449748187245576576, guid: d243c636f06439c43ad27f682d66244a, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -1216,30 +1204,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8087210517537898797, guid: d243c636f06439c43ad27f682d66244a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8619532051571350727, guid: d243c636f06439c43ad27f682d66244a, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: d4eb0a6fcddceac45a7a9bbb006be41b, type: 2}
-    - target: {fileID: 8619532051571350727, guid: d243c636f06439c43ad27f682d66244a, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -7047558055015836175, guid: d4eb0a6fcddceac45a7a9bbb006be41b, type: 2}
-    - target: {fileID: 8619532051571350727, guid: d243c636f06439c43ad27f682d66244a, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8990887571801889586, guid: d243c636f06439c43ad27f682d66244a, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: d4eb0a6fcddceac45a7a9bbb006be41b, type: 2}
-    - target: {fileID: 8990887571801889586, guid: d243c636f06439c43ad27f682d66244a, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -7047558055015836175, guid: d4eb0a6fcddceac45a7a9bbb006be41b, type: 2}
-    - target: {fileID: 8990887571801889586, guid: d243c636f06439c43ad27f682d66244a, type: 3}
-      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3249,63 +3213,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90b868c14a83bb44c96db0978ba0e9d9, type: 3}
---- !u!1001 &1887019661
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1331593332975343812, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 11.47
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331593332975343812, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331593332975343812, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331593332975343812, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331593332975343812, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331593332975343812, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331593332975343812, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331593332975343812, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331593332975343812, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331593332975343812, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5632498583972159001, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
-      propertyPath: m_Name
-      value: Punto De Enganche
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0822c64535349e14ebf08d57cb6a377a, type: 3}
 --- !u!1001 &1919901107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4299,6 +4206,5 @@ SceneRoots:
   - {fileID: 889305929}
   - {fileID: 1632984417}
   - {fileID: 64596047}
-  - {fileID: 1887019661}
   - {fileID: 1644931558}
   - {fileID: 2116732628}
