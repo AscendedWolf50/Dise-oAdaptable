@@ -1,9 +1,13 @@
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 public class CarJump : MonoBehaviour
 {
     
     [SerializeField] private CarData data;
+    
+    [Header("FeedBack")]
+    [SerializeField] private MMF_Player feedbackSalto;
     
     private Rigidbody rb;
     
@@ -34,7 +38,8 @@ public class CarJump : MonoBehaviour
         
             
             rb.linearVelocity -= velocidadPerpendicular; 
-        
+            
+            feedbackSalto.PlayFeedbacks();
             
             rb.AddForce(transform.up * data.fuerzaSalto, ForceMode.Impulse);
         }
