@@ -52,6 +52,8 @@ public class CarDeath : MonoBehaviour
         if (other.CompareTag("Suelo"))
         {
             feedbackMuerte.PlayFeedbacks();
+
+            puntoDebil.enabled = false;
             
             carController.enabled = false;
             carJump.enabled = false;
