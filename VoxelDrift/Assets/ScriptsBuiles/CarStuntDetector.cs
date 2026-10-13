@@ -6,7 +6,11 @@ public class CarStuntDetector : MonoBehaviour
 {
     [SerializeField] private float puntosPorGiro;
 
+    [Tooltip("Mide el angulo maximo respecto al suelo que tiene permito tener el jugador cuando aterriza")]
     [SerializeField] private float anguloToleraciaTrucos;
+    
+    [Tooltip("Grados de regalo si aterriza bien pero le faltó un poco para los 360 grados")]
+    [SerializeField] private float bufferGradosCompletado = 45f;
     
     
     private CarController carController;
@@ -42,7 +46,9 @@ public class CarStuntDetector : MonoBehaviour
             
             rotacionAnterior = rotacionActual; //La rotacion anterior pasa a ser la actual
             
-            int vueltasActuales = Mathf.FloorToInt(Mathf.Abs(gradosAcumulados) / 360); //Calcular las vueltas actuales mientras esta en el aire y no solo cuandoa aterriza
+            float gradosConBuffer = Mathf.Abs(gradosAcumulados) + bufferGradosCompletado;
+            
+            int vueltasActuales = Mathf.FloorToInt(Mathf.Abs(gradosConBuffer) / 360); //Calcular las vueltas actuales mientras esta en el aire y no solo cuandoa aterriza
 
             if (vueltasActuales >= 1 && vueltasActuales != ultimasVueltasDetectadas) //Cuando el jugador empeiza a dar vueltas
             {
@@ -57,7 +63,9 @@ public class CarStuntDetector : MonoBehaviour
         { 
             rotacionAnterior = transform.eulerAngles.z; //Para que las vueltas empiecen a contar exactamente desde la rotacion en que despego
             
-            int vueltas = Mathf.FloorToInt(Mathf.Abs(gradosAcumulados) / 360);
+            float gradosConBuffer = Mathf.Abs(gradosAcumulados) + bufferGradosCompletado; //APlicar los grados del buffer a los grados acumulados
+            
+            int vueltas = Mathf.FloorToInt(Mathf.Abs(gradosConBuffer) / 360);
             // Sacar el valor absoluto ya que si no se le hiciera y el jugador girara en sentido contrario (-360) la siguiente condicion no se cumpliria
 
             if (vueltas >= 1) // Si ha dado una o mas vueltas
@@ -96,13 +104,16 @@ public class CarStuntDetector : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Suelo"))
         {
-            if (ultimasVueltasDetectadas >= 1) // Si el jugador llevaba minimo una vuelta y se choca con el suelo (no aterriza con las ruedas, el truco falla)
+            if (ultimasVueltasDetectadas >= 1 || Mathf.Abs(gradosAcumulados) >= 200f) // Si el jugador llevaba minimo una vuelta y se choca con el suelo (no aterriza con las ruedas, el truco falla)
             {
-                OnTrucoFallido?.Invoke();
+                float anguloInclinacion = Vector3.Angle(transform.up, Vector3.up);
                 
-                gradosAcumulados = 0;
-
-                ultimasVueltasDetectadas = 0;
+                if (anguloInclinacion > anguloToleraciaTrucos) // Solo le salta el error de truco si el jugador sobrepasa los 200 grados de rotacion
+                {
+                    OnTrucoFallido?.Invoke();
+                    gradosAcumulados = 0;
+                    ultimasVueltasDetectadas = 0;
+                }
             }
         }
     }
