@@ -25,6 +25,8 @@ public class CarGrapple : MonoBehaviour
     [SerializeField] LineRenderer ganchovisual;
     
     [SerializeField] private MMF_Player feedbackGancho;
+    
+    [SerializeField] private MMF_Player feedbackDesenganchar;
 
     
 
@@ -128,9 +130,7 @@ public class CarGrapple : MonoBehaviour
     {
         ganchovisual.enabled  = false;
         
-        
-        
-        
+        feedbackDesenganchar.PlayFeedbacks();
         
             Destroy(jointActual);
             
