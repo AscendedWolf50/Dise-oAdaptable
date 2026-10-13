@@ -12,7 +12,7 @@ public struct partesCarro
 
 public class CarDeath : MonoBehaviour
 {
-    [SerializeField] private partesCarro [] partesDesprendibles;
+    [SerializeField] private partesCarro[] partesDesprendibles;
     private Rigidbody rigibodyCarro;
     [SerializeField] private Collider puntoDebil;
     [SerializeField] private float fuerzaExplosionDesarme;
@@ -20,13 +20,14 @@ public class CarDeath : MonoBehaviour
     [SerializeField] private float elevacionExplosionDesarme;
     
     [SerializeField] private MMF_Player feedbackMuerte;
-    
     [SerializeField] private MMF_Player feedbackCaida;
     
     private CarController carController;
     private CarJump carJump;
     
     public static event Action OnCarroDestruido;
+    // Nuevo evento para activar la cámara al momento del choque
+    public static event Action OnCarImpactDeath; 
 
     void Awake()
     {
@@ -35,7 +36,6 @@ public class CarDeath : MonoBehaviour
         rigibodyCarro = GetComponent<Rigidbody>();
     }
 
-    
     void OnEnable()
     {
         DeathZone.OnPlayerFall += ProcesarCaidaAlVacio;
@@ -46,11 +46,13 @@ public class CarDeath : MonoBehaviour
         DeathZone.OnPlayerFall -= ProcesarCaidaAlVacio;
     }
 
-   
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Suelo"))
         {
+            // Disparar la cámara de muerte inmediatamente
+            OnCarImpactDeath?.Invoke(); 
+            
             feedbackMuerte.PlayFeedbacks();
 
             puntoDebil.enabled = false;
@@ -72,17 +74,13 @@ public class CarDeath : MonoBehaviour
         }
     }
 
-    
     private void ProcesarCaidaAlVacio()
     {
         feedbackCaida.PlayFeedbacks();
         
-        
-        
         carController.enabled = false;
         carJump.enabled = false;
 
-        
         StartCoroutine(rutinaDestruccion());
     }
 

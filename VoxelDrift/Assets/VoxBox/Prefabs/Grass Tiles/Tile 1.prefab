@@ -26,7 +26,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 311704533098164385}
@@ -103,6 +103,22 @@ PrefabInstance:
     - target: {fileID: -7061887207048021656, guid: 6cacf8a7f2bb29a4a903ec6193aafb67, type: 3}
       propertyPath: m_TagString
       value: Suelo
+      objectReference: {fileID: 0}
+    - target: {fileID: -3333676992809214690, guid: 6cacf8a7f2bb29a4a903ec6193aafb67, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3333676992809214690, guid: 6cacf8a7f2bb29a4a903ec6193aafb67, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3333676992809214690, guid: 6cacf8a7f2bb29a4a903ec6193aafb67, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3333676992809214690, guid: 6cacf8a7f2bb29a4a903ec6193aafb67, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6cacf8a7f2bb29a4a903ec6193aafb67, type: 3}
       propertyPath: m_Name
