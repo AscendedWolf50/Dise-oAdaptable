@@ -36,9 +36,9 @@ const Victoria = () => {
 
   return (
     <ModalOverlay title="¡VICTORIA!">
-      <div ref={containerRef} className="flex flex-col items-center gap-4 font-sans md:gap-5">
+      <div ref={containerRef} className="flex flex-col items-center gap-4 font-sans md:gap-5 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
         {/* Illustration placeholder */}
-        <div className="w-full h-36 border-2 border-[#0D0D0D] bg-[#8BA3A7] relative flex items-center justify-center">
+        <div className="relative flex h-36 w-full items-center justify-center border-2 border-[#0D0D0D] bg-[#8BA3A7] lg:col-start-1 lg:row-start-1 lg:h-full lg:min-h-[180px]">
           <div className="absolute top-0 left-0 w-2 h-2 bg-[#0D0D0D]"></div>
           <div className="absolute top-0 right-0 w-2 h-2 bg-[#0D0D0D]"></div>
           <div className="absolute bottom-0 left-0 w-2 h-2 bg-[#0D0D0D]"></div>
@@ -48,13 +48,13 @@ const Victoria = () => {
 
         {/* Victory Banner */}
         <div
-          className="voxel-grid-surface w-full border-2 border-[#0D0D0D] bg-[#0D0D0D] p-4 text-center text-3xl font-black uppercase tracking-widest text-white"
+          className="voxel-grid-surface w-full border-2 border-[#0D0D0D] bg-[#0D0D0D] p-4 text-center text-3xl font-black uppercase tracking-widest text-white lg:col-start-1 lg:row-start-2"
         >
           ¡VICTORIA!
         </div>
 
         {/* Stars Section */}
-        <div className="flex flex-col items-center gap-4 py-2">
+        <div className="flex flex-col items-center gap-4 py-2 lg:col-start-2 lg:row-start-1">
           <div className="flex gap-2">
             {[0, 1, 2].map((i) => (
               <div 
@@ -82,7 +82,7 @@ const Victoria = () => {
         </div>
 
         {/* Bottom 3-button row */}
-        <div className="mt-2 grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="mt-2 grid w-full grid-cols-1 gap-3 sm:grid-cols-3 lg:col-start-2 lg:row-start-2">
           <button
             ref={el => buttonsRef.current[0] = el}
             onClick={handleMenu}

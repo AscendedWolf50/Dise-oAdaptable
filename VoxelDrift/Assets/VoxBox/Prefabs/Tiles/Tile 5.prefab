@@ -32,6 +32,73 @@ Transform:
   - {fileID: 8753520440846520427}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6231487880375883622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3654525054813460581}
+  - component: {fileID: 1932758513361712161}
+  - component: {fileID: 2352788586819366274}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3654525054813460581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231487880375883622}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5033611917991860978}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1932758513361712161
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231487880375883622}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 9.674745, y: 4.078259, z: 11.637153}
+  m_Center: {x: 0.0000011175871, y: 7.295911, z: -0.11372715}
+--- !u!114 &2352788586819366274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231487880375883622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63179f945a1a6804c955d76c2f1128dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Turbo
+  boostForce: 500
 --- !u!1001 &9146943931416213376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114,9 +181,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4263363302088355186, guid: 174cb2b8edf231549809749f3942f5b0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3654525054813460581}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -3977241652621531915, guid: 174cb2b8edf231549809749f3942f5b0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4991929947543940526}
   m_SourcePrefab: {fileID: 100100000, guid: 174cb2b8edf231549809749f3942f5b0, type: 3}
+--- !u!1 &3908428215280030581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3977241652621531915, guid: 174cb2b8edf231549809749f3942f5b0, type: 3}
+  m_PrefabInstance: {fileID: 9146943931416213376}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &4991929947543940526
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3908428215280030581}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 12, y: 4, z: 12}
+  m_Center: {x: 0, y: 3, z: 0}
+--- !u!4 &5033611917991860978 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4263363302088355186, guid: 174cb2b8edf231549809749f3942f5b0, type: 3}
+  m_PrefabInstance: {fileID: 9146943931416213376}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8753520440846520427 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 174cb2b8edf231549809749f3942f5b0, type: 3}
