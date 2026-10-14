@@ -37,10 +37,10 @@ export default function Menu() {
   }, [location.pathname]);
 
   return (
-    <nav aria-label="Navegación principal" className="voxel-grid-surface border-b-2 border-[#0D0D0D] bg-[#1B384B] px-3 py-2 text-white shadow-[0px_4px_0px_0px_#0D0D0D] sm:px-4">
+    <nav aria-label="Navegación principal" className="voxel-grid-surface border-b-2 border-[#0D0D0D] bg-[#1B384B] px-3 py-2 text-white shadow-[0px_4px_0px_0px_#0D0D0D] sm:px-4 lg:px-6">
       <div className="mx-auto flex max-w-7xl flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
         <button onClick={() => navigate('/')} className="shrink-0 self-center border-2 border-[#0D0D0D] bg-[#FF7800] px-3 py-2 text-sm font-black tracking-[0.2em] text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] sm:self-auto">VOXEL DRIFT</button>
-        <div className="flex w-full gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-end sm:overflow-visible sm:pb-0">
+        <div className="flex w-full gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-end sm:overflow-visible sm:pb-0 lg:flex-wrap lg:gap-1.5">
           {NAV_ITEMS.map((item, index) => {
             const isActive = location.pathname === item.path;
             return (
@@ -53,7 +53,7 @@ export default function Menu() {
                 }}
                 onClick={() => navigate(item.path)}
                 aria-current={isActive ? 'page' : undefined}
-                className={`shrink-0 border-2 px-3 py-2 text-[10px] font-black tracking-widest transition-colors duration-150 sm:text-xs
+                className={`shrink-0 border-2 px-3 py-2 text-[10px] font-black tracking-widest transition-colors duration-150 sm:text-xs lg:px-2 lg:py-1.5 lg:text-[9px]
                   ${isActive
                     ? 'border-[#FF7800] bg-[#FF7800] text-[#0D0D0D] shadow-[2px_2px_0px_0px_#0D0D0D]'
                     : 'border-[#8BA3A7] bg-[#1B384B] text-white hover:border-[#FF7800] hover:text-white'

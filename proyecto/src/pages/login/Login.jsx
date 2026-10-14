@@ -35,28 +35,28 @@ const Login = () => {
     <div className="bg-[#1B384B] flex justify-center p-4 font-sans">
       <div 
         ref={containerRef}
-        className="relative flex w-full max-w-md flex-col border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-xl md:p-8"
+        className="relative flex w-full max-w-md flex-col border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-xl md:p-8 lg:grid lg:max-w-5xl lg:grid-cols-2 lg:items-center lg:gap-8"
       >
         {/* Version Label */}
-        <div className="text-right text-[#FF7800] font-black tracking-widest text-sm mb-2">
+        <div className="mb-2 text-right text-sm font-black tracking-widest text-[#FF7800] lg:col-span-2">
           V 1.0
         </div>
 
         {/* Title */}
-        <div className="text-center mb-6">
+        <div className="mb-6 text-center lg:col-start-1 lg:row-start-2 lg:row-span-2 lg:mb-0 lg:text-left">
           <h1 className="text-6xl font-black text-[#0D0D0D] tracking-tighter leading-none mb-1">VOXEL</h1>
           <h1 className="text-6xl font-black text-[#0D0D0D] tracking-tighter leading-none">DRIFT</h1>
         </div>
 
         {/* Decorative Diamond Separator */}
-        <div className="flex justify-center items-center gap-2 mb-6 text-[#0D0D0D]">
+        <div className="mb-6 flex items-center justify-center gap-2 text-[#0D0D0D] lg:col-start-1 lg:row-start-4 lg:mb-0 lg:justify-start">
           <div className="w-16 h-0.5 bg-[#0D0D0D]"></div>
           <div className="w-3 h-3 bg-[#FF7800] border-2 border-[#0D0D0D] rotate-45"></div>
           <div className="w-16 h-0.5 bg-[#0D0D0D]"></div>
         </div>
 
         {/* Message Box */}
-        <div className="relative border-2 border-[#0D0D0D] p-4 mb-8 bg-[#8BA3A7]">
+        <div className="relative mb-8 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-4 lg:col-start-2 lg:row-start-2 lg:mb-0">
           <div className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#FF7800] border-2 border-[#0D0D0D]"></div>
           <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#FF7800] border-2 border-[#0D0D0D]"></div>
           <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#FF7800] border-2 border-[#0D0D0D]"></div>
@@ -68,7 +68,7 @@ const Login = () => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleLogin} className="flex flex-col gap-6 mb-8">
+        <form onSubmit={handleLogin} className="mb-8 flex flex-col gap-6 lg:col-start-2 lg:row-start-3 lg:mb-0">
           <input 
             type="text" 
             placeholder="ingresa tu usuario..."
@@ -84,7 +84,7 @@ const Login = () => {
         </form>
 
         {/* Stats Grid */}
-        <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3 lg:col-span-2 lg:row-start-5 lg:mt-0">
           {statsData && statsData.map((stat, index) => (
             <div 
               key={stat.id}

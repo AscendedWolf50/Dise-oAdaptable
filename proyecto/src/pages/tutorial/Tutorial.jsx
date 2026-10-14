@@ -33,24 +33,26 @@ export default function Tutorial() {
 
   return (
     <ModalOverlay title="TUTORIAL">
-      <section ref={pageRef} className="flex flex-col text-[#0D0D0D]">
-        <div data-tutorial-enter className="mb-4 flex h-32 items-center justify-center border-2 border-[#0D0D0D]">
+      <section ref={pageRef} className="flex flex-col text-[#0D0D0D] lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
+        <div data-tutorial-enter className="mb-4 flex h-32 items-center justify-center border-2 border-[#0D0D0D] lg:col-start-1 lg:row-span-3 lg:mb-0 lg:h-full lg:min-h-[280px]">
           <button {...gsapButtonMotion} onClick={() => setDemoPlaying((playing) => !playing)} aria-label={demoPlaying ? 'Pausar demostración' : 'Reproducir demostración'} className="button-secondary grid h-12 w-12 place-items-center p-0 text-xl">{demoPlaying ? 'Ⅱ' : '▶'}</button>
         </div>
-        <div data-step-content className="flex flex-col">
-          <span data-tutorial-enter className="w-fit border-2 border-[#0D0D0D] bg-[#8BA3A7] px-2 py-1 text-[10px] font-black tracking-[0.18em] shadow-[2px_2px_0px_0px_#0D0D0D]">{step.tag}</span>
-          <h2 data-tutorial-enter className="mt-3 text-2xl font-black tracking-wide [text-shadow:2px_2px_0px_#8BA3A7]">{step.title}</h2>
-          <p data-tutorial-enter className="mt-4 text-sm leading-6 text-[#8BA3A7]">{step.body}</p>
-          <p data-tutorial-enter aria-hidden="true" className="mt-3 text-lg font-black tracking-widest">{step.icon}</p>
-          <div className="mt-3 flex gap-2" aria-label={`Paso ${stepIndex + 1} de ${steps.length}`}>
-            {steps.map((item, index) => <span key={item.tag} className={`h-2 flex-1 border border-[#0D0D0D] ${index === stepIndex ? 'bg-[#FF7800]' : 'bg-white'}`} />)}
+        <div className="lg:col-start-2 lg:row-start-1">
+          <div data-step-content className="flex flex-col">
+            <span data-tutorial-enter className="w-fit border-2 border-[#0D0D0D] bg-[#8BA3A7] px-2 py-1 text-[10px] font-black tracking-[0.18em] shadow-[2px_2px_0px_0px_#0D0D0D]">{step.tag}</span>
+            <h2 data-tutorial-enter className="mt-3 text-2xl font-black tracking-wide [text-shadow:2px_2px_0px_#8BA3A7]">{step.title}</h2>
+            <p data-tutorial-enter className="mt-4 text-sm leading-6 text-[#8BA3A7]">{step.body}</p>
+            <p data-tutorial-enter aria-hidden="true" className="mt-3 text-lg font-black tracking-widest">{step.icon}</p>
+            <div className="mt-3 flex gap-2" aria-label={`Paso ${stepIndex + 1} de ${steps.length}`}>
+              {steps.map((item, index) => <span key={item.tag} className={`h-2 flex-1 border border-[#0D0D0D] ${index === stepIndex ? 'bg-[#FF7800]' : 'bg-white'}`} />)}
+            </div>
           </div>
+          <div data-tutorial-enter className="mt-6 grid grid-cols-2 gap-3">
+            <button {...gsapButtonMotion} onClick={() => changeStep(stepIndex - 1)} disabled={stepIndex === 0} className="button-secondary px-2 py-3 text-xs font-black tracking-widest disabled:opacity-50">◂ ANTERIOR</button>
+            <button {...gsapButtonMotion} onClick={() => changeStep(stepIndex + 1)} disabled={stepIndex === steps.length - 1} className="button-primary px-2 py-3 text-xs font-black tracking-widest disabled:opacity-50">SIGUIENTE ▸</button>
+          </div>
+          <button {...gsapButtonMotion} onClick={dismiss} className="button-secondary mt-3 py-3 text-xs font-black tracking-widest">X CERRAR TUTORIAL</button>
         </div>
-        <div data-tutorial-enter className="mt-6 grid grid-cols-2 gap-3">
-          <button {...gsapButtonMotion} onClick={() => changeStep(stepIndex - 1)} disabled={stepIndex === 0} className="button-secondary px-2 py-3 text-xs font-black tracking-widest disabled:opacity-50">◂ ANTERIOR</button>
-          <button {...gsapButtonMotion} onClick={() => changeStep(stepIndex + 1)} disabled={stepIndex === steps.length - 1} className="button-primary px-2 py-3 text-xs font-black tracking-widest disabled:opacity-50">SIGUIENTE ▸</button>
-        </div>
-        <button {...gsapButtonMotion} data-tutorial-enter onClick={dismiss} className="button-secondary mt-3 py-3 text-xs font-black tracking-widest">X CERRAR TUTORIAL</button>
       </section>
     </ModalOverlay>
   );

@@ -71,16 +71,16 @@ export default function Gameplay() {
   }, []);
 
   return (
-    <div className="flex justify-center bg-[#1B384B] p-4 font-sans selection:bg-[#FF7800] selection:text-white">
+    <div className="flex h-full min-h-0 justify-center bg-[#1B384B] p-4 font-sans selection:bg-[#FF7800] selection:text-white lg:p-0">
       {/* Main Container */}
       <div 
         ref={containerRef}
-        className="relative flex h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl"
+        className="relative flex h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl lg:h-full lg:min-h-0 lg:max-w-none"
       >
         {/* HUD Area */}
-        <div ref={hudRef} className="relative z-10 flex shrink-0 flex-col gap-3 bg-[#8BA3A7] p-4 shadow-[0px_4px_0px_0px_#0D0D0D]">
+        <div ref={hudRef} className="relative z-10 flex shrink-0 flex-col gap-3 bg-[#8BA3A7] p-4 shadow-[0px_4px_0px_0px_#0D0D0D] lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-8 lg:py-3">
           {/* Row 1: Pause, Progress */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 lg:flex-1">
             <button 
               onClick={() => navigate('/pausa')}
               className="button-secondary flex h-10 w-10 items-center justify-center p-0 transition-all"
@@ -105,7 +105,7 @@ export default function Gameplay() {
           </div>
 
           {/* Row 2: Level, Timer */}
-          <div className="flex justify-between items-center font-black text-[#0D0D0D]">
+          <div className="flex items-center justify-between font-black text-[#0D0D0D] lg:w-auto lg:gap-8 lg:text-xl">
             <span className="uppercase tracking-widest text-lg">NIVEL {level}</span>
             <div className="flex items-center gap-2">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -118,7 +118,7 @@ export default function Gameplay() {
         </div>
 
         {/* Game Canvas Area */}
-        <div ref={canvasRef} className="relative flex flex-1 items-center justify-center overflow-hidden border-y-2 border-[#0D0D0D] bg-[#8BA3A7]">
+        <div ref={canvasRef} className="relative z-0 flex min-h-0 flex-1 items-center justify-center overflow-hidden border-y-2 border-[#0D0D0D] bg-[#8BA3A7]">
           {/* Ground Grid/Lines placeholder for 3D effect */}
           <div className="absolute bottom-0 h-1/3 w-full border-t-2 border-[#0D0D0D] opacity-20" style={{ backgroundImage: 'linear-gradient(#0D0D0D 2px, transparent 2px)', backgroundSize: '100% 20px' }}></div>
           
@@ -161,7 +161,7 @@ export default function Gameplay() {
         </div>
 
         {/* Bottom Controls */}
-        <div ref={controlsRef} className="z-10 flex shrink-0 gap-3 bg-[#8BA3A7] p-4 shadow-[0px_-4px_0px_0px_#0D0D0D]">
+        <div ref={controlsRef} className="z-10 flex shrink-0 gap-3 bg-[#8BA3A7] p-4 shadow-[0px_-4px_0px_0px_#0D0D0D] lg:hidden">
           {/* Left Arrow */}
           <button className="voxel-grid-surface flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">

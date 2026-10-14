@@ -71,10 +71,10 @@ const SelectorNiveles = () => {
     <div className="bg-[#1B384B] flex justify-center p-4 font-sans uppercase tracking-widest text-[#0D0D0D]">
       <div
         ref={containerRef}
-        className="w-full max-w-md overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:p-7"
+        className="w-full max-w-md overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:p-7 lg:grid lg:h-full lg:min-h-0 lg:max-w-none lg:grid-cols-12 lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-6 lg:p-8"
       >
         {/* Header row */}
-        <div className="flex items-center gap-3 mb-6">
+        <div className="mb-6 flex items-center gap-3 lg:col-span-12 lg:mb-0">
           <button
             onClick={() => navigate('/')}
             className="button-secondary px-3 py-1 text-xs font-bold transition-all"
@@ -85,7 +85,7 @@ const SelectorNiveles = () => {
         </div>
 
         {/* Stats bar */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6 flex items-center justify-between lg:col-span-3 lg:mb-0 lg:flex-col lg:items-stretch lg:justify-center lg:gap-8 lg:border-2 lg:border-[#0D0D0D] lg:p-6">
           <div className="voxel-grid-surface bg-[#0D0D0D] px-3 py-1 text-sm font-bold text-white">
             {completedCount}/100 NIVELES
           </div>
@@ -95,8 +95,8 @@ const SelectorNiveles = () => {
         </div>
 
         {/* Level Grid Area */}
-        <div className="max-h-[60vh] overflow-y-auto pb-2 pr-1 md:max-h-[70vh]">
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
+        <div className="max-h-[60vh] overflow-y-auto scroll-smooth pb-2 pr-1 md:max-h-[70vh] lg:col-span-9 lg:h-full lg:min-h-0 lg:max-h-full">
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 lg:gap-4">
             {levels.map((level, index) => {
               // Add separator before first locked level
               const isFirstLocked = level.status === 'locked' && levels[index - 1]?.status !== 'locked';
@@ -104,7 +104,7 @@ const SelectorNiveles = () => {
               return (
                 <React.Fragment key={level.id}>
                   {isFirstLocked && (
-                    <div className="col-span-3 my-2 flex items-center justify-center gap-2 opacity-60 sm:col-span-4 md:col-span-5">
+                    <div className="col-span-3 my-2 flex items-center justify-center gap-2 opacity-60 sm:col-span-4 md:col-span-5 lg:col-span-6">
                       <div className="flex-grow border-t-2 border-dashed border-[#8BA3A7]"></div>
                       <svg aria-label="Niveles bloqueados" className="h-4 w-4 text-[#8BA3A7]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="10" width="14" height="11" /><path d="M8 10V7a4 4 0 1 1 8 0v3" /></svg>
                       <div className="flex-grow border-t-2 border-dashed border-[#8BA3A7]"></div>
