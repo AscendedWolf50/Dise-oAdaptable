@@ -4,13 +4,14 @@ using System.Runtime.InteropServices;
 
 public class WebBridgeManager : MonoBehaviour
 {
-    private static WebBridgeManager instancia;
+    
+    public static WebBridgeManager Instancia { get; private set; }
 
     void Awake()
     {
-        if (instancia == null)
+        if (Instancia == null)
         {
-            instancia = this;
+            Instancia = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -18,16 +19,20 @@ public class WebBridgeManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
-    
 
     public void CargarNivelDesdeWeb(int indiceNivel)
     {
-        Debug.Log("La Web ordenó cargar el nivel: " + indiceNivel);
         Time.timeScale = 1f; 
         AudioListener.pause = false;
         SceneManager.LoadScene(indiceNivel);
     }
+    
+    public void ReiniciarNivelActual()
+        {
+            Time.timeScale = 1f;
+            AudioListener.pause = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     
     public void PausarJuego()
     {
@@ -40,33 +45,43 @@ public class WebBridgeManager : MonoBehaviour
         Time.timeScale = 1f;
         AudioListener.pause = false;
     }
-    
-    
+
     [DllImport("__Internal")]
     private static extern void AvisarNivelCompletadoJS(int estrellas);
 
     [DllImport("__Internal")]
     private static extern void AbrirMenuPausaJS();
 
-
     
+    [DllImport("__Internal")]
+    private static extern void AvisarNivelFallidoJS();
+
     public void BotonPausaPulsado()
     {
         PausarJuego(); 
-
 #if UNITY_WEBGL && !UNITY_EDITOR
-            AbrirMenuPausaJS(); // Le decimos a React que abra su overlay
-#else
-        Debug.Log("[SIMULACIÓN] Unity abriría el overlay de pausa en la web.");
+        AbrirMenuPausaJS();
 #endif
     }
 
     public void FinalizarNivel(int estrellasObtenidas)
     {
+        PausarJuego(); 
 #if UNITY_WEBGL && !UNITY_EDITOR
-            AvisarNivelCompletadoJS(estrellasObtenidas);
+        AvisarNivelCompletadoJS(estrellasObtenidas);
 #else
-        Debug.Log($"[SIMULACIÓN] Nivel terminado con {estrellasObtenidas} estrellas.");
+        Debug.Log($"[SIMULACIÓN WEB] Nivel completado: {estrellasObtenidas} estrellas.");
+#endif
+    }
+
+    
+    public void NivelFallido()
+    {
+        PausarJuego(); 
+#if UNITY_WEBGL && !UNITY_EDITOR
+        AvisarNivelFallidoJS();
+#else
+        Debug.Log("[SIMULACIÓN WEB] Nivel Fallido.");
 #endif
     }
 }

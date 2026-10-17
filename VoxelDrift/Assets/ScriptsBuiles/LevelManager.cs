@@ -31,7 +31,22 @@ public class LevelManager : MonoBehaviour
         CarStuntDetector.OnPuntosGanados -= SumarPuntos;
     }
 
+    
+    public int CalcularEstrellas()
+    {
+        int totalEstrellas = 1; 
 
+        if (tiempoActual <= data.tiempoParaEstrella)
+        {
+            totalEstrellas++;
+        }
+        if (puntosTotales >= data.puntosParaEstrella)
+        {
+            totalEstrellas++;
+        }
+
+        return totalEstrellas;
+    }
 
     private void ProcesarCompletacion()
     {

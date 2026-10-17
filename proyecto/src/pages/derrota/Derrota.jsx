@@ -17,6 +17,21 @@ export default function Derrota() {
     return () => context.revert();
   }, []);
 
+  const handleMenu = () => {
+    if (window.unityInstance) {
+      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
+    }
+    navigate('/');
+  };
+
+  const handleRestart = () => {
+    if (window.unityInstance) {
+      // Ordenamos a Unity reiniciar la escena actual
+      window.unityInstance.SendMessage('WebBridge', 'ReiniciarNivelActual');
+    }
+    navigate('/gameplay');
+  };
+
   return (
     <ModalOverlay title="¡PERDISTE!">
       <section ref={pageRef} className="flex flex-col items-center gap-4 text-[#0D0D0D] lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
@@ -25,12 +40,20 @@ export default function Derrota() {
         </div>
         <p data-defeat-enter className="voxel-grid-surface w-full border-2 border-[#0D0D0D] bg-[#0D0D0D] p-3 text-center text-xl font-black tracking-widest text-white lg:col-start-1 lg:row-start-2">¡PERDISTE!</p>
         <div className="flex gap-3 py-1 lg:col-start-2 lg:row-start-1" aria-label="0 de 3 estrellas">
-          {[0, 1, 2].map((star, index) => <svg key={star} ref={(element) => { starsRef.current[index] = element; }} className="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" strokeWidth="1.8"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8l-6.2 3.2L7 14.2l-5-4.9 6.9-1L12 2Z" /></svg>)}
+          {[0, 1, 2].map((star, index) => (
+            <svg key={star} ref={(element) => { starsRef.current[index] = element; }} className="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" strokeWidth="1.8">
+              <path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8l-6.2 3.2L7 14.2l-5-4.9 6.9-1L12 2Z" />
+            </svg>
+          ))}
         </div>
         <p data-defeat-enter className="text-xs font-bold tracking-[0.2em] text-[#8BA3A7] lg:col-start-2 lg:row-start-2">0/3 ESTRELLAS</p>
         <div className="mt-2 grid w-full grid-cols-2 gap-3 lg:col-start-2 lg:row-start-3">
-          <button {...gsapButtonMotion} onClick={() => navigate('/')} className="button-secondary flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-black tracking-widest">≡<span>MENÚ</span></button>
-          <button {...gsapButtonMotion} onClick={() => navigate('/gameplay')} className="button-primary flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-black tracking-widest">↻<span>REINTENTAR</span></button>
+          <button {...gsapButtonMotion} onClick={handleMenu} className="button-secondary flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-black tracking-widest">
+            ≡<span>MENÚ</span>
+          </button>
+          <button {...gsapButtonMotion} onClick={handleRestart} className="button-primary flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-black tracking-widest">
+            ↻<span>REINTENTAR</span>
+          </button>
         </div>
       </section>
     </ModalOverlay>

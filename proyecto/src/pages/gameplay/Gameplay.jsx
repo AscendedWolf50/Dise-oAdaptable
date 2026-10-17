@@ -32,12 +32,18 @@ export default function Gameplay() {
     };
 
     window.ReactBridge_NivelCompletado = (estrellas) => {
-      console.log("Unity finalizó el nivel con estrellas:", estrellas);
+    console.log("Unity finalizó el nivel con estrellas:", estrellas);
+    navigate('/victoria', { state: { estrellasTotales: estrellas } });
+  };
+
+    window.ReactBridge_NivelFallido = () => {
+      navigate('/derrota');
     };
 
     return () => {
       delete window.ReactBridge_AbrirPausa;
       delete window.ReactBridge_NivelCompletado;
+      delete window.ReactBridge_NivelFallido;
     };
   }, [navigate]);
 
