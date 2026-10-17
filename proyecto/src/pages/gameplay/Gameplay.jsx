@@ -24,15 +24,31 @@ export default function Gameplay() {
     return () => clearInterval(timer);
   }, []);
 
+  // Lógica de comunicación con Unity (Escuchando a Unity)
+  useEffect(() => {
+    window.ReactBridge_AbrirPausa = () => {
+      console.log("Unity solicitó abrir la pausa");
+      navigate('/pausa');
+    };
+
+    window.ReactBridge_NivelCompletado = (estrellas) => {
+      console.log("Unity finalizó el nivel con estrellas:", estrellas);
+    };
+
+    return () => {
+      delete window.ReactBridge_AbrirPausa;
+      delete window.ReactBridge_NivelCompletado;
+    };
+  }, [navigate]);
+
   const formatTime = (seconds) => {
     const m = Math.floor(seconds / 60).toString().padStart(2, '0');
     const s = (seconds % 60).toString().padStart(2, '0');
     return `${m}:${s}`;
   };
 
-  // Carga dinámica de Unity WebGL (Sin compresión)
+  // Carga dinámica de Unity WebGL
   useEffect(() => {
-    // 1. Resolver el base path de Vite para evitar fallos por subrutas como /Dise-oAdaptable/
     const base = import.meta.env.BASE_URL.endsWith('/') 
       ? import.meta.env.BASE_URL 
       : `${import.meta.env.BASE_URL}/`;
@@ -40,7 +56,7 @@ export default function Gameplay() {
     const buildUrl = `${base}BuildVoxelDrift/Build`;
     const loaderUrl = `${buildUrl}/BuildVoxelDrift.loader.js`;
 
-    // 2. Configuración para BUILD SIN COMPRESIÓN (archivos sin extensión .unityweb)
+    // Si tu build en disco todavía usa compresión, cambia las extensiones a .data.unityweb, etc.
     const config = {
       arguments: [],
       dataUrl: `${buildUrl}/BuildVoxelDrift.data`,
@@ -52,18 +68,16 @@ export default function Gameplay() {
       productVersion: "0.1.0",
     };
 
-    // Evitar que Vite / React StrictMode duplique la inyección del script
     let script = document.querySelector(`script[src="${loaderUrl}"]`);
 
     const inicializarUnity = () => {
       if (window.createUnityInstance && unityCanvasRef.current) {
         window.createUnityInstance(unityCanvasRef.current, config, (progreso) => {
-          // Opcional: conectar con barra de carga
+          // Opcional: progreso de carga
         })
         .then((unityInstance) => {
-          // Guardar la instancia globalmente
           window.unityInstance = unityInstance;
-          console.log("¡Unity WebGL (Sin compresión) cargado con éxito!");
+          console.log("¡Unity WebGL cargado con éxito!");
         })
         .catch((error) => {
           console.error("Error al instanciar el canvas de Unity:", error);
@@ -71,15 +85,26 @@ export default function Gameplay() {
       }
     };
 
+    // Manejo correcto de carga síncrona/asíncrona del script
     if (!script) {
       script = document.createElement("script");
       script.src = loaderUrl;
       script.async = true;
       script.onload = inicializarUnity;
       document.body.appendChild(script);
-    } else {
+    } else if (window.createUnityInstance) {
+      // Si el script ya existía y ya terminó de cargar
       inicializarUnity();
+    } else {
+      // Si el script existe en el DOM pero aún está en proceso de descarga
+      script.addEventListener('load', inicializarUnity);
     }
+
+    return () => {
+      if (script) {
+        script.removeEventListener('load', inicializarUnity);
+      }
+    };
   }, []);
 
   // Animaciones GSAP

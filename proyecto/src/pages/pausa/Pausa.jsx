@@ -14,6 +14,26 @@ export default function Pausa() {
     return () => context.revert();
   }, []);
 
+  // --- NUEVA LÓGICA DE REACT A UNITY ---
+  const handleReanudar = () => {
+    // Le mandamos el mensaje al GameObject 'WebBridge' para ejecutar 'ReanudarJuego'
+    if (window.unityInstance) {
+      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
+    }
+    // Cerramos el overlay modal en React
+    dismiss();
+  };
+
+  const handleReiniciar = () => {
+    // Si tienes un método Reiniciar en WebBridge, podrías llamarlo aquí.
+    // Por ahora, recargamos la escena actual
+    if (window.unityInstance) {
+      // Necesitaríamos crear 'ReiniciarNivelActual' en C#, 
+      // o simplemente usar 'CargarNivelDesdeWeb(nivel_actual)'
+    }
+    navigate('/gameplay');
+  };
+
   return (
     <ModalOverlay title="Ⅱ PAUSADO" panelClassName="!pt-14">
       <div ref={pageRef} className="flex flex-col gap-3 text-[#0D0D0D] lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
@@ -21,9 +41,12 @@ export default function Pausa() {
           <div><p className="text-xs font-bold tracking-widest">NIVEL 12</p><p aria-label="3 estrellas" className="text-lg leading-none">★★★</p></div>
           <div className="w-20"><p className="mb-1 text-right text-[9px] font-bold tracking-widest">PROGRESO</p><div className="h-3 border-2 border-[#0D0D0D] bg-white"><div className="h-full w-3/5 bg-[#FF7800]" /></div></div>
         </div>
-          <button {...gsapButtonMotion} data-pause-enter onClick={dismiss} className="button-primary py-4 text-base font-black tracking-widest lg:col-start-2 lg:row-start-1 lg:py-6 lg:text-lg">▶ REANUDAR</button>
+          
+          {/* Se cambió el onClick de dismiss a handleReanudar */}
+          <button {...gsapButtonMotion} data-pause-enter onClick={handleReanudar} className="button-primary py-4 text-base font-black tracking-widest lg:col-start-2 lg:row-start-1 lg:py-6 lg:text-lg">▶ REANUDAR</button>
+          
           <div data-pause-enter className="border-2 border-[#0D0D0D] p-2 lg:col-start-2 lg:row-start-2">
-            <button {...gsapButtonMotion} onClick={() => navigate('/gameplay')} className="button-secondary flex w-full items-center gap-3 px-2 py-3 text-left text-xs font-bold tracking-widest"><span>↻</span><span>REINICIAR NIVEL</span></button>
+            <button {...gsapButtonMotion} onClick={handleReiniciar} className="button-secondary flex w-full items-center gap-3 px-2 py-3 text-left text-xs font-bold tracking-widest"><span>↻</span><span>REINICIAR NIVEL</span></button>
             <button {...gsapButtonMotion} onClick={() => navigate('/configuracion')} className="button-secondary flex w-full items-center gap-3 px-2 py-3 text-left text-xs font-bold tracking-widest"><span>⚙</span><span>CONFIGURACIÓN</span></button>
             <button {...gsapButtonMotion} onClick={() => navigate('/')} className="button-secondary flex w-full items-center gap-3 px-2 py-3 text-left text-xs font-bold tracking-widest"><span>≡</span><span>MENÚ PRINCIPAL</span></button>
           </div>
