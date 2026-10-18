@@ -72,6 +72,7 @@ export default function Gameplay() {
       companyName: "DefaultCompany",
       productName: "VoxelDrift",
       productVersion: "0.1.0",
+      devicePixelRatio: window.devicePixelRatio || 1,
     };
 
     let script = document.querySelector(`script[src="${loaderUrl}"]`);
@@ -206,14 +207,12 @@ export default function Gameplay() {
         </div>
 
         {/* Área del Canvas del Juego */}
-        <div ref={canvasRef} className="relative z-0 flex min-h-0 flex-1 items-center justify-center overflow-hidden border-y-2 border-[#0D0D0D] bg-[#1B384B]">
-          <canvas 
-            ref={unityCanvasRef}
-            id="unity-canvas" 
-            className="h-full w-full object-contain"
-            tabIndex={-1}
-          />
-        </div>
+        <canvas 
+          ref={unityCanvasRef}
+          id="unity-canvas" 
+          className="block h-full w-full"
+          tabIndex={-1}
+        />
 
         {/* Controles Táctiles Inferiores */}
         <div ref={controlsRef} className="z-10 flex shrink-0 gap-3 bg-[#8BA3A7] p-4 shadow-[0px_-4px_0px_0px_#0D0D0D] lg:hidden">
