@@ -32,17 +32,17 @@ const Inicio = () => {
   const buttonPressStyle = "active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-100";
 
   return (
-    <div className="bg-[#1B384B] flex justify-center p-4 font-sans">
+    <div className="flex h-full min-h-full w-full justify-center bg-[#1B384B] p-4 font-sans lg:p-6">
       <div 
         ref={containerRef}
-        className="grid w-full max-w-md grid-cols-1 gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:grid-cols-2 md:gap-5 md:p-8 lg:max-w-5xl lg:items-center lg:gap-8"
+        className="grid h-full w-full max-w-md content-center grid-cols-1 gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:grid-cols-2 md:gap-5 md:p-8 lg:max-w-5xl lg:items-center lg:gap-8 lg:p-10"
       >
         {/* Illustration Box */}
         <div ref={addToRefs} className="relative flex h-40 w-full items-center justify-center overflow-hidden border-2 border-[#0D0D0D] bg-[#FF7800] md:col-span-2 md:h-52 lg:col-span-1 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:h-full lg:min-h-[240px]">
-          <div className="absolute top-2 left-2 w-2 h-2 bg-[#0D0D0D]"></div>
-          <div className="absolute top-2 right-2 w-2 h-2 bg-[#0D0D0D]"></div>
-          <div className="absolute bottom-2 left-2 w-2 h-2 bg-[#0D0D0D]"></div>
-          <div className="absolute bottom-2 right-2 w-2 h-2 bg-[#0D0D0D]"></div>
+          <div className="absolute top-2 left-2 h-2 w-2 bg-[#0D0D0D]"></div>
+          <div className="absolute top-2 right-2 h-2 w-2 bg-[#0D0D0D]"></div>
+          <div className="absolute bottom-2 left-2 h-2 w-2 bg-[#0D0D0D]"></div>
+          <div className="absolute bottom-2 right-2 h-2 w-2 bg-[#0D0D0D]"></div>
           <span className="font-black text-[#0D0D0D] text-xl tracking-widest">ILUSTRACIÓN</span>
         </div>
 
@@ -57,7 +57,7 @@ const Inicio = () => {
           onClick={() => navigate('/niveles')}
           className={`button-primary flex items-center justify-center gap-2 p-4 font-bold tracking-widest uppercase md:text-lg lg:col-start-2 lg:row-start-1 ${buttonPressStyle}`}
         >
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+          <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
             <path d="M4 4l12 6-12 6z" />
           </svg>
           JUGAR
@@ -68,7 +68,7 @@ const Inicio = () => {
           onClick={() => navigate('/perfil')}
           className={`button-secondary flex items-center justify-center gap-2 p-4 font-bold tracking-widest uppercase md:text-lg lg:col-start-2 lg:row-start-2 ${buttonPressStyle}`}
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
           PERFIL
@@ -79,7 +79,7 @@ const Inicio = () => {
           onClick={() => navigate('/configuracion')}
           className={`button-secondary flex items-center justify-center gap-2 p-4 font-bold tracking-widest uppercase md:col-span-2 md:text-lg lg:col-span-1 lg:col-start-2 lg:row-start-3 ${buttonPressStyle}`}
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
@@ -89,7 +89,7 @@ const Inicio = () => {
         {/* Separator */}
         <div ref={addToRefs} className="my-2 flex items-center gap-4 md:col-span-2 lg:col-span-1 lg:col-start-2 lg:row-start-4">
           <div className="flex-1 border-b-2 border-dashed border-[#0D0D0D]"></div>
-          <span className="font-bold tracking-widest text-sm text-[#0D0D0D] uppercase">MÁS</span>
+          <span className="text-sm font-bold uppercase tracking-widest text-[#0D0D0D]">MÁS</span>
           <div className="flex-1 border-b-2 border-dashed border-[#0D0D0D]"></div>
         </div>
 
@@ -98,7 +98,7 @@ const Inicio = () => {
           <button 
             className={`button-secondary flex flex-col items-center justify-center gap-2 p-3 text-sm font-bold tracking-widest uppercase ${buttonPressStyle}`}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             CRÉDITOS
@@ -108,7 +108,7 @@ const Inicio = () => {
             onClick={() => navigate('/tutorial')}
             className={`button-secondary flex flex-col items-center justify-center gap-2 p-3 text-sm font-bold tracking-widest uppercase ${buttonPressStyle}`}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             TUTORIAL
