@@ -32,67 +32,74 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[#1B384B] flex justify-center p-4 font-sans">
+    <div className="flex h-full min-h-full w-full justify-center bg-[#1B384B] p-4 font-sans lg:p-6">
       <div 
         ref={containerRef}
-        className="relative flex w-full max-w-md flex-col border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-xl md:p-8 lg:grid lg:max-w-5xl lg:grid-cols-2 lg:items-center lg:gap-8"
+        className="relative flex h-full w-full max-w-md flex-col justify-between border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-xl md:p-8 lg:grid lg:max-w-none lg:grid-cols-2 lg:items-center lg:gap-8 lg:p-10"
       >
         {/* Version Label */}
-        <div className="mb-2 text-right text-sm font-black tracking-widest text-[#FF7800] lg:col-span-2">
+        <div className="text-right text-xs font-black tracking-widest text-[#FF7800] lg:col-span-2">
           V 1.0
         </div>
 
-        {/* Title */}
-        <div className="mb-6 text-center lg:col-start-1 lg:row-start-2 lg:row-span-2 lg:mb-0 lg:text-left">
-          <h1 className="text-6xl font-black text-[#0D0D0D] tracking-tighter leading-none mb-1">VOXEL</h1>
-          <h1 className="text-6xl font-black text-[#0D0D0D] tracking-tighter leading-none">DRIFT</h1>
+        {/* Title Section */}
+        <div className="my-auto text-center lg:col-start-1 lg:text-left">
+          <h1 className="text-5xl font-black leading-none tracking-tighter text-[#0D0D0D] md:text-6xl lg:text-7xl">
+            VOXEL
+          </h1>
+          <h1 className="text-5xl font-black leading-none tracking-tighter text-[#0D0D0D] md:text-6xl lg:text-7xl">
+            DRIFT
+          </h1>
+
+          {/* Decorative Diamond Separator */}
+          <div className="mt-4 flex items-center justify-center gap-2 text-[#0D0D0D] lg:justify-start">
+            <div className="h-0.5 w-16 bg-[#0D0D0D]"></div>
+            <div className="h-3 w-3 rotate-45 border-2 border-[#0D0D0D] bg-[#FF7800]"></div>
+            <div className="h-0.5 w-16 bg-[#0D0D0D]"></div>
+          </div>
         </div>
 
-        {/* Decorative Diamond Separator */}
-        <div className="mb-6 flex items-center justify-center gap-2 text-[#0D0D0D] lg:col-start-1 lg:row-start-4 lg:mb-0 lg:justify-start">
-          <div className="w-16 h-0.5 bg-[#0D0D0D]"></div>
-          <div className="w-3 h-3 bg-[#FF7800] border-2 border-[#0D0D0D] rotate-45"></div>
-          <div className="w-16 h-0.5 bg-[#0D0D0D]"></div>
+        {/* Form and Message Section */}
+        <div className="my-auto flex flex-col gap-6 lg:col-start-2">
+          {/* Message Box */}
+          <div className="relative border-2 border-[#0D0D0D] bg-[#8BA3A7] p-4 shadow-[2px_2px_0px_0px_#0D0D0D]">
+            <div className="absolute -top-1.5 -left-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#FF7800]"></div>
+            <div className="absolute -top-1.5 -right-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#FF7800]"></div>
+            <div className="absolute -bottom-1.5 -left-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#FF7800]"></div>
+            <div className="absolute -bottom-1.5 -right-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#FF7800]"></div>
+            
+            <p className="text-center text-sm font-bold uppercase tracking-widest text-[#0D0D0D]">
+              PREPÁRATE PARA LA AVENTURA...
+            </p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleLogin} className="flex flex-col gap-4">
+            <input 
+              type="text" 
+              placeholder="ingresa tu usuario..."
+              className="w-full border-2 border-[#0D0D0D] bg-[#FFFFFF] p-4 font-bold uppercase tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] placeholder:text-[#8BA3A7] focus:outline-none focus:ring-2 focus:ring-[#FF7800]"
+              required
+            />
+            <button 
+              type="submit"
+              className="button-primary w-full py-4 font-black uppercase tracking-widest transition-all"
+            >
+              INGRESAR
+            </button>
+          </form>
         </div>
 
-        {/* Message Box */}
-        <div className="relative mb-8 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-4 lg:col-start-2 lg:row-start-2 lg:mb-0">
-          <div className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#FF7800] border-2 border-[#0D0D0D]"></div>
-          <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#FF7800] border-2 border-[#0D0D0D]"></div>
-          <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#FF7800] border-2 border-[#0D0D0D]"></div>
-          <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-[#FF7800] border-2 border-[#0D0D0D]"></div>
-          
-          <p className="text-center text-[#0D0D0D] font-bold tracking-widest uppercase text-sm">
-            PREPÁRATE PARA LA AVENTURA...
-          </p>
-        </div>
-
-        {/* Form */}
-        <form onSubmit={handleLogin} className="mb-8 flex flex-col gap-6 lg:col-start-2 lg:row-start-3 lg:mb-0">
-          <input 
-            type="text" 
-            placeholder="ingresa tu usuario..."
-            className="w-full bg-[#FFFFFF] border-2 border-[#0D0D0D] p-4 font-bold text-[#0D0D0D] placeholder:text-[#8BA3A7] focus:outline-none focus:ring-2 focus:ring-[#FF7800] uppercase tracking-widest shadow-[4px_4px_0px_0px_#0D0D0D]"
-            required
-          />
-          <button 
-            type="submit"
-            className="button-primary w-full py-4 font-black tracking-widest uppercase transition-all"
-          >
-            INGRESAR
-          </button>
-        </form>
-
-        {/* Stats Grid */}
-        <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3 lg:col-span-2 lg:row-start-5 lg:mt-0">
+        {/* Stats Grid - Ubicado en la franja inferior */}
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3 lg:col-span-2 lg:mt-0">
           {statsData && statsData.map((stat, index) => (
             <div 
               key={stat.id}
               ref={el => statsRef.current[index] = el}
-              className="border-2 border-[#0D0D0D] bg-[#8BA3A7] p-2 flex flex-col items-center justify-center text-center"
+              className="flex flex-col items-center justify-center border-2 border-[#0D0D0D] bg-[#8BA3A7] p-2.5 text-center shadow-[2px_2px_0px_0px_#0D0D0D]"
             >
-              <div className="text-[#FF7800] font-black text-lg mb-1">{stat.valor}</div>
-              <div className="text-[#0D0D0D] font-bold text-[9px] uppercase tracking-widest leading-tight">{stat.etiqueta}</div>
+              <div className="mb-0.5 text-lg font-black text-[#FF7800]">{stat.valor}</div>
+              <div className="text-[9px] font-bold uppercase leading-tight tracking-widest text-[#0D0D0D]">{stat.etiqueta}</div>
             </div>
           ))}
         </div>

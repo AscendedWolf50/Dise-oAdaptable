@@ -1,4 +1,5 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import Inicio from './pages/inicio/Inicio.jsx';
 import Login from './pages/login/Login.jsx';
 import SelectorNiveles from './pages/selectorNiveles/SelectorNiveles.jsx';
@@ -9,11 +10,21 @@ import Gameplay from './pages/gameplay/Gameplay.jsx';
 import Pausa from './pages/pausa/Pausa.jsx';
 import Tutorial from './pages/tutorial/Tutorial.jsx';
 import Victoria from './pages/victoria/Victoria.jsx';
-import Menu from './components/ui/Menu.jsx';
 import { DEFAULT_BACKGROUND_LOCATION, MODAL_PATHS } from './utils/useAppNavigation.js';
 
 export default function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const hasRedirected = useRef(false);
+
+  // Lógica para forzar que el inicio siempre sea la pantalla de registro
+  useEffect(() => {
+    if (!hasRedirected.current) {
+      hasRedirected.current = true;
+      navigate('/login', { replace: true });
+    }
+  }, [navigate]);
+
   const isModalRoute = MODAL_PATHS.has(location.pathname);
   const backgroundLocation = isModalRoute
     ? location.state?.backgroundLocation || DEFAULT_BACKGROUND_LOCATION
@@ -22,7 +33,9 @@ export default function App() {
   return (
     <div className="voxel-grid-surface flex min-h-screen w-full flex-col items-center justify-center bg-[#1B384B] p-4">
       <div className="pixel-edge relative flex h-[800px] w-full max-h-[90vh] max-w-[390px] shrink-0 flex-col overflow-hidden border-[3px] border-[#0D0D0D] bg-[#8BA3A7] shadow-[6px_6px_0px_0px_#0D0D0D] md:h-[960px] md:max-w-[768px] lg:h-auto lg:aspect-video lg:w-full lg:max-w-5xl xl:max-w-6xl">
-        <Menu />
+        
+        {/* El componente Menu fue eliminado de aquí */}
+
         <div className="relative min-h-0 flex-1 overflow-y-auto">
           <Routes location={backgroundLocation}>
             <Route path="/" element={<Inicio />} />
@@ -36,6 +49,7 @@ export default function App() {
             <Route path="/derrota" element={<Inicio />} />
           </Routes>
         </div>
+        
         {isModalRoute && (
           <Routes location={location}>
             <Route path="/configuracion" element={<Configuracion />} />
