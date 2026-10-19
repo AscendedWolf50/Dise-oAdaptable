@@ -14,5 +14,10 @@ mergeInto(LibraryManager.library, {
     if (window.ReactBridge_NivelFallido) {
       window.ReactBridge_NivelFallido();
     }
+  },
+
+  SincronizarProgresoWebJS: function(jsonPtr) {
+    var jsonStr = UTF8ToString(jsonPtr);
+    window.localStorage.setItem('VoxelDriftProgress', jsonStr);
   }
 });

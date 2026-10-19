@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using MoreMountains.Feedbacks;
+using System.Runtime.InteropServices;
 
 public class LevelManager : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class LevelManager : MonoBehaviour
     [Header("Feedback")]
     
     [SerializeField] private MMF_Player feedbackObtenerPuntos;
+    
+    [DllImport("__Internal")]
+    private static extern void SincronizarProgresoWebJS(string json);
 
 
     void OnEnable()
@@ -104,6 +108,12 @@ public class LevelManager : MonoBehaviour
         string json = JsonUtility.ToJson(datos);
         PlayerPrefs.SetString("UserProgress", json);
         PlayerPrefs.Save();
+        
+        #if UNITY_WEBGL && !UNITY_EDITOR
+                    SincronizarProgresoWebJS(json);
+        #else
+                Debug.Log("[SIMULACIÓN WEB] Progreso sincronizado con React: " + json);
+        #endif
     }
 
     private void SumarPuntos(float puntajeRecibido)
@@ -120,4 +130,6 @@ public class LevelManager : MonoBehaviour
             tiempoActual += Time.deltaTime;
         }
     }
+    
+    
 }
