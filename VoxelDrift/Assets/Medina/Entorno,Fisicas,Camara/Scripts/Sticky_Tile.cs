@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Sticky_Tile : MonoBehaviour
 {
-    [SerializeField] private float stickyForce = 30f; // Fuerza que atrae el carro a la pared
+    [SerializeField] private float stickyForce = 10f; // Fuerza que atrae el carro a la pared
     [SerializeField] private float maxAngleDifference = 25f; // Rango máximo de alineación
     [SerializeField] private float rotationSpeed = 10f; // Velocidad de alineación suave
 
