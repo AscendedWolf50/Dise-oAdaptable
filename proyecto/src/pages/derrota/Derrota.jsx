@@ -33,7 +33,15 @@ export default function Derrota() {
   };
 
   return (
-    <ModalOverlay title="¡PERDISTE!">
+    <ModalOverlay 
+      title="¡PERDISTE!"
+      panelClassName="[&>button.absolute]:hidden [&>button[aria-label]]:hidden"
+      showCloseButton={false}
+      showClose={false}
+      hideCloseButton={true}
+      hasCloseButton={false}
+      onClose={null}
+    >
       <section ref={pageRef} className="flex flex-col items-center gap-4 text-[#0D0D0D] lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
         <div data-defeat-enter className="flex h-24 w-full items-center justify-center border-2 border-[#0D0D0D] lg:col-start-1 lg:row-start-1 lg:h-full lg:min-h-[180px]">
           <span className="text-xs font-bold tracking-[0.3em] text-[#8BA3A7]">ILUSTRACIÓN</span>

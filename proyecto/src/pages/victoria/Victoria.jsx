@@ -71,7 +71,15 @@ const Victoria = () => {
   };
 
   return (
-    <ModalOverlay title="¡VICTORIA!">
+    <ModalOverlay 
+      title=""
+      panelClassName="!pt-6 [&>*:not(:last-child)]:hidden"
+      showCloseButton={false}
+      showClose={false}
+      hideCloseButton={true}
+      hasCloseButton={false}
+      onClose={null}
+    >
       <div
         ref={containerRef}
         className="flex flex-col items-center gap-4 font-sans md:gap-5 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6"
