@@ -48,9 +48,9 @@ export default function Gameplay() {
 
     const config = {
       arguments: [],
-      dataUrl: `${buildUrl}/BuildVoxelDrift.data`,
-      frameworkUrl: `${buildUrl}/BuildVoxelDrift.framework.js`,
-      codeUrl: `${buildUrl}/BuildVoxelDrift.wasm`,
+      dataUrl: `${buildUrl}/BuildVoxelDrift.data.unityweb`,
+      frameworkUrl: `${buildUrl}/BuildVoxelDrift.framework.js.unityweb`,
+      codeUrl: `${buildUrl}/BuildVoxelDrift.wasm.unityweb`,
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "VoxelDrift",
