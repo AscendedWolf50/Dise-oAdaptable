@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import LevelCard from '../../components/ui/LevelCard.jsx';
 
-// CONFIGURACIÓN: Cambia este número según la cantidad de niveles reales en tu Build de Unity
-const TOTAL_NIVELES_EN_BUILD = 21; 
+// CONFIGURACIÓN: Cambia este número según la cantidad de niveles reales
+const TOTAL_NIVELES_EN_BUILD = 10; 
+const OFFSET_ESCENAS_UNITY = -1; // <-- EL DESFASE: Nivel 1 = Escena 0, Nivel 2 = Escena 1
 
 const SelectorNiveles = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const SelectorNiveles = () => {
   const [levels, setLevels] = useState([]);
 
   useEffect(() => {
-    // 1. Leer el progreso guardado desde el navegador
+    // 1. Leer el progreso guardado
     const progresoGuardado = localStorage.getItem('VoxelDriftProgress');
     let nivelesCompletados = [];
     
@@ -26,15 +27,17 @@ const SelectorNiveles = () => {
       }
     }
 
-    // 2. Construir la lista de niveles dinámicamente
+    // 2. Construir la lista dinámica
     const nivelesGenerados = [];
-    let nivelAnteriorCompletado = true; // Permite que el nivel 1 siempre esté desbloqueado al inicio
+    let nivelAnteriorCompletado = true;
 
     for (let i = 1; i <= TOTAL_NIVELES_EN_BUILD; i++) {
-      const idNivel = i.toString();
       
-      // Buscamos si el jugador tiene guardado progreso en este nivel
-      const progresoNivel = nivelesCompletados.find(n => n.idNivel === idNivel || n.idNivel === i);
+      const progresoNivel = nivelesCompletados.find(n => {
+        if (!n.idNivel) return false;
+        const numId = parseInt(String(n.idNivel).replace(/\D/g, ''), 10);
+        return numId === i;
+      });
 
       let status = 'locked';
       let stars = 0;
@@ -44,15 +47,15 @@ const SelectorNiveles = () => {
         stars += progresoNivel.estrellaCompletado ? 1 : 0;
         stars += progresoNivel.estrellaTiempo ? 1 : 0;
         stars += progresoNivel.estrellaPuntos ? 1 : 0;
-        nivelAnteriorCompletado = true; // Abre la puerta al siguiente nivel
+        nivelAnteriorCompletado = true;
       } else if (nivelAnteriorCompletado) {
         status = 'current';
-        nivelAnteriorCompletado = false; // Bloquea los niveles posteriores a este
+        nivelAnteriorCompletado = false;
       }
 
       nivelesGenerados.push({
         id: i,
-        number: i.toString().padStart(2, '0'), // "1" -> "01"
+        number: i.toString().padStart(2, '0'),
         stars: stars,
         status: status
       });
@@ -61,7 +64,6 @@ const SelectorNiveles = () => {
     setLevels(nivelesGenerados);
   }, []);
 
-  // Animaciones GSAP cuando los niveles terminan de generarse
   useEffect(() => {
     if (levels.length > 0) {
       gsap.fromTo(
@@ -80,8 +82,9 @@ const SelectorNiveles = () => {
 
   const handleLevelClick = (level) => {
     if (level.status === 'completed' || level.status === 'current') {
-      // Pasamos el ID del nivel en el estado de navegación para que Unity sepa cuál cargar después
-      navigate('/gameplay', { state: { nivelSeleccionado: level.id } });
+      // Aplicamos el desfase antes de navegar
+      const indiceEscenaUnity = level.id + OFFSET_ESCENAS_UNITY;
+      navigate('/gameplay', { state: { nivelSeleccionado: indiceEscenaUnity } });
     }
   };
 
@@ -89,10 +92,10 @@ const SelectorNiveles = () => {
   const completedCount = levels.filter(l => l.status === 'completed').length;
 
   return (
-    <div className="bg-[#1B384B] flex justify-center p-4 font-sans uppercase tracking-widest text-[#0D0D0D]">
+    <div className="flex h-full min-h-full w-full items-center justify-center bg-[#1B384B] p-4 font-sans uppercase tracking-widest text-[#0D0D0D] lg:p-6">
       <div
         ref={containerRef}
-        className="w-full max-w-md overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:p-7 lg:grid lg:h-full lg:min-h-0 lg:max-w-none lg:grid-cols-12 lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-6 lg:p-8"
+        className="w-full max-w-md overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:p-7 lg:grid lg:max-w-5xl lg:grid-cols-12 lg:gap-6 lg:p-8"
       >
         {/* Header row */}
         <div className="mb-6 flex items-center gap-3 lg:col-span-12 lg:mb-0">
@@ -113,11 +116,10 @@ const SelectorNiveles = () => {
         </div>
 
         {/* Level Grid Area */}
-        <div className="max-h-[60vh] overflow-y-auto scroll-smooth pb-2 pr-1 md:max-h-[70vh] lg:col-span-9 lg:h-full lg:min-h-0 lg:max-h-full">
+        <div className="max-h-[60vh] overflow-y-auto scroll-smooth pb-2 pr-1 md:max-h-[70vh] lg:col-span-9 lg:max-h-[65vh]">
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 lg:gap-4">
             {levels.map((level, index) => {
               const isFirstLocked = level.status === 'locked' && levels[index - 1]?.status !== 'locked';
-
               return (
                 <LevelCard
                   key={level.id}

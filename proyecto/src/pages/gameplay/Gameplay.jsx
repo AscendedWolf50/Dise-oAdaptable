@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { useAppNavigation } from '../../utils/useAppNavigation.js';
 
 export default function Gameplay() {
   const navigate = useAppNavigation();
+  const location = useLocation();
 
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
@@ -66,6 +68,14 @@ export default function Gameplay() {
         .then((unityInstance) => {
           window.unityInstance = unityInstance;
           console.log("¡Unity WebGL cargado con éxito!");
+
+          // Solo se fuerza cambio de escena si el nivel seleccionado NO es el nivel por defecto (0)
+          const nivelSeleccionado = location.state?.nivelSeleccionado;
+          if (nivelSeleccionado !== undefined && nivelSeleccionado !== 0) {
+            setTimeout(() => {
+              unityInstance.SendMessage('WebBridge', 'CargarNivelDesdeWeb', nivelSeleccionado);
+            }, 100);
+          }
         })
         .catch((error) => {
           console.error("Error al instanciar el canvas de Unity:", error);
