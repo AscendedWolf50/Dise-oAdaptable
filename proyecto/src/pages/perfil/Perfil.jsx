@@ -8,7 +8,20 @@ import ModalOverlay from '../../components/ui/ModalOverlay.jsx';
 // IMPORTACIONES DE FIREBASE
 import { auth, db } from '../../firebase/config.js';
 import { doc, getDoc } from 'firebase/firestore';
-import { signOut } from 'firebase/auth';
+import { signOut, onAuthStateChanged } from 'firebase/auth';
+
+const getCurrentUser = () => {
+  return new Promise((resolve) => {
+    if (auth.currentUser) {
+      resolve(auth.currentUser);
+      return;
+    }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user);
+    });
+  });
+};
 
 export default function Perfil() {
   const containerRef = useRef(null);
@@ -16,19 +29,23 @@ export default function Perfil() {
   const [copied, setCopied] = useState(false);
   const [userData, setUserData] = useState(null);
 
-  // Cargar datos reales del usuario desde Firebase Firestore / LocalStorage
   useEffect(() => {
     const cargarDatosPerfil = async () => {
       try {
-        if (auth.currentUser) {
-          const userDoc = await getDoc(doc(db, 'users', auth.currentUser.uid));
+        const user = await getCurrentUser();
+        if (user) {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
           if (userDoc.exists()) {
-            setUserData(userDoc.data());
+            const data = userDoc.data();
+            setUserData(data);
+            localStorage.setItem('VoxelDriftUser', JSON.stringify(data));
+            if (data.progress) {
+              localStorage.setItem('VoxelDriftProgress', JSON.stringify(data.progress));
+            }
             return;
           }
         }
         
-        // Respaldo desde LocalStorage
         const userCached = localStorage.getItem('VoxelDriftUser');
         if (userCached) {
           setUserData(JSON.parse(userCached));
@@ -41,7 +58,6 @@ export default function Perfil() {
     cargarDatosPerfil();
   }, []);
 
-  // Animaciones GSAP
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(containerRef.current, {
@@ -64,7 +80,6 @@ export default function Perfil() {
     return () => ctx.revert();
   }, []);
 
-  // Función para Cerrar Sesión y limpiar la sesión del dispositivo
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -76,27 +91,33 @@ export default function Perfil() {
     }
   };
 
-  // Cálculos dinámicos de estadísticas
   const TOTAL_NIVELES = 10;
-  const TOTAL_ESTRELLAS_POSIBLES = TOTAL_NIVELES * 3; // 30 Estrellas totales
+  const TOTAL_ESTRELLAS_POSIBLES = TOTAL_NIVELES * 3; 
 
-  // Lectura de niveles completados desde la nube o local
-  let niveles = userData?.progress?.niveles;
-  if (!niveles) {
-    const progresoLocalRaw = localStorage.getItem('VoxelDriftProgress');
-    if (progresoLocalRaw) {
-      try {
-        const parsed = JSON.parse(progresoLocalRaw);
-        niveles = parsed.niveles || [];
-      } catch (e) {
-        niveles = [];
-      }
-    } else {
-      niveles = [];
+  let niveles = [];
+  if (userData && userData.progress) {
+    let prog = userData.progress;
+    if (typeof prog === 'string') {
+      try { prog = JSON.parse(prog); } catch(e) {}
+    }
+    if (prog && Array.isArray(prog.niveles)) {
+      niveles = prog.niveles;
     }
   }
 
-  // Conteo de estrellas y niveles completados
+  if (niveles.length === 0) {
+    const progresoLocalRaw = localStorage.getItem('VoxelDriftProgress');
+    if (progresoLocalRaw) {
+      try {
+        let parsed = JSON.parse(progresoLocalRaw);
+        if (typeof parsed === 'string') parsed = JSON.parse(parsed);
+        if (parsed && Array.isArray(parsed.niveles)) {
+          niveles = parsed.niveles;
+        }
+      } catch (e) {}
+    }
+  }
+
   const completedLevels = niveles.filter(n => n.estrellaCompletado).length;
 
   let stars = 0;
@@ -108,8 +129,8 @@ export default function Perfil() {
 
   const username = userData?.username || profileData.username;
   const joinDate = userData?.joinDate || profileData.joinDate;
-  const failedAttempts = userData?.failedAttempts ?? profileData.failedAttempts;
-  const playedTime = userData?.playedTime || profileData.playedTime;
+  const failedAttempts = userData?.failedAttempts ?? 0;
+  const playedTime = userData?.playedTime || "0h 0m";
   const currentStreak = userData?.currentStreak || profileData.currentStreak;
 
   const completionPercent = Math.round((completedLevels / TOTAL_NIVELES) * 100);
@@ -118,7 +139,6 @@ export default function Perfil() {
     <ModalOverlay title="PERFIL">
       <div ref={containerRef} className="flex flex-col gap-3 font-sans text-[#0D0D0D] md:gap-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6">
         
-        {/* Header con Cerrar Sesión y Compartir */}
         <div data-profile-enter className="flex items-center justify-between gap-2 lg:col-span-2">
           <button 
             {...gsapButtonMotion}
@@ -138,7 +158,6 @@ export default function Perfil() {
           </button>
         </div>
 
-        {/* Tarjeta del Usuario */}
         <div data-profile-enter className="border-2 border-[#0D0D0D] p-3 lg:col-start-1 lg:row-start-2 lg:row-span-2">
           <div className="flex items-center gap-4">
             <div aria-hidden="true" className="grid h-16 w-16 shrink-0 place-items-center border-2 border-[#0D0D0D] bg-[#1B384B] text-2xl font-black text-[#FF7800] shadow-[3px_3px_0px_0px_#0D0D0D]">
@@ -151,7 +170,6 @@ export default function Perfil() {
           </div>
         </div>
 
-        {/* Progreso del Jugador */}
         <div className="flex flex-col gap-3 lg:col-start-2 lg:row-start-2 lg:row-span-2 lg:gap-4">
           <div data-profile-enter className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em]">
             <span className="h-2 w-2 border border-[#0D0D0D]" />PROGRESO<span className="flex-1 border-t-2 border-dashed border-[#8BA3A7]" />
@@ -190,7 +208,6 @@ export default function Perfil() {
           </div>
         </div>
 
-        {/* Tarjetas de Estadísticas Adicionales */}
         <div data-profile-enter className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:col-span-2 lg:grid-cols-2 lg:gap-6">
           <div className="col-span-2 flex items-center gap-4 border-2 border-[#0D0D0D] p-3 shadow-[3px_3px_0px_0px_#0D0D0D] md:col-span-1 lg:col-span-1">
             <strong className="text-3xl font-black">{failedAttempts}</strong>

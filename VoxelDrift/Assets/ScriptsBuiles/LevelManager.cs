@@ -81,11 +81,20 @@ public class LevelManager : MonoBehaviour
         
         GuardarDatos(datosGuardados);
         
-        Debug.Log($"=== RESUMEN NIVEL: {data.idNivel} ===\n" +
-                  $" Estrella 1 (Completar): {(progresoActual.estrellaCompletado ? "CONSEGUIDA" : "NO")}\n" +
-                  $" Estrella 2 (Tiempo): {(progresoActual.estrellaTiempo ? "CONSEGUIDA" : "FALLADA")} " +
-                  $"({tiempoActual:F2}s / {data.tiempoParaEstrella:F2}s Objetivo)\n" +
-                  $" Estrella 3 (Puntos): {(progresoActual.estrellaPuntos ? "CONSEGUIDA" : "NO")}");
+        int estrellas = CalcularEstrellas();
+
+    #if UNITY_WEBGL && !UNITY_EDITOR
+                if (WebBridgeManager.Instancia != null)
+                {
+                    WebBridgeManager.Instancia.FinalizarNivel(estrellas);
+                }
+    #else
+            Debug.Log($"=== RESUMEN NIVEL: {data.idNivel} ===\n" +
+                      $" Estrella 1 (Completar): {(progresoActual.estrellaCompletado ? "CONSEGUIDA" : "NO")}\n" +
+                      $" Estrella 2 (Tiempo): {(progresoActual.estrellaTiempo ? "CONSEGUIDA" : "FALLADA")} " +
+                      $"({tiempoActual:F2}s / {data.tiempoParaEstrella:F2}s Objetivo)\n" +
+                      $" Estrella 3 (Puntos): {(progresoActual.estrellaPuntos ? "CONSEGUIDA" : "NO")}");
+    #endif
         
         
     }
