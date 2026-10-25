@@ -131,7 +131,6 @@ export default function Perfil() {
   const joinDate = userData?.joinDate || profileData.joinDate;
   const failedAttempts = userData?.failedAttempts ?? 0;
   const playedTime = userData?.playedTime || "0h 0m";
-  const currentStreak = userData?.currentStreak || profileData.currentStreak;
 
   const completionPercent = Math.round((completedLevels / TOTAL_NIVELES) * 100);
 
@@ -219,8 +218,8 @@ export default function Perfil() {
               <strong className="mt-1 text-lg font-black">{playedTime}</strong>
             </div>
             <div className="flex flex-col justify-center border-2 border-[#0D0D0D] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]">
-              <span className="text-[9px] font-bold tracking-widest text-[#8BA3A7]">RACHA ACTUAL</span>
-              <strong className="mt-1 text-lg font-black">{currentStreak}</strong>
+              <span className="text-[9px] font-bold tracking-widest text-[#8BA3A7]">FECHA DE REGISTRO</span>
+              <strong className="mt-1 text-lg font-black">{joinDate}</strong>
             </div>
           </div>
         </div>
