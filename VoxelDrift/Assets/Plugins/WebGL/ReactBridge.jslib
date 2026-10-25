@@ -4,6 +4,7 @@ mergeInto(LibraryManager.library, {
       window.ReactBridge_NivelCompletado(estrellas);
     }
   },
+
   AbrirMenuPausaJS: function() {
     if (window.ReactBridge_AbrirPausa) {
       window.ReactBridge_AbrirPausa();
@@ -18,6 +19,12 @@ mergeInto(LibraryManager.library, {
 
   SincronizarProgresoWebJS: function(jsonPtr) {
     var jsonStr = UTF8ToString(jsonPtr);
+    
     window.localStorage.setItem('VoxelDriftProgress', jsonStr);
+    
+    
+    if (window.ReactBridge_GuardarProgreso) {
+      window.ReactBridge_GuardarProgreso(jsonStr);
+    }
   }
 });
