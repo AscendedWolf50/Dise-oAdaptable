@@ -3,6 +3,10 @@ import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { useAppNavigation } from '../../utils/useAppNavigation.js';
 
+// IMPORTACIONES DE FIREBASE
+import { doc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../../firebase/config.js';
+
 export default function Gameplay() {
   const navigate = useAppNavigation();
   const location = useLocation();
@@ -30,10 +34,32 @@ export default function Gameplay() {
       navigate('/derrota');
     };
 
+    // ESCUCHADOR DE PROGRESO DESDE UNITY (REACTBRIDGE.JSLIB) -> FIREBASE FIRESTORE
+    window.ReactBridge_GuardarProgreso = async (jsonString) => {
+      try {
+        const parsedData = JSON.parse(jsonString);
+        
+        // 1. Guardado de respaldo en localStorage
+        localStorage.setItem('VoxelDriftProgress', jsonString);
+
+        // 2. Guardado en la nube si hay una cuenta activa
+        if (auth.currentUser) {
+          const userRef = doc(db, 'users', auth.currentUser.uid);
+          await updateDoc(userRef, {
+            progress: parsedData
+          });
+          console.log("¡Progreso del usuario actualizado en Firestore!");
+        }
+      } catch (e) {
+        console.error("Error al sincronizar progreso con Firestore:", e);
+      }
+    };
+
     return () => {
       delete window.ReactBridge_AbrirPausa;
       delete window.ReactBridge_NivelCompletado;
       delete window.ReactBridge_NivelFallido;
+      delete window.ReactBridge_GuardarProgreso;
     };
   }, [navigate]);
 
