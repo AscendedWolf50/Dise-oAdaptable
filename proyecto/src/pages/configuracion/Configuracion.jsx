@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { gsapButtonMotion } from '../../utils/gsapButtonMotion.js';
 import ModalOverlay from '../../components/ui/ModalOverlay.jsx';
+import { useAppNavigation, useDismissModal } from '../../utils/useAppNavigation.js';
 
 export default function Configuracion() {
   const pageRef = useRef(null);
+  
+  const location = useLocation();
+  const navigate = useAppNavigation();
+  const dismiss = useDismissModal();
+
   const [music, setMusic] = useState(70);
   const [effects, setEffects] = useState(85);
   const [saved, setSaved] = useState(false);
@@ -22,8 +29,22 @@ export default function Configuracion() {
     gsap.fromTo('[data-apply]', { scale: 0.97 }, { scale: 1, duration: 0.25, ease: 'back.out(2)' });
   };
 
+  console.log("Estado al montar Configuración:", location.state);
+
+  const handleClose = () => {
+    console.log("Botón X presionado. Estado actual:", location.state);
+    
+    if (location.state?.desdePausa) {
+      console.log("Regresando a pausa...");
+      navigate('/pausa');
+    } else {
+      console.log("Cerrando modal normal...");
+      dismiss();
+    }
+  };
+
   return (
-    <ModalOverlay title="CONFIGURACIÓN">
+    <ModalOverlay title="CONFIGURACIÓN" onClose={handleClose}>
       <div ref={pageRef} className="flex flex-col gap-4 text-[#0D0D0D] md:gap-6 lg:grid lg:grid-cols-2 lg:items-center lg:gap-8">
 
         <div data-enter className="relative flex h-24 items-center justify-center border-2 border-[#0D0D0D] bg-[#8BA3A7] lg:col-start-1 lg:row-span-4 lg:aspect-square lg:h-auto lg:w-full">
