@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { gsapButtonMotion } from '../../utils/gsapButtonMotion.js';
 import ModalOverlay from '../../components/ui/ModalOverlay.jsx';
 import { useAppNavigation } from '../../utils/useAppNavigation.js';
+import imagenVictoria from '../../assets/victoriaImagenFinal.png';
 
 const Victoria = () => {
   const containerRef = useRef(null);
@@ -15,6 +16,7 @@ const Victoria = () => {
 
   // Extraemos las estrellas del estado (por defecto 1 si no hay dato)
   const estrellasObtenidas = location.state?.estrellasTotales || 1;
+
 
   useEffect(() => {
     // 1. Aseguramos que el juego se pause cuando aparece la pantalla de victoria
@@ -84,14 +86,22 @@ const Victoria = () => {
         ref={containerRef}
         className="flex flex-col items-center gap-4 font-sans md:gap-5 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6"
       >
-        {/* Ilustración / Placeholder */}
-        <div className="relative flex h-36 w-full items-center justify-center border-2 border-[#0D0D0D] bg-[#8BA3A7] lg:col-start-1 lg:row-start-1 lg:h-full lg:min-h-[180px]">
-          <div className="absolute top-0 left-0 h-2 w-2 bg-[#0D0D0D]"></div>
-          <div className="absolute top-0 right-0 h-2 w-2 bg-[#0D0D0D]"></div>
-          <div className="absolute bottom-0 left-0 h-2 w-2 bg-[#0D0D0D]"></div>
-          <div className="absolute bottom-0 right-0 h-2 w-2 bg-[#0D0D0D]"></div>
-          <span className="font-bold tracking-widest text-[#0D0D0D]">ILUSTRACIÓN</span>
-        </div>
+        {/* Ilustración / Imagen de Victoria */}
+<div className="relative flex h-32 w-full items-center justify-center overflow-hidden border-2 border-[#0D0D0D] bg-[#0D0D0D] lg:col-start-1 lg:row-start-1 lg:h-40 xl:h-48">
+  
+  {/* Cuadrados decorativos de las esquinas */}
+  <div className="absolute top-0 left-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+  <div className="absolute top-0 right-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+  <div className="absolute bottom-0 left-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+  <div className="absolute bottom-0 right-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+  
+  {/* Imagen estirada */}
+  <img 
+    src={imagenVictoria} 
+    alt="Ilustración de victoria" 
+    className="absolute inset-0 h-full w-full object-fill" 
+  />
+</div>
 
         {/* Banner de Victoria */}
         <div className="voxel-grid-surface w-full border-2 border-[#0D0D0D] bg-[#0D0D0D] p-4 text-center text-3xl font-black uppercase tracking-widest text-white lg:col-start-1 lg:row-start-2">

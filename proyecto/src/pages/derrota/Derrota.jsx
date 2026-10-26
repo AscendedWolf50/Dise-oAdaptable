@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { gsapButtonMotion } from '../../utils/gsapButtonMotion.js';
 import ModalOverlay from '../../components/ui/ModalOverlay.jsx';
 import { useAppNavigation } from '../../utils/useAppNavigation.js';
+import imagenDerrota from '../../assets/derrotaImageFinal.png';
 
 export default function Derrota() {
   const navigate = useAppNavigation();
@@ -44,9 +45,13 @@ export default function Derrota() {
     >
       <section ref={pageRef} className="flex flex-col items-center gap-4 text-[#0D0D0D] lg:grid lg:grid-cols-2 lg:items-center lg:gap-8">
         {/* Columna Izquierda: Ilustración */}
-        <div data-defeat-enter className="flex h-24 w-full items-center justify-center border-2 border-[#0D0D0D] lg:col-start-1 lg:row-start-1 lg:h-full lg:min-h-[180px]">
-          <span className="text-xs font-bold tracking-[0.3em] text-[#8BA3A7]">ILUSTRACIÓN</span>
-        </div>
+<div data-defeat-enter className="relative flex h-32 w-full items-center justify-center overflow-hidden border-2 border-[#0D0D0D] bg-[#0D0D0D] lg:col-start-1 lg:row-start-1 lg:h-40 xl:h-48">
+  <img 
+    src={imagenDerrota} 
+    alt="Ilustración de derrota" 
+    className="absolute inset-0 h-full w-full object-fill" 
+  />
+</div>
         
         {/* Banner Pérdida */}
         <p data-defeat-enter className="voxel-grid-surface w-full border-2 border-[#0D0D0D] bg-[#0D0D0D] p-3 text-center text-xl font-black tracking-widest text-white lg:col-start-1 lg:row-start-2">
