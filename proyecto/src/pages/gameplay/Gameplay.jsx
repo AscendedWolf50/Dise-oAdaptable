@@ -63,7 +63,6 @@ export default function Gameplay() {
 
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
-  const controlsRef = useRef(null);
 
   // Referencia directa al canvas donde se renderizará Unity
   const unityCanvasRef = useRef(null);
@@ -243,17 +242,6 @@ export default function Gameplay() {
         delay: 0.2,
         ease: 'power2.out'
       });
-
-      if (controlsRef.current) {
-        gsap.from(controlsRef.current.children, {
-          opacity: 0,
-          y: 30,
-          duration: 0.5,
-          stagger: 0.1,
-          delay: 0.3,
-          ease: 'back.out(1.5)'
-        });
-      }
     });
 
     return () => ctx.revert();
@@ -274,10 +262,10 @@ export default function Gameplay() {
       {/* Contenedor Principal (Se oculta dinámicamente en orientación portrait) */}
       <div 
         ref={containerRef}
-        className="relative flex portrait:hidden h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl lg:h-full lg:min-h-0 lg:max-w-none"
+        className="relative flex portrait:hidden h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl lg:h-full lg:min-h-0 lg:max-w-none"
       >
         
-        {/* Área del Canvas del Juego */}
+        {/* Área del Canvas del Juego (Toma todo el espacio del contenedor) */}
         <div ref={canvasRef} className="relative z-0 flex min-h-0 flex-1 w-full items-center justify-center overflow-hidden bg-[#1B384B]">
           <canvas 
             ref={unityCanvasRef}
@@ -287,24 +275,6 @@ export default function Gameplay() {
           />
         </div>
 
-        {/* Controles Táctiles Inferiores */}
-        <div ref={controlsRef} className="z-10 flex shrink-0 gap-3 bg-[#8BA3A7] p-4 border-t-2 border-[#0D0D0D] lg:hidden">
-          <button className="voxel-grid-surface flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-
-          <button className="button-primary flex h-14 flex-1 items-center justify-center text-lg font-black uppercase tracking-widest transition-all md:h-16 md:text-xl">
-            ACCIÓN
-          </button>
-
-          <button className="voxel-grid-surface flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
-        </div>
       </div>
     </div>
   );
