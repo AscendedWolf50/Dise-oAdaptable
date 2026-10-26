@@ -7,7 +7,7 @@ import ModalOverlay from '../../components/ui/ModalOverlay.jsx';
 
 // IMPORTACIONES DE FIREBASE
 import { auth, db } from '../../firebase/config.js';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
 
 const getCurrentUser = () => {
@@ -23,11 +23,19 @@ const getCurrentUser = () => {
   });
 };
 
+const MAX_NICKNAME_LENGTH = 18;
+
 export default function Perfil() {
   const containerRef = useRef(null);
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [nickname, setNickname] = useState('');
+
+  // Estados para controlar los modales de Opciones y Vista Previa
+  const [showAvatarMenu, setShowAvatarMenu] = useState(false);
+  const [showImagePreview, setShowImagePreview] = useState(false);
 
   useEffect(() => {
     const cargarDatosPerfil = async () => {
@@ -38,6 +46,7 @@ export default function Perfil() {
           if (userDoc.exists()) {
             const data = userDoc.data();
             setUserData(data);
+            setNickname(data.nickname || '');
             localStorage.setItem('VoxelDriftUser', JSON.stringify(data));
             if (data.progress) {
               localStorage.setItem('VoxelDriftProgress', JSON.stringify(data.progress));
@@ -48,7 +57,9 @@ export default function Perfil() {
         
         const userCached = localStorage.getItem('VoxelDriftUser');
         if (userCached) {
-          setUserData(JSON.parse(userCached));
+          const parsed = JSON.parse(userCached);
+          setUserData(parsed);
+          setNickname(parsed.nickname || '');
         }
       } catch (error) {
         console.error("Error al obtener datos del perfil:", error);
@@ -91,6 +102,106 @@ export default function Perfil() {
     }
   };
 
+  // Guardar apodo en Firestore y LocalStorage
+  const handleNicknameChange = (e) => {
+    const val = e.target.value;
+    if (val.length <= MAX_NICKNAME_LENGTH) {
+      setNickname(val);
+    }
+  };
+
+  const handleNicknameBlur = async () => {
+    const updatedUserData = { ...userData, nickname };
+    setUserData(updatedUserData);
+
+    // Actualizar localStorage
+    const userCached = localStorage.getItem('VoxelDriftUser');
+    if (userCached) {
+      try {
+        const parsed = JSON.parse(userCached);
+        parsed.nickname = nickname;
+        localStorage.setItem('VoxelDriftUser', JSON.stringify(parsed));
+      } catch (err) {}
+    }
+
+    // Actualizar Firestore
+    try {
+      const user = await getCurrentUser();
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        await setDoc(userRef, { nickname }, { merge: true });
+        console.log("¡Apodo actualizado en Firestore!");
+      }
+    } catch (err) {
+      console.error("Error al guardar el apodo:", err);
+    }
+  };
+
+  // Función para procesar y guardar la nueva foto de perfil
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_SIZE = 256;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_SIZE) {
+            height *= MAX_SIZE / width;
+            width = MAX_SIZE;
+          }
+        } else {
+          if (height > MAX_SIZE) {
+            width *= MAX_SIZE / height;
+            height = MAX_SIZE;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+        // Update estado local de React
+        setUserData((prev) => ({ ...prev, photoURL: compressedBase64 }));
+
+        // Update localStorage
+        const userCached = localStorage.getItem('VoxelDriftUser');
+        if (userCached) {
+          try {
+            const parsed = JSON.parse(userCached);
+            parsed.photoURL = compressedBase64;
+            localStorage.setItem('VoxelDriftUser', JSON.stringify(parsed));
+          } catch (err) {}
+        }
+
+        // Update en Firestore
+        getCurrentUser().then(async (user) => {
+          if (user) {
+            try {
+              const userRef = doc(db, 'users', user.uid);
+              await setDoc(userRef, { photoURL: compressedBase64 }, { merge: true });
+              console.log("¡Foto de perfil actualizada en Firestore!");
+            } catch (err) {
+              console.error("Error al guardar foto en Firestore:", err);
+            }
+          }
+        });
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+    setShowAvatarMenu(false);
+  };
+
   const TOTAL_NIVELES = 10;
   const TOTAL_ESTRELLAS_POSIBLES = TOTAL_NIVELES * 3; 
 
@@ -129,6 +240,7 @@ export default function Perfil() {
 
   const username = userData?.username || profileData.username;
   const joinDate = userData?.joinDate || profileData.joinDate;
+  const photoURL = userData?.photoURL || null;
   const failedAttempts = userData?.failedAttempts ?? 0;
   const playedTime = userData?.playedTime || "0h 0m";
 
@@ -157,14 +269,53 @@ export default function Perfil() {
           </button>
         </div>
 
+        {/* Tarjeta de usuario con Foto de Perfil y Apodo Editable */}
         <div data-profile-enter className="border-2 border-[#0D0D0D] p-3 lg:col-start-1 lg:row-start-2 lg:row-span-2">
           <div className="flex items-center gap-4">
-            <div aria-hidden="true" className="grid h-16 w-16 shrink-0 place-items-center border-2 border-[#0D0D0D] bg-[#1B384B] text-2xl font-black text-[#FF7800] shadow-[3px_3px_0px_0px_#0D0D0D]">
-              {username.slice(0, 1).toUpperCase()}
-            </div>
-            <div>
-              <p className="font-black text-sm tracking-widest uppercase">{username}</p>
-              <p className="mt-1 text-[10px] text-[#8BA3A7] tracking-widest uppercase">SE UNIÓ EL {joinDate}</p>
+            
+            {/* Input oculto para cargar archivo de imagen */}
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              onChange={handleImageUpload} 
+              accept="image/*" 
+              className="hidden" 
+            />
+
+            {/* Recuadro interactivo del Avatar */}
+            <button
+              type="button"
+              onClick={() => setShowAvatarMenu(true)}
+              title="Opciones de foto de perfil"
+              className="group relative grid h-16 w-16 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] text-2xl font-black text-[#FF7800] shadow-[3px_3px_0px_0px_#0D0D0D] cursor-pointer focus:outline-none"
+            >
+              {photoURL ? (
+                <img src={photoURL} alt={username} className="h-full w-full object-cover" />
+              ) : (
+                username.slice(0, 1).toUpperCase()
+              )}
+
+              {/* Overlay visual al pasar el cursor */}
+              <div className="absolute inset-0 flex items-center justify-center bg-[#0D0D0D]/70 opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="text-[9px] font-bold tracking-widest text-white uppercase">OPCIONES</span>
+              </div>
+            </button>
+
+            <div className="flex flex-col min-w-0 flex-1">
+              <p className="font-black text-sm tracking-widest uppercase truncate">{username}</p>
+              
+              {/* CAMPO EDITABLE DE APODO */}
+              <input
+                type="text"
+                maxLength={MAX_NICKNAME_LENGTH}
+                placeholder="INGRESA TU APODO"
+                value={nickname}
+                onChange={handleNicknameChange}
+                onBlur={handleNicknameBlur}
+                onKeyDown={(e) => { if (e.key === 'Enter') e.target.blur(); }}
+                className="mt-1 w-full bg-transparent text-[10px] font-bold tracking-widest uppercase text-[#0D0D0D] border-b border-dashed border-[#0D0D0D]/40 focus:border-[#FF7800] focus:outline-none placeholder:text-[#0D0D0D]/60 placeholder:font-bold"
+                title="Haz clic para ingresar o cambiar tu apodo"
+              />
             </div>
           </div>
         </div>
@@ -187,7 +338,7 @@ export default function Perfil() {
                 style={{ width: `${completionPercent}%` }}
               />
             </div>
-            <span className="mt-1 block text-[9px] font-bold tracking-widest text-[#8BA3A7]">
+            <span className="mt-1 block text-[9px] font-bold tracking-widest text-[#0D0D0D]">
               {completedLevels} / {TOTAL_NIVELES} NIVELES
             </span>
 
@@ -201,30 +352,122 @@ export default function Perfil() {
                 style={{ width: `${Math.min(100, Math.round((stars / TOTAL_ESTRELLAS_POSIBLES) * 100))}%` }} 
               />
             </div>
-            <span className="mt-1 block text-[9px] font-bold tracking-widest text-[#8BA3A7]">
+            <span className="mt-1 block text-[9px] font-bold tracking-widest text-[#0D0D0D]">
               {stars} / {TOTAL_ESTRELLAS_POSIBLES} ESTRELLAS
             </span>
           </div>
         </div>
 
         <div data-profile-enter className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:col-span-2 lg:grid-cols-2 lg:gap-6">
+          
+          {/* INTENTOS FALLIDOS (Calavera y texto más grandes) */}
           <div className="col-span-2 flex items-center gap-4 border-2 border-[#0D0D0D] p-3 shadow-[3px_3px_0px_0px_#0D0D0D] md:col-span-1 lg:col-span-1">
             <strong className="text-3xl font-black">{failedAttempts}</strong>
-            <span className="text-[9px] font-bold leading-4 tracking-widest">☠<br />INTENTOS<br />FALLIDOS</span>
+            <span className="flex flex-col text-xs font-black leading-tight tracking-widest uppercase text-[#0D0D0D]">
+              <span className="text-base font-black">☠</span>
+              INTENTOS FALLIDOS
+            </span>
           </div>
+
+          {/* TIEMPO JUGADO Y FECHA DE REGISTRO (Títulos visibles con alto contraste) */}
           <div className="col-span-2 grid grid-cols-2 gap-3 lg:col-span-1">
             <div className="flex flex-col justify-center border-2 border-[#0D0D0D] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]">
-              <span className="text-[9px] font-bold tracking-widest text-[#8BA3A7]">TIEMPO JUGADO</span>
-              <strong className="mt-1 text-lg font-black">{playedTime}</strong>
+              <span className="text-[10px] font-black tracking-widest text-[#0D0D0D] uppercase">TIEMPO JUGADO</span>
+              <strong className="mt-1 text-lg font-black text-[#0D0D0D]">{playedTime}</strong>
             </div>
             <div className="flex min-w-0 flex-col justify-center border-2 border-[#0D0D0D] p-2.5 sm:p-3 shadow-[3px_3px_0px_0px_#0D0D0D]">
-              <span className="text-[8px] sm:text-[9px] font-bold tracking-wider sm:tracking-widest text-[#8BA3A7] truncate">FECHA DE REGISTRO</span>
+              <span className="text-[10px] font-black tracking-widest text-[#0D0D0D] uppercase truncate">FECHA DE REGISTRO</span>
               <strong className="mt-1 text-xs sm:text-sm md:text-lg font-black tracking-normal sm:tracking-widest text-[#0D0D0D] truncate">{joinDate}</strong>
             </div>
           </div>
+
         </div>
 
       </div>
+
+      {/* MODAL CON OPCIONES DE FOTO DE PERFIL */}
+      {showAvatarMenu && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/70 p-4">
+          <div className="w-full max-w-xs border-2 border-[#0D0D0D] bg-[#8BA3A7] p-4 shadow-[4px_4px_0px_0px_#0D0D0D] font-sans">
+            <div className="mb-3 flex items-center justify-between border-b-2 border-[#0D0D0D] pb-2">
+              <span className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
+                FOTO DE PERFIL
+              </span>
+              <button 
+                onClick={() => setShowAvatarMenu(false)}
+                className="text-sm font-black text-[#0D0D0D] hover:text-[#FF7800]"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="flex flex-col gap-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAvatarMenu(false);
+                  setShowImagePreview(true);
+                }}
+                className="button-secondary w-full py-2 text-xs font-black uppercase tracking-widest transition-all"
+              >
+                VER FOTO DE PERFIL
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAvatarMenu(false);
+                  fileInputRef.current?.click();
+                }}
+                className="button-primary w-full py-2 text-xs font-black uppercase tracking-widest transition-all"
+              >
+                CAMBIAR FOTO DE PERFIL
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE VISTA PREVIA / AMPLIAR FOTO */}
+      {showImagePreview && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/80 p-4">
+          <div className="relative flex w-full max-w-sm flex-col items-center gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] font-sans">
+            <div className="flex w-full items-center justify-between border-b-2 border-[#0D0D0D] pb-2">
+              <span className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
+                {username}
+              </span>
+              <button 
+                onClick={() => setShowImagePreview(false)}
+                className="text-sm font-black text-[#0D0D0D] hover:text-[#FF7800]"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="my-2 flex justify-center w-full">
+              {photoURL ? (
+                <img 
+                  src={photoURL} 
+                  alt={username} 
+                  className="max-h-64 w-64 border-2 border-[#0D0D0D] object-cover shadow-[3px_3px_0px_0px_#0D0D0D]" 
+                />
+              ) : (
+                <div className="grid h-40 w-40 place-items-center border-2 border-[#0D0D0D] bg-[#1B384B] text-6xl font-black text-[#FF7800] shadow-[3px_3px_0px_0px_#0D0D0D]">
+                  {username.slice(0, 1).toUpperCase()}
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowImagePreview(false)}
+              className="button-primary w-full py-2 text-xs font-black uppercase tracking-widest transition-all"
+            >
+              CERRAR
+            </button>
+          </div>
+        </div>
+      )}
     </ModalOverlay>
   );
 }
