@@ -46,6 +46,10 @@ export default function Amigos() {
   const [amigosList, setAmigosList] = useState([]);
   const [solicitudesList, setSolicitudesList] = useState([]);
 
+  // ESTADOS PARA VER EL PERFIL DE OTRO JUGADOR
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(false);
+
   // 1. Obtener usuario actual y escuchar solicitudes + amigos en tiempo real
   useEffect(() => {
     let unsubscribeFriends = () => {};
@@ -55,7 +59,7 @@ export default function Amigos() {
       const user = await getCurrentUser();
       if (!user) return;
 
-      // Obtener datos del perfil actual (username, nickname, photoURL)
+      // Obtener datos del perfil actual
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
         setCurrentUserData({ uid: user.uid, ...userDoc.data() });
@@ -73,7 +77,7 @@ export default function Amigos() {
         setAmigosList(friends);
       }, (error) => console.error("Error al escuchar amigos:", error));
 
-      // Listener 2: Escuchar solicitudes de amistad pendientes dirijidas a este usuario
+      // Listener 2: Escuchar solicitudes pendientes recibidas
       const requestsQuery = query(
         collection(db, 'friend_requests'),
         where('toUid', '==', user.uid),
@@ -119,7 +123,26 @@ export default function Amigos() {
     return () => ctx.revert();
   }, [activeTab]);
 
-  // 3. Buscar usuario por username en Firestore
+  // 3. Abrir el perfil público de cualquier usuario mediante su UID
+  const handleViewProfile = async (targetUid) => {
+    if (!targetUid) return;
+    setIsLoadingProfile(true);
+
+    try {
+      const userDoc = await getDoc(doc(db, 'users', targetUid));
+      if (userDoc.exists()) {
+        setSelectedUser({ uid: targetUid, ...userDoc.data() });
+      } else {
+        console.warn("No se encontró el perfil del usuario solicitado.");
+      }
+    } catch (error) {
+      console.error("Error al obtener perfil del jugador:", error);
+    } finally {
+      setIsLoadingProfile(false);
+    }
+  };
+
+  // 4. Buscar usuario por username en Firestore
   const handleSearch = async (e) => {
     e.preventDefault();
     const queryTerm = searchQuery.trim();
@@ -142,12 +165,10 @@ export default function Amigos() {
         if (currentUserData && targetUser.uid === currentUserData.uid) {
           setRequestStatus('self');
         } else {
-          // Verificar si ya son amigos
           const isAlreadyFriend = amigosList.some(f => f.uid === targetUser.uid);
           if (isAlreadyFriend) {
             setRequestStatus('already_friends');
           } else {
-            // Verificar si ya le enviaste una solicitud pendiente
             const reqQuery = query(
               collection(db, 'friend_requests'),
               where('fromUid', '==', currentUserData.uid),
@@ -171,7 +192,7 @@ export default function Amigos() {
     }
   };
 
-  // 4. Enviar solicitud de amistad
+  // 5. Enviar solicitud de amistad
   const handleSendRequest = async () => {
     if (!searchResults || !currentUserData) return;
     setRequestStatus('sending');
@@ -198,16 +219,14 @@ export default function Amigos() {
     }
   };
 
-  // 5. Aceptar solicitud de amistad (Bidireccional en subcolección 'friends')
+  // 6. Aceptar solicitud
   const handleAcceptRequest = async (solicitud) => {
     if (!currentUserData) return;
 
     try {
-      // a) Actualizar estado de la solicitud en Firestore
       const requestRef = doc(db, 'friend_requests', solicitud.id);
       await updateDoc(requestRef, { status: 'accepted' });
 
-      // b) Guardar amigo en subcolección del usuario actual
       const myFriendRef = doc(db, 'users', currentUserData.uid, 'friends', solicitud.fromUid);
       await setDoc(myFriendRef, {
         username: solicitud.fromUsername,
@@ -216,7 +235,6 @@ export default function Amigos() {
         addedAt: serverTimestamp()
       }, { merge: true });
 
-      // c) Guardar al usuario actual en la subcolección del amigo
       const otherFriendRef = doc(db, 'users', solicitud.fromUid, 'friends', currentUserData.uid);
       await setDoc(otherFriendRef, {
         username: currentUserData.username,
@@ -230,7 +248,7 @@ export default function Amigos() {
     }
   };
 
-  // 6. Rechazar / Eliminar solicitud
+  // 7. Rechazar / Eliminar solicitud
   const handleRejectRequest = async (solicitudId) => {
     try {
       const requestRef = doc(db, 'friend_requests', solicitudId);
@@ -239,6 +257,36 @@ export default function Amigos() {
       console.error("Error al rechazar solicitud:", error);
     }
   };
+
+  // Cálculo de estadísticas para la vista detallada de un usuario
+  const computeUserStats = (profile) => {
+    if (!profile) return { completedLevels: 0, stars: 0, completionPercent: 0 };
+    
+    let niveles = [];
+    let prog = profile.progress;
+    if (typeof prog === 'string') {
+      try { prog = JSON.parse(prog); } catch (e) {}
+    }
+    if (prog && Array.isArray(prog.niveles)) {
+      niveles = prog.niveles;
+    }
+
+    const TOTAL_NIVELES = 10;
+    const completedLevels = niveles.filter(n => n.estrellaCompletado).length;
+    
+    let stars = 0;
+    niveles.forEach(n => {
+      if (n.estrellaCompletado) stars += 1;
+      if (n.estrellaTiempo) stars += 1;
+      if (n.estrellaPuntos) stars += 1;
+    });
+
+    const completionPercent = Math.round((completedLevels / TOTAL_NIVELES) * 100);
+    return { completedLevels, stars, completionPercent };
+  };
+
+  const selectedStats = selectedUser ? computeUserStats(selectedUser) : null;
+  const isSelectedUserFriend = selectedUser ? amigosList.some(f => f.uid === selectedUser.uid) : false;
 
   return (
     <ModalOverlay title="AMIGOS">
@@ -307,8 +355,13 @@ export default function Amigos() {
                   key={amigo.uid}
                   className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#8BA3A7] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]"
                 >
-                  <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] font-black text-[#FF7800]">
+                  <button
+                    type="button"
+                    onClick={() => handleViewProfile(amigo.uid)}
+                    title="Ver perfil del jugador"
+                    className="group flex items-center gap-3 min-w-0 flex-1 text-left cursor-pointer focus:outline-none"
+                  >
+                    <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] font-black text-[#FF7800] group-hover:border-[#FF7800] transition-colors">
                       {amigo.photoURL ? (
                         <img src={amigo.photoURL} alt={amigo.username} className="h-full w-full object-cover" />
                       ) : (
@@ -316,15 +369,17 @@ export default function Amigos() {
                       )}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-black uppercase tracking-widest truncate">{amigo.username}</p>
+                      <p className="text-xs font-black uppercase tracking-widest truncate group-hover:text-[#FF7800] transition-colors">
+                        {amigo.username}
+                      </p>
                       <p className="text-[9px] font-bold text-[#0D0D0D]/70 uppercase truncate">{amigo.nickname || 'SIN APODO'}</p>
                     </div>
-                  </div>
+                  </button>
 
                   <button
                     {...gsapButtonMotion}
                     onClick={() => alert(`Próximamente retarás al fantasma de ${amigo.username}`)}
-                    className="button-primary px-3 py-1.5 text-[10px] font-black uppercase tracking-widest ml-2"
+                    className="button-primary px-3 py-1.5 text-[10px] font-black uppercase tracking-widest ml-2 shrink-0"
                   >
                     👻 RETAR
                   </button>
@@ -363,8 +418,13 @@ export default function Amigos() {
               </div>
             ) : searchResults ? (
               <div className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#8BA3A7] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]">
-                <div className="flex items-center gap-3 min-w-0 flex-1">
-                  <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] font-black text-[#FF7800]">
+                <button
+                  type="button"
+                  onClick={() => handleViewProfile(searchResults.uid)}
+                  title="Ver perfil del jugador"
+                  className="group flex items-center gap-3 min-w-0 flex-1 text-left cursor-pointer focus:outline-none"
+                >
+                  <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] font-black text-[#FF7800] group-hover:border-[#FF7800] transition-colors">
                     {searchResults.photoURL ? (
                       <img src={searchResults.photoURL} alt={searchResults.username} className="h-full w-full object-cover" />
                     ) : (
@@ -372,10 +432,12 @@ export default function Amigos() {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-black uppercase tracking-widest truncate">{searchResults.username}</p>
+                    <p className="text-xs font-black uppercase tracking-widest truncate group-hover:text-[#FF7800] transition-colors">
+                      {searchResults.username}
+                    </p>
                     <p className="text-[9px] font-bold text-[#0D0D0D]/70 uppercase truncate">{searchResults.nickname || 'SIN APODO'}</p>
                   </div>
-                </div>
+                </button>
 
                 {requestStatus === 'self' ? (
                   <span className="text-[9px] font-black text-[#0D0D0D]/60 uppercase tracking-widest px-2">
@@ -394,7 +456,7 @@ export default function Amigos() {
                     {...gsapButtonMotion}
                     onClick={handleSendRequest}
                     disabled={requestStatus === 'sending'}
-                    className="button-primary px-3 py-1.5 text-[10px] font-black uppercase tracking-widest ml-2"
+                    className="button-primary px-3 py-1.5 text-[10px] font-black uppercase tracking-widest ml-2 shrink-0"
                   >
                     {requestStatus === 'sending' ? 'ENVIANDO...' : '+ AGREGAR'}
                   </button>
@@ -424,10 +486,17 @@ export default function Amigos() {
                   key={solicitud.id}
                   className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#8BA3A7] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]"
                 >
-                  <div className="min-w-0 flex-1 pr-2">
-                    <p className="text-xs font-black uppercase tracking-widest truncate">{solicitud.fromUsername}</p>
+                  <button
+                    type="button"
+                    onClick={() => handleViewProfile(solicitud.fromUid)}
+                    title="Ver perfil del remitente"
+                    className="group min-w-0 flex-1 pr-2 text-left cursor-pointer focus:outline-none"
+                  >
+                    <p className="text-xs font-black uppercase tracking-widest truncate group-hover:text-[#FF7800] transition-colors">
+                      {solicitud.fromUsername}
+                    </p>
                     <p className="text-[9px] font-bold text-[#0D0D0D]/70 uppercase">TE ENVIÓ UNA SOLICITUD</p>
-                  </div>
+                  </button>
 
                   <div className="flex gap-2 shrink-0">
                     <button
@@ -452,6 +521,110 @@ export default function Amigos() {
         )}
 
       </div>
+
+      {/* INDICADOR DE CARGA DE PERFIL */}
+      {isLoadingProfile && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/70 p-4">
+          <div className="border-2 border-[#0D0D0D] bg-[#8BA3A7] p-4 text-xs font-black uppercase tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D]">
+            CARGANDO PERFIL...
+          </div>
+        </div>
+      )}
+
+      {/* MODAL / SUB-OVERLAY DE VISTA DE PERFIL DE JUGADOR */}
+      {selectedUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/80 p-4">
+          <div className="relative flex w-full max-w-md flex-col gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 font-sans shadow-[4px_4px_0px_0px_#0D0D0D]">
+            
+            {/* Encabezado */}
+            <div className="flex items-center justify-between border-b-2 border-[#0D0D0D] pb-3">
+              <span className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
+                PERFIL DE JUGADOR
+              </span>
+              <button
+                type="button"
+                onClick={() => setSelectedUser(null)}
+                className="text-sm font-black text-[#0D0D0D] hover:text-[#FF7800]"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Datos del Jugador */}
+            <div className="flex items-center gap-4 border-2 border-[#0D0D0D] bg-[#1B384B] p-3 text-white shadow-[3px_3px_0px_0px_#0D0D0D]">
+              <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] text-2xl font-black text-[#FF7800]">
+                {selectedUser.photoURL ? (
+                  <img src={selectedUser.photoURL} alt={selectedUser.username} className="h-full w-full object-cover" />
+                ) : (
+                  selectedUser.username?.slice(0, 1).toUpperCase()
+                )}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-black uppercase tracking-widest truncate">{selectedUser.username}</p>
+                <p className="text-[10px] font-bold text-[#FF7800] uppercase tracking-widest truncate">
+                  {selectedUser.nickname || 'SIN APODO'}
+                </p>
+                <p className="mt-1 text-[9px] font-bold text-gray-300 uppercase tracking-wider">
+                  REGISTRO: {selectedUser.joinDate || 'N/A'}
+                </p>
+              </div>
+            </div>
+
+            {/* Estadísticas de Juego */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col border-2 border-[#0D0D0D] bg-white p-3 shadow-[2px_2px_0px_0px_#0D0D0D]">
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#0D0D0D]">COMPLETADO</span>
+                <strong className="text-lg font-black text-[#FF7800]">{selectedStats.completionPercent}%</strong>
+                <span className="text-[8px] font-bold text-[#0D0D0D]/70">{selectedStats.completedLevels} / 10 NIVELES</span>
+              </div>
+
+              <div className="flex flex-col border-2 border-[#0D0D0D] bg-white p-3 shadow-[2px_2px_0px_0px_#0D0D0D]">
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#0D0D0D]">ESTRELLAS</span>
+                <strong className="text-lg font-black text-[#FF7800]">{selectedStats.stars} ★</strong>
+                <span className="text-[8px] font-bold text-[#0D0D0D]/70">DE 30 POSIBLES</span>
+              </div>
+
+              <div className="flex flex-col border-2 border-[#0D0D0D] bg-white p-3 shadow-[2px_2px_0px_0px_#0D0D0D]">
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#0D0D0D]">TIEMPO JUGADO</span>
+                <strong className="text-sm font-black text-[#0D0D0D]">{selectedUser.playedTime || '0h 0m'}</strong>
+              </div>
+
+              <div className="flex flex-col border-2 border-[#0D0D0D] bg-white p-3 shadow-[2px_2px_0px_0px_#0D0D0D]">
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#0D0D0D]">INTENTOS FALLIDOS</span>
+                <strong className="text-sm font-black text-[#0D0D0D]">☠ {selectedUser.failedAttempts ?? 0}</strong>
+              </div>
+            </div>
+
+            {/* Acciones */}
+            <div className="flex gap-2 pt-1">
+              {isSelectedUserFriend && (
+                <button
+                  type="button"
+                  {...gsapButtonMotion}
+                  onClick={() => {
+                    alert(`Iniciando duelo contra el fantasma de ${selectedUser.username}`);
+                    setSelectedUser(null);
+                  }}
+                  className="button-primary flex-1 py-2 text-xs font-black uppercase tracking-widest"
+                >
+                  👻 RETAR FANTASMA
+                </button>
+              )}
+
+              <button
+                type="button"
+                {...gsapButtonMotion}
+                onClick={() => setSelectedUser(null)}
+                className="button-secondary flex-1 py-2 text-xs font-black uppercase tracking-widest"
+              >
+                CERRAR
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </ModalOverlay>
   );
 }
