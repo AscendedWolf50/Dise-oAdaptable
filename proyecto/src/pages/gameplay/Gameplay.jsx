@@ -191,7 +191,6 @@ export default function Gameplay() {
           window.unityInstance = unityInstance;
           console.log("¡Unity WebGL cargado con éxito!");
 
-          // Solo se fuerza cambio de escena si el nivel seleccionado NO es el nivel por defecto (0)
           const nivelSeleccionado = location.state?.nivelSeleccionado;
           if (nivelSeleccionado !== undefined && nivelSeleccionado !== 0) {
             setTimeout(() => {
@@ -205,7 +204,6 @@ export default function Gameplay() {
       }
     };
 
-    // Manejo correcto de carga síncrona/asíncrona del script
     if (!script) {
       script = document.createElement("script");
       script.src = loaderUrl;
@@ -221,6 +219,22 @@ export default function Gameplay() {
     return () => {
       if (script) {
         script.removeEventListener('load', inicializarUnity);
+      }
+      if (window.unityInstance) {
+        try {
+          window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
+          if (typeof window.unityInstance.Quit === 'function') {
+            window.unityInstance.Quit().then(() => {
+              window.unityInstance = null;
+            }).catch(() => {
+              window.unityInstance = null;
+            });
+          } else {
+            window.unityInstance = null;
+          }
+        } catch (e) {
+          console.error("Error al limpiar la instancia de Unity:", e);
+        }
       }
     };
   }, []);
@@ -259,13 +273,13 @@ export default function Gameplay() {
         <p className="text-lg text-gray-300">Este juego requiere que juegues en modo horizontal.</p>
       </div>
 
-      {/* Contenedor Principal (Se oculta dinámicamente en orientación portrait) */}
+      {/* Contenedor Principal */}
       <div 
         ref={containerRef}
         className="relative flex portrait:hidden h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl lg:h-full lg:min-h-0 lg:max-w-none"
       >
         
-        {/* Área del Canvas del Juego (Toma todo el espacio del contenedor) */}
+        {/* Área del Canvas del Juego */}
         <div ref={canvasRef} className="relative z-0 flex min-h-0 flex-1 w-full items-center justify-center overflow-hidden bg-[#1B384B]">
           <canvas 
             ref={unityCanvasRef}
