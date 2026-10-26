@@ -17,14 +17,13 @@ const Victoria = () => {
   // Extraemos las estrellas del estado (por defecto 1 si no hay dato)
   const estrellasObtenidas = location.state?.estrellasTotales || 1;
 
-
   useEffect(() => {
     // 1. Aseguramos que el juego se pause cuando aparece la pantalla de victoria
     if (window.unityInstance) {
       window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
     }
 
-    // 2. Animaciones de entrada GSAP para el contenedor, las estrellas y los botones
+    // 2. Animaciones de entrada GSAP
     const context = gsap.context(() => {
       const timeline = gsap.timeline();
       timeline
@@ -53,7 +52,7 @@ const Victoria = () => {
   // Handlers para la interacción con Unity y navegación
   const handleMenu = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
+      window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
     }
     navigate('/');
   };
@@ -61,13 +60,14 @@ const Victoria = () => {
   const handleRestart = () => {
     if (window.unityInstance) {
       window.unityInstance.SendMessage('WebBridge', 'ReiniciarNivelActual');
+      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
     }
     navigate('/gameplay');
   };
 
   const handleNext = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
+      window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
     }
     navigate('/niveles');
   };
@@ -87,21 +87,18 @@ const Victoria = () => {
         className="flex flex-col items-center gap-4 font-sans md:gap-5 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6"
       >
         {/* Ilustración / Imagen de Victoria */}
-<div className="relative flex h-32 w-full items-center justify-center overflow-hidden border-2 border-[#0D0D0D] bg-[#0D0D0D] lg:col-start-1 lg:row-start-1 lg:h-40 xl:h-48">
-  
-  {/* Cuadrados decorativos de las esquinas */}
-  <div className="absolute top-0 left-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
-  <div className="absolute top-0 right-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
-  <div className="absolute bottom-0 left-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
-  <div className="absolute bottom-0 right-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
-  
-  {/* Imagen estirada */}
-  <img 
-    src={imagenVictoria} 
-    alt="Ilustración de victoria" 
-    className="absolute inset-0 h-full w-full object-fill" 
-  />
-</div>
+        <div className="relative flex h-32 w-full items-center justify-center overflow-hidden border-2 border-[#0D0D0D] bg-[#0D0D0D] lg:col-start-1 lg:row-start-1 lg:h-40 xl:h-48">
+          <div className="absolute top-0 left-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+          <div className="absolute top-0 right-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+          <div className="absolute bottom-0 left-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+          <div className="absolute bottom-0 right-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+          
+          <img 
+            src={imagenVictoria} 
+            alt="Ilustración de victoria" 
+            className="absolute inset-0 h-full w-full object-fill" 
+          />
+        </div>
 
         {/* Banner de Victoria */}
         <div className="voxel-grid-surface w-full border-2 border-[#0D0D0D] bg-[#0D0D0D] p-4 text-center text-3xl font-black uppercase tracking-widest text-white lg:col-start-1 lg:row-start-2">
@@ -120,7 +117,6 @@ const Victoria = () => {
                 className="text-5xl"
               >
                 {i < estrellasObtenidas ? (
-                  // Estrella Llena
                   <svg
                     className="h-12 w-12 text-[#FF7800]"
                     fill="currentColor"
@@ -135,7 +131,6 @@ const Victoria = () => {
                     />
                   </svg>
                 ) : (
-                  // Estrella Vacía
                   <svg
                     className="h-12 w-12 text-[#0D0D0D]"
                     fill="none"
@@ -158,7 +153,7 @@ const Victoria = () => {
           </div>
         </div>
 
-        {/* Fila de 3 Botones */}
+        {/* Botones */}
         <div className="mt-2 grid w-full grid-cols-1 gap-3 sm:grid-cols-3 lg:col-start-2 lg:row-start-2">
           <button
             {...gsapButtonMotion}

@@ -63,7 +63,8 @@ export default function Gameplay() {
 
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
-  const controlsRef = useRef(null);
+
+  // Referencia directa al canvas donde se renderizará Unity
   const unityCanvasRef = useRef(null);
 
   const startTimeRef = useRef(Date.now());
@@ -109,14 +110,17 @@ export default function Gameplay() {
     }
   };
 
+  // Lógica de comunicación con Unity (Escuchando a Unity)
   useEffect(() => {
     hasHandledFailureRef.current = false;
 
     window.ReactBridge_AbrirPausa = () => {
+      console.log("Unity solicitó abrir la pausa");
       navigate('/pausa');
     };
 
     window.ReactBridge_NivelCompletado = async (estrellas) => {
+      console.log("Unity finalizó el nivel con estrellas:", estrellas);
       await acumularTiempoYGuardar();
       navigate('/victoria', { state: { estrellasTotales: estrellas } });
     };
@@ -157,6 +161,7 @@ export default function Gameplay() {
     };
   }, [navigate]);
 
+  // Carga dinámica de Unity WebGL
   useEffect(() => {
     const base = import.meta.env.BASE_URL.endsWith('/') 
       ? import.meta.env.BASE_URL 
@@ -181,9 +186,10 @@ export default function Gameplay() {
 
     const inicializarUnity = () => {
       if (window.createUnityInstance && unityCanvasRef.current) {
-        window.createUnityInstance(unityCanvasRef.current, config, () => {})
+        window.createUnityInstance(unityCanvasRef.current, config, (progreso) => {})
         .then((unityInstance) => {
           window.unityInstance = unityInstance;
+          console.log("¡Unity WebGL cargado con éxito!");
 
           const nivelSeleccionado = location.state?.nivelSeleccionado;
           if (nivelSeleccionado !== undefined && nivelSeleccionado !== 0) {
@@ -214,9 +220,26 @@ export default function Gameplay() {
       if (script) {
         script.removeEventListener('load', inicializarUnity);
       }
+      if (window.unityInstance) {
+        try {
+          window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
+          if (typeof window.unityInstance.Quit === 'function') {
+            window.unityInstance.Quit().then(() => {
+              window.unityInstance = null;
+            }).catch(() => {
+              window.unityInstance = null;
+            });
+          } else {
+            window.unityInstance = null;
+          }
+        } catch (e) {
+          console.error("Error al limpiar la instancia de Unity:", e);
+        }
+      }
     };
   }, []);
 
+  // Animaciones GSAP
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(containerRef.current, {
@@ -233,25 +256,15 @@ export default function Gameplay() {
         delay: 0.2,
         ease: 'power2.out'
       });
-
-      if (controlsRef.current) {
-        gsap.from(controlsRef.current.children, {
-          opacity: 0,
-          y: 30,
-          duration: 0.5,
-          stagger: 0.1,
-          delay: 0.3,
-          ease: 'back.out(1.5)'
-        });
-      }
     });
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <div className="flex h-screen min-h-0 items-center justify-center bg-[#1B384B] p-4 font-sans selection:bg-[#FF7800] selection:text-white lg:p-8">
+    <div className="flex h-full min-h-0 justify-center bg-[#1B384B] p-4 font-sans selection:bg-[#FF7800] selection:text-white lg:p-0">
       
+      {/* Mensaje obligatorio para girar el dispositivo en celulares/tablets en posición vertical */}
       <div className="fixed inset-0 z-50 hidden portrait:flex flex-col items-center justify-center bg-[#1B384B] p-6 text-center text-white">
         <svg className="mb-6 h-20 w-20 animate-pulse text-[#FF7800]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -260,36 +273,22 @@ export default function Gameplay() {
         <p className="text-lg text-gray-300">Este juego requiere que juegues en modo horizontal.</p>
       </div>
 
+      {/* Contenedor Principal */}
       <div 
         ref={containerRef}
-        className="relative flex portrait:hidden w-full max-w-5xl flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] shadow-[4px_4px_0px_0px_#0D0D0D]"
+        className="relative flex portrait:hidden h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl lg:h-full lg:min-h-0 lg:max-w-none"
       >
-        <div ref={canvasRef} className="relative z-0 flex w-full aspect-video items-center justify-center overflow-hidden bg-[#1B384B]">
+        
+        {/* Área del Canvas del Juego */}
+        <div ref={canvasRef} className="relative z-0 flex min-h-0 flex-1 w-full items-center justify-center overflow-hidden bg-[#1B384B]">
           <canvas 
             ref={unityCanvasRef}
             id="unity-canvas" 
-            className="block h-full w-full object-cover"
+            className="block h-full w-full object-contain"
             tabIndex={-1}
           />
         </div>
 
-        <div ref={controlsRef} className="z-10 flex shrink-0 gap-3 bg-[#8BA3A7] p-4 border-t-2 border-[#0D0D0D] lg:hidden">
-          <button className="voxel-grid-surface flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-
-          <button className="button-primary flex h-14 flex-1 items-center justify-center text-lg font-black uppercase tracking-widest transition-all md:h-16 md:text-xl">
-            ACCIÓN
-          </button>
-
-          <button className="voxel-grid-surface flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
-        </div>
       </div>
     </div>
   );

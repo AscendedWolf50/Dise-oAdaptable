@@ -29,7 +29,6 @@ export default function Perfil() {
   const containerRef = useRef(null);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
-  const [copied, setCopied] = useState(false);
   const [userData, setUserData] = useState(null);
   const [nickname, setNickname] = useState('');
 
@@ -259,13 +258,15 @@ export default function Perfil() {
             CERRAR SESIÓN
           </button>
 
+          {/* NUEVO BOTÓN DE AMIGOS (Reemplaza al botón '↗' de compartir) */}
           <button 
             {...gsapButtonMotion} 
-            aria-label="Compartir perfil" 
-            onClick={() => { navigator.clipboard?.writeText(window.location.href); setCopied(true); }} 
-            className="button-secondary ml-auto px-3 py-2 font-bold"
+            aria-label="Ver amigos" 
+            onClick={() => navigate('/amigos')} 
+            className="button-primary ml-auto flex items-center gap-1.5 px-3 py-1.5 text-xs font-black uppercase tracking-widest transition-all"
           >
-            {copied ? '✓' : '↗'}
+            <span>👥</span>
+            <span>AMIGOS</span>
           </button>
         </div>
 
@@ -273,7 +274,6 @@ export default function Perfil() {
         <div data-profile-enter className="border-2 border-[#0D0D0D] p-3 lg:col-start-1 lg:row-start-2 lg:row-span-2">
           <div className="flex items-center gap-4">
             
-            {/* Input oculto para cargar archivo de imagen */}
             <input 
               type="file" 
               ref={fileInputRef} 
@@ -282,7 +282,6 @@ export default function Perfil() {
               className="hidden" 
             />
 
-            {/* Recuadro interactivo del Avatar */}
             <button
               type="button"
               onClick={() => setShowAvatarMenu(true)}
@@ -295,7 +294,6 @@ export default function Perfil() {
                 username.slice(0, 1).toUpperCase()
               )}
 
-              {/* Overlay visual al pasar el cursor */}
               <div className="absolute inset-0 flex items-center justify-center bg-[#0D0D0D]/70 opacity-0 group-hover:opacity-100 transition-opacity">
                 <span className="text-[9px] font-bold tracking-widest text-white uppercase">OPCIONES</span>
               </div>
@@ -304,7 +302,6 @@ export default function Perfil() {
             <div className="flex flex-col min-w-0 flex-1">
               <p className="font-black text-sm tracking-widest uppercase truncate">{username}</p>
               
-              {/* CAMPO EDITABLE DE APODO */}
               <input
                 type="text"
                 maxLength={MAX_NICKNAME_LENGTH}
@@ -359,8 +356,6 @@ export default function Perfil() {
         </div>
 
         <div data-profile-enter className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:col-span-2 lg:grid-cols-2 lg:gap-6">
-          
-          {/* INTENTOS FALLIDOS (Calavera y texto más grandes) */}
           <div className="col-span-2 flex items-center gap-4 border-2 border-[#0D0D0D] p-3 shadow-[3px_3px_0px_0px_#0D0D0D] md:col-span-1 lg:col-span-1">
             <strong className="text-3xl font-black">{failedAttempts}</strong>
             <span className="flex flex-col text-xs font-black leading-tight tracking-widest uppercase text-[#0D0D0D]">
@@ -369,7 +364,6 @@ export default function Perfil() {
             </span>
           </div>
 
-          {/* TIEMPO JUGADO Y FECHA DE REGISTRO (Títulos visibles con alto contraste) */}
           <div className="col-span-2 grid grid-cols-2 gap-3 lg:col-span-1">
             <div className="flex flex-col justify-center border-2 border-[#0D0D0D] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]">
               <span className="text-[10px] font-black tracking-widest text-[#0D0D0D] uppercase">TIEMPO JUGADO</span>
