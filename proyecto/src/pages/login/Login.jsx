@@ -5,7 +5,8 @@ import statsData from '../../data/stats.json';
 import { auth, db } from '../../firebase/config.js';
 import { 
   signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword 
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail 
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
@@ -20,6 +21,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -43,6 +45,7 @@ const Login = () => {
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
+    setSuccessMsg('');
     setLoading(true);
 
     try {
@@ -98,6 +101,35 @@ const Login = () => {
     }
   };
 
+  // Función para enviar correo de recuperación de contraseña
+  const handleForgotPassword = async () => {
+    if (!email.trim()) {
+      setErrorMsg('Ingresa tu correo en el campo de texto para enviarte el enlace.');
+      setSuccessMsg('');
+      return;
+    }
+
+    setErrorMsg('');
+    setSuccessMsg('');
+    setLoading(true);
+
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+      setSuccessMsg('¡Correo enviado! Revisa tu bandeja de entrada o spam.');
+    } catch (err) {
+      console.error("Error al restablecer contraseña:", err);
+      if (err.code === 'auth/user-not-found') {
+        setErrorMsg('No existe ninguna cuenta con este correo.');
+      } else if (err.code === 'auth/invalid-email') {
+        setErrorMsg('Ingresa un correo electrónico válido.');
+      } else {
+        setErrorMsg('Error al enviar el correo. Inténtalo de nuevo.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex h-full min-h-full w-full justify-center bg-[#1B384B] p-4 font-sans lg:p-6">
       <div 
@@ -147,6 +179,13 @@ const Login = () => {
             </div>
           )}
 
+          {/* Caja de Éxito */}
+          {successMsg && (
+            <div className="border-2 border-[#0D0D0D] bg-[#1B384B] p-2 text-center text-xs font-bold uppercase tracking-widest text-[#FF7800] shadow-[2px_2px_0px_0px_#0D0D0D]">
+              {successMsg}
+            </div>
+          )}
+
           {/* Form */}
           <form onSubmit={handleAuthSubmit} className="flex flex-col gap-3">
             {isRegistering && (
@@ -178,6 +217,20 @@ const Login = () => {
               required
             />
 
+            {/* Enlace para Olvidó su Contraseña (Solo en pantalla de Login) */}
+            {!isRegistering && (
+              <div className="text-right">
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  disabled={loading}
+                  className="text-[10px] font-bold uppercase tracking-widest text-[#0D0D0D] underline hover:text-[#FF7800] transition-colors disabled:opacity-50"
+                >
+                  ¿OLVIDASTE TU CONTRASEÑA?
+                </button>
+              </div>
+            )}
+
             <button 
               type="submit"
               disabled={loading}
@@ -190,7 +243,7 @@ const Login = () => {
           {/* Alternar modo Registro / Login */}
           <button
             type="button"
-            onClick={() => { setIsRegistering(!isRegistering); setErrorMsg(''); }}
+            onClick={() => { setIsRegistering(!isRegistering); setErrorMsg(''); setSuccessMsg(''); }}
             className="text-center text-xs font-bold uppercase tracking-widest text-[#0D0D0D] underline hover:text-[#FF7800] transition-colors"
           >
             {isRegistering ? '¿YA TIENES CUENTA? INICIA SESIÓN' : '¿NO TIENES CUENTA? REGÍSTRATE AQUÍ'}
