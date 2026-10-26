@@ -18,7 +18,7 @@ MonoBehaviour:
   velocidadMaximaReversa: 10
   fuerzaSalto: 1500
   desaceleracionNatural: 0.5
-  torqueEnElAire: 20
+  torqueEnElAire: 15
   friccionRotacionalAire: 2
   masaVehiculo: 200
   offsetCentroDeMasa: {x: -0.2, y: 0, z: 0}

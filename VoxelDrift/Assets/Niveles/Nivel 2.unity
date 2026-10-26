@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 179457754}
   - component: {fileID: 179457753}
   m_Layer: 0
-  m_Name: WebBridge
+  m_Name: WebBridgeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -345,6 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f59c817c53c1f4bbbfef0d150abd2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WebBridgeManager
+  volumenGlobal: 0.85
 --- !u!4 &179457754
 Transform:
   m_ObjectHideFlags: 0
