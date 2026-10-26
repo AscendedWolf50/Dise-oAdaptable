@@ -56,7 +56,7 @@ export default function Pausa() {
           
         <div data-pause-enter className="border-2 border-[#0D0D0D] p-2 lg:col-start-2 lg:row-start-2">
           <button {...gsapButtonMotion} onClick={handleReiniciar} className="button-secondary flex w-full items-center gap-3 px-2 py-3 text-left text-xs font-bold tracking-widest"><span>↻</span><span>REINICIAR NIVEL</span></button>
-          <button {...gsapButtonMotion} onClick={() => navigate('/configuracion')} className="button-secondary flex w-full items-center gap-3 px-2 py-3 text-left text-xs font-bold tracking-widest"><span>⚙</span><span>CONFIGURACIÓN</span></button>
+          <button  {...gsapButtonMotion} onClick={() => navigate('/configuracion', { state: { desdePausa: true } })} className="button-secondary flex w-full items-center gap-3 px-2 py-3 text-left text-xs font-bold tracking-widest"><span>⚙</span><span>CONFIGURACIÓN</span></button>
           <button {...gsapButtonMotion} onClick={() => navigate('/')} className="button-secondary flex w-full items-center gap-3 px-2 py-3 text-left text-xs font-bold tracking-widest"><span>≡</span><span>MENÚ PRINCIPAL</span></button>
         </div>
       </div>

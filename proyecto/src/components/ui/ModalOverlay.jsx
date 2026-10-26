@@ -3,7 +3,8 @@ import gsap from 'gsap';
 import { useDismissModal } from '../../utils/useAppNavigation.js';
 import { gsapButtonMotion } from '../../utils/gsapButtonMotion.js';
 
-export default function ModalOverlay({ title, children, panelClassName = '' }) {
+// 1. Agregamos onClose a las propiedades que recibe el componente
+export default function ModalOverlay({ title, children, panelClassName = '', onClose }) {
   const backdropRef = useRef(null);
   const panelRef = useRef(null);
   const closeButtonRef = useRef(null);
@@ -12,8 +13,9 @@ export default function ModalOverlay({ title, children, panelClassName = '' }) {
   const dismiss = useDismissModal();
 
   useEffect(() => {
-    dismissRef.current = dismiss;
-  }, [dismiss]);
+    // 2. Si onClose existe, lo usamos. Si no (como en otras pantallas), usamos dismiss por defecto.
+    dismissRef.current = onClose || dismiss;
+  }, [dismiss, onClose]);
 
   useEffect(() => {
     openerRef.current = document.activeElement;
