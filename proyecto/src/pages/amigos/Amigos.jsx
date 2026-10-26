@@ -35,7 +35,6 @@ const getCurrentUser = () => {
   });
 };
 
-// Genera una ID única y consistente para la conversación de 2 usuarios
 const getChatId = (uid1, uid2) => {
   return [uid1, uid2].sort().join('_');
 };
@@ -43,6 +42,7 @@ const getChatId = (uid1, uid2) => {
 export default function Amigos() {
   const containerRef = useRef(null);
   const chatScrollRef = useRef(null);
+  const chatFileInputRef = useRef(null);
 
   const [activeTab, setActiveTab] = useState('lista'); // 'lista', 'buscar', 'solicitudes'
   
@@ -60,9 +60,10 @@ export default function Amigos() {
   const [isLoadingProfile, setIsLoadingProfile] = useState(false);
 
   // ESTADOS DEL CHAT
-  const [activeChatFriend, setActiveChatFriend] = useState(null); // Objeto del amigo con quien se chatea
+  const [activeChatFriend, setActiveChatFriend] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [newMessageText, setNewMessageText] = useState('');
+  const [previewImage, setPreviewImage] = useState(null);
 
   // 1. Obtener usuario actual y escuchar solicitudes + amigos en tiempo real
   useEffect(() => {
@@ -129,7 +130,6 @@ export default function Amigos() {
       }));
       setChatMessages(msgs);
 
-      // Scroll automático al último mensaje recibido
       setTimeout(() => {
         if (chatScrollRef.current) {
           chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
@@ -162,13 +162,56 @@ export default function Amigos() {
     return () => ctx.revert();
   }, [activeTab]);
 
-  // 4. Enviar un mensaje de chat
+  // 4. Procesar selección de imagen para adjuntar
+  const handleImageSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_SIZE = 512;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_SIZE) {
+            height *= MAX_SIZE / width;
+            width = MAX_SIZE;
+          }
+        } else {
+          if (height > MAX_SIZE) {
+            width *= MAX_SIZE / height;
+            height = MAX_SIZE;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+        setPreviewImage(compressedBase64);
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // 5. Enviar mensaje de texto o con imagen
   const handleSendMessage = async (e) => {
     e.preventDefault();
     const text = newMessageText.trim();
-    if (!text || !activeChatFriend || !currentUserData) return;
+    if ((!text && !previewImage) || !activeChatFriend || !currentUserData) return;
+
+    const currentText = text;
+    const currentImg = previewImage;
 
     setNewMessageText('');
+    setPreviewImage(null);
 
     try {
       const chatId = getChatId(currentUserData.uid, activeChatFriend.uid);
@@ -176,7 +219,8 @@ export default function Amigos() {
 
       await addDoc(messagesRef, {
         senderUid: currentUserData.uid,
-        text,
+        text: currentText,
+        imageURL: currentImg || null,
         timestamp: serverTimestamp()
       });
     } catch (error) {
@@ -184,7 +228,7 @@ export default function Amigos() {
     }
   };
 
-  // 5. Abrir perfil de otro jugador
+  // 6. Abrir perfil de otro jugador
   const handleViewProfile = async (targetUid) => {
     if (!targetUid) return;
     setIsLoadingProfile(true);
@@ -201,7 +245,7 @@ export default function Amigos() {
     }
   };
 
-  // 6. Buscar usuario por username
+  // 7. Buscar usuario por username
   const handleSearch = async (e) => {
     e.preventDefault();
     const queryTerm = searchQuery.trim();
@@ -251,7 +295,7 @@ export default function Amigos() {
     }
   };
 
-  // 7. Enviar solicitud de amistad
+  // 8. Enviar solicitud de amistad
   const handleSendRequest = async () => {
     if (!searchResults || !currentUserData) return;
     setRequestStatus('sending');
@@ -278,7 +322,7 @@ export default function Amigos() {
     }
   };
 
-  // 8. Aceptar solicitud
+  // 9. Aceptar solicitud
   const handleAcceptRequest = async (solicitud) => {
     if (!currentUserData) return;
 
@@ -307,7 +351,7 @@ export default function Amigos() {
     }
   };
 
-  // 9. Rechazar solicitud
+  // 10. Rechazar solicitud
   const handleRejectRequest = async (solicitudId) => {
     try {
       const requestRef = doc(db, 'friend_requests', solicitudId);
@@ -708,15 +752,15 @@ export default function Amigos() {
         </div>
       )}
 
-      {/* SUB-OVERLAY DE CHAT DE TEXTO EN TIEMPO REAL */}
+      {/* SUB-OVERLAY DE CHAT DE TEXTO E IMÁGENES EN TIEMPO REAL */}
       {activeChatFriend && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/80 p-4">
-          <div className="relative flex h-[480px] w-full max-w-md flex-col border-2 border-[#0D0D0D] bg-[#8BA3A7] font-sans shadow-[4px_4px_0px_0px_#0D0D0D]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/80 p-3 sm:p-4">
+          <div className="relative flex h-[420px] sm:h-[460px] max-h-[85vh] w-full max-w-sm sm:max-w-md flex-col border-2 border-[#0D0D0D] bg-[#8BA3A7] font-sans shadow-[4px_4px_0px_0px_#0D0D0D] overflow-hidden">
             
             {/* ENCABEZADO DEL CHAT */}
-            <div className="flex items-center justify-between border-b-2 border-[#0D0D0D] bg-[#1B384B] p-3 text-white">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] font-black text-[#FF7800]">
+            <div className="flex items-center justify-between border-b-2 border-[#0D0D0D] bg-[#1B384B] p-2.5 sm:p-3 text-white">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] font-black text-[#FF7800]">
                   {activeChatFriend.photoURL ? (
                     <img src={activeChatFriend.photoURL} alt={activeChatFriend.username} className="h-full w-full object-cover" />
                   ) : (
@@ -731,14 +775,17 @@ export default function Amigos() {
 
               <button
                 type="button"
-                onClick={() => setActiveChatFriend(null)}
+                onClick={() => {
+                  setActiveChatFriend(null);
+                  setPreviewImage(null);
+                }}
                 className="text-sm font-black text-white hover:text-[#FF7800] px-2"
               >
                 ✕
               </button>
             </div>
 
-            {/* CAJA DE MENSAJES (SCROLLABLE) */}
+            {/* CAJA DE MENSAJES */}
             <div 
               ref={chatScrollRef}
               className="flex-1 overflow-y-auto p-3 flex flex-col gap-2.5 bg-[#8BA3A7]"
@@ -765,7 +812,14 @@ export default function Amigos() {
                             : 'bg-white text-[#0D0D0D]'
                         }`}
                       >
-                        <p className="break-words leading-relaxed">{msg.text}</p>
+                        {msg.imageURL && (
+                          <img 
+                            src={msg.imageURL} 
+                            alt="Imagen adjunta" 
+                            className="mb-1 max-h-40 w-full border border-[#0D0D0D] object-cover" 
+                          />
+                        )}
+                        {msg.text && <p className="break-words leading-relaxed">{msg.text}</p>}
                       </div>
                     </div>
                   );
@@ -773,19 +827,50 @@ export default function Amigos() {
               )}
             </div>
 
+            {/* VISTA PREVIA DE IMAGEN ADJUNTA */}
+            {previewImage && (
+              <div className="relative flex items-center gap-2 border-t-2 border-[#0D0D0D] bg-[#8BA3A7] px-3 py-1.5">
+                <img src={previewImage} alt="Adjunto" className="h-10 w-10 border border-[#0D0D0D] object-cover" />
+                <span className="text-[9px] font-black uppercase text-[#0D0D0D]">Imagen adjuntada</span>
+                <button
+                  type="button"
+                  onClick={() => setPreviewImage(null)}
+                  className="ml-auto text-xs font-black text-red-700 hover:text-red-900"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+
             {/* FORMULARIO PARA ENVIAR MENSAJE */}
-            <form onSubmit={handleSendMessage} className="flex gap-2 border-t-2 border-[#0D0D0D] bg-[#1B384B] p-3">
+            <form onSubmit={handleSendMessage} className="flex gap-1.5 border-t-2 border-[#0D0D0D] bg-[#1B384B] p-2 sm:p-2.5">
+              <input
+                type="file"
+                ref={chatFileInputRef}
+                accept="image/*"
+                onChange={handleImageSelect}
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={() => chatFileInputRef.current?.click()}
+                title="Adjuntar imagen"
+                className="button-secondary px-2.5 py-1.5 text-xs font-black uppercase shrink-0"
+              >
+                📷
+              </button>
+
               <input
                 type="text"
-                placeholder="ESCRIBE UN MENSAJE..."
+                placeholder="MENSAJE..."
                 value={newMessageText}
                 onChange={(e) => setNewMessageText(e.target.value)}
-                className="flex-1 border-2 border-[#0D0D0D] bg-white px-3 py-2 text-xs font-bold uppercase tracking-widest text-[#0D0D0D] focus:border-[#FF7800] focus:outline-none placeholder:text-[#0D0D0D]/50"
+                className="flex-1 min-w-0 border-2 border-[#0D0D0D] bg-white px-2.5 py-1.5 text-xs font-bold uppercase tracking-widest text-[#0D0D0D] focus:border-[#FF7800] focus:outline-none placeholder:text-[#0D0D0D]/50"
               />
               <button
                 type="submit"
                 {...gsapButtonMotion}
-                className="button-primary px-4 py-2 text-xs font-black uppercase tracking-widest shrink-0"
+                className="button-primary px-3 py-1.5 text-xs font-black uppercase tracking-widest shrink-0"
               >
                 ENVIAR
               </button>
