@@ -217,9 +217,9 @@ export default function Perfil() {
               <span className="text-[9px] font-bold tracking-widest text-[#8BA3A7]">TIEMPO JUGADO</span>
               <strong className="mt-1 text-lg font-black">{playedTime}</strong>
             </div>
-            <div className="flex flex-col justify-center border-2 border-[#0D0D0D] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]">
-              <span className="text-[9px] font-bold tracking-widest text-[#8BA3A7]">FECHA DE REGISTRO</span>
-              <strong className="mt-1 text-lg font-black">{joinDate}</strong>
+            <div className="flex min-w-0 flex-col justify-center border-2 border-[#0D0D0D] p-2.5 sm:p-3 shadow-[3px_3px_0px_0px_#0D0D0D]">
+              <span className="text-[8px] sm:text-[9px] font-bold tracking-wider sm:tracking-widest text-[#8BA3A7] truncate">FECHA DE REGISTRO</span>
+              <strong className="mt-1 text-xs sm:text-sm md:text-lg font-black tracking-normal sm:tracking-widest text-[#0D0D0D] truncate">{joinDate}</strong>
             </div>
           </div>
         </div>
