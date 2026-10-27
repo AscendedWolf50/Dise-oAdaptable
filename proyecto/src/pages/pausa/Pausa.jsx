@@ -16,22 +16,22 @@ export default function Pausa() {
 
   const handleReanudar = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'ReanudarJuego');
     }
     dismiss();
   };
 
   const handleReiniciar = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'ReiniciarNivelActual');
-      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'ReiniciarNivelActual');
+      window.unityInstance.SendMessage('WebBridgeManager', 'ReanudarJuego');
     }
     dismiss();
   };
 
   const handleMenuPrincipal = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
     }
     navigate('/');
   };

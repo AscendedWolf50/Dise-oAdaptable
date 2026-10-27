@@ -194,7 +194,7 @@ export default function Gameplay() {
           const nivelSeleccionado = location.state?.nivelSeleccionado;
           if (nivelSeleccionado !== undefined && nivelSeleccionado !== 0) {
             setTimeout(() => {
-              unityInstance.SendMessage('WebBridge', 'CargarNivelDesdeWeb', nivelSeleccionado);
+              unityInstance.SendMessage('WebBridgeManager', 'CargarNivelDesdeWeb', nivelSeleccionado);
             }, 100);
           }
         })
