@@ -44,7 +44,7 @@ const Inicio = () => {
         </div>
 
         {/* Big Banner */}
-        <div ref={addToRefs} className="voxel-grid-surface border-2 border-[#0D0D0D] bg-[#0D0D0D] p-4 text-center text-2xl font-black uppercase tracking-widest text-white md:col-span-2 lg:col-span-1 lg:col-start-1 lg:row-start-3">
+        <div ref={addToRefs} className="voxel-grid-surface flex h-full w-full items-center justify-center border-2 border-[#0D0D0D] bg-[#0D0D0D] p-6 text-center text-4xl font-black uppercase tracking-widest text-white md:col-span-2 md:text-5xl lg:col-span-1 lg:col-start-1 lg:row-start-3 lg:row-span-3 lg:text-6xl">
           VOXEL DRIFT
         </div>
 
@@ -74,7 +74,7 @@ const Inicio = () => {
         <button 
           ref={addToRefs}
           onClick={() => navigate('/configuracion')}
-          className={`button-secondary flex items-center justify-center gap-2 p-4 font-bold tracking-widest uppercase md:col-span-2 md:text-lg lg:col-start-2 lg:row-start-3 ${buttonPressStyle}`}
+          className={`button-secondary flex items-center justify-center gap-2 p-4 font-bold tracking-widest uppercase md:col-span-2 md:text-lg lg:col-span-1 lg:col-start-2 lg:row-start-3 ${buttonPressStyle}`}
         >
           <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
