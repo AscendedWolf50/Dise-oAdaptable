@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useAppNavigation } from '../../utils/useAppNavigation.js';
+import CarCanvas from '../../components/ui/CarCanvas.jsx';
 
 const Inicio = () => {
   const navigate = useAppNavigation();
@@ -37,13 +38,9 @@ const Inicio = () => {
         ref={containerRef}
         className="grid h-full w-full max-w-md content-center grid-cols-1 gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:grid-cols-2 md:gap-5 md:p-8 lg:max-w-5xl lg:items-center lg:gap-8 lg:p-10"
       >
-        {/* Illustration Box */}
-        <div ref={addToRefs} className="relative flex h-40 w-full items-center justify-center overflow-hidden border-2 border-[#0D0D0D] bg-[#FF7800] md:col-span-2 md:h-52 lg:col-span-1 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:h-full lg:min-h-[240px]">
-          <div className="absolute top-2 left-2 h-2 w-2 bg-[#0D0D0D]"></div>
-          <div className="absolute top-2 right-2 h-2 w-2 bg-[#0D0D0D]"></div>
-          <div className="absolute bottom-2 left-2 h-2 w-2 bg-[#0D0D0D]"></div>
-          <div className="absolute bottom-2 right-2 h-2 w-2 bg-[#0D0D0D]"></div>
-          <span className="font-black text-[#0D0D0D] text-xl tracking-widest">ILUSTRACIÓN</span>
+        {/* Modelo 3D integrado directamente al fondo base */}
+        <div ref={addToRefs} className="relative flex h-40 w-full items-center justify-center overflow-hidden md:col-span-2 md:h-52 lg:col-span-1 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:h-full lg:min-h-[240px]">
+          <CarCanvas />
         </div>
 
         {/* Big Banner */}
@@ -77,7 +74,7 @@ const Inicio = () => {
         <button 
           ref={addToRefs}
           onClick={() => navigate('/configuracion')}
-          className={`button-secondary flex items-center justify-center gap-2 p-4 font-bold tracking-widest uppercase md:col-span-2 md:text-lg lg:col-span-1 lg:col-start-2 lg:row-start-3 ${buttonPressStyle}`}
+          className={`button-secondary flex items-center justify-center gap-2 p-4 font-bold tracking-widest uppercase md:col-span-2 md:text-lg lg:col-start-2 lg:row-start-3 ${buttonPressStyle}`}
         >
           <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
