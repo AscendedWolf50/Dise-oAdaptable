@@ -27,6 +27,7 @@ public class CarGrapple : MonoBehaviour
     [SerializeField] private MMF_Player feedbackGancho;
     
     [SerializeField] private MMF_Player feedbackDesenganchar;
+    
 
     
 
@@ -81,6 +82,8 @@ public class CarGrapple : MonoBehaviour
                         distanciaMasCercana = distanciaConCarro;
                         
                         objetivoMasCercana = col.transform;
+                        
+                        
                     }
                     
                 }

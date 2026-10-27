@@ -257,6 +257,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5288404407184104348, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
+      propertyPath: miraUI
+      value: 
+      objectReference: {fileID: 889305930}
     - target: {fileID: 7353404011956246953, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.2
@@ -308,12 +312,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
 --- !u!4 &125337060 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 5610029216110354448, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
-  m_PrefabInstance: {fileID: 125337059}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &156627958 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7353404011956246953, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6548952171350974710, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
   m_PrefabInstance: {fileID: 125337059}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &179457752
@@ -345,7 +344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f59c817c53c1f4bbbfef0d150abd2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WebBridgeManager
-  volumenGlobal: 0.85
 --- !u!4 &179457754
 Transform:
   m_ObjectHideFlags: 0
@@ -1369,6 +1367,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d243c636f06439c43ad27f682d66244a, type: 3}
+--- !u!1 &889305930 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2429615306866208523, guid: d243c636f06439c43ad27f682d66244a, type: 3}
+  m_PrefabInstance: {fileID: 889305929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &905944227 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 311704533098164385, guid: c1a2979d33fca8b44975ebe9e0c2af62, type: 3}
@@ -1680,7 +1683,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 156627958}
+    TrackingTarget: {fileID: 125337060}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:

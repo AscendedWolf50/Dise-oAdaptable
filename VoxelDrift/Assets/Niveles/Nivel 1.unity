@@ -194,6 +194,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5288404407184104348, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
+      propertyPath: miraUI
+      value: 
+      objectReference: {fileID: 671554302}
     - target: {fileID: 7353404011956246953, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -243,11 +247,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
---- !u!4 &125337060 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5610029216110354448, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
-  m_PrefabInstance: {fileID: 125337059}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &179457752
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f59c817c53c1f4bbbfef0d150abd2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WebBridgeManager
-  volumenGlobal: 0.85
 --- !u!4 &179457754
 Transform:
   m_ObjectHideFlags: 0
@@ -637,6 +635,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1a2979d33fca8b44975ebe9e0c2af62, type: 3}
+--- !u!4 &539081904 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6548952171350974710, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
+  m_PrefabInstance: {fileID: 125337059}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &664143918
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,6 +703,11 @@ Transform:
   - {fileID: 1966553618}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &671554302 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2429615306866208523, guid: d243c636f06439c43ad27f682d66244a, type: 3}
+  m_PrefabInstance: {fileID: 889305929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &711797989 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9135790294111233674, guid: c1a2979d33fca8b44975ebe9e0c2af62, type: 3}
@@ -810,7 +818,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 125337060}
+    TrackingTarget: {fileID: 539081904}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -1651,7 +1659,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 125337060}
+    TrackingTarget: {fileID: 539081904}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -2044,7 +2052,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 125337060}
+    TrackingTarget: {fileID: 539081904}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
