@@ -222,7 +222,7 @@ export default function Gameplay() {
       }
       if (window.unityInstance) {
         try {
-          window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
+          window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
           if (typeof window.unityInstance.Quit === 'function') {
             window.unityInstance.Quit().then(() => {
               window.unityInstance = null;

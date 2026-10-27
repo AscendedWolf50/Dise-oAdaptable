@@ -20,7 +20,7 @@ const Victoria = () => {
   useEffect(() => {
     // 1. Aseguramos que el juego se pause cuando aparece la pantalla de victoria
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
     }
 
     // 2. Animaciones de entrada GSAP
@@ -52,22 +52,22 @@ const Victoria = () => {
   // Handlers para la interacción con Unity y navegación
   const handleMenu = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
     }
     navigate('/');
   };
 
   const handleRestart = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'ReiniciarNivelActual');
-      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'ReiniciarNivelActual');
+      window.unityInstance.SendMessage('WebBridgeManager', 'ReanudarJuego');
     }
     navigate('/gameplay');
   };
 
   const handleNext = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
     }
     navigate('/niveles');
   };

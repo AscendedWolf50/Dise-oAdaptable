@@ -13,7 +13,7 @@ export default function Derrota() {
   useEffect(() => {
     // Aseguramos que el juego se pause cuando aparece la pantalla de derrota
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
     }
 
     const context = gsap.context(() => {
@@ -25,15 +25,15 @@ export default function Derrota() {
 
   const handleMenu = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
     }
     navigate('/');
   };
 
   const handleRestart = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'ReiniciarNivelActual');
-      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'ReiniciarNivelActual');
+      window.unityInstance.SendMessage('WebBridgeManager', 'ReanudarJuego');
     }
     navigate('/gameplay');
   };
