@@ -37,7 +37,6 @@ public class GhostManager : MonoBehaviour
             jugadorTransform = jugadorObj.transform;
             grabando = true;
 
-            
             if (WebBridgeManager.Instancia != null && WebBridgeManager.Instancia.ghostDataActual != null)
             {
                 ghostAmigo = WebBridgeManager.Instancia.ghostDataActual;
@@ -48,14 +47,12 @@ public class GhostManager : MonoBehaviour
 
     void Update()
     {
-        
         if (jugadorTransform == null)
         {
             BuscarJugadorEInicializar();
             return;
         }
 
-        
         if (grabando)
         {
             temporizadorGrabacion += Time.deltaTime;
@@ -74,7 +71,6 @@ public class GhostManager : MonoBehaviour
             }
         }
 
-        
         if (reproducirFantasma && ghostCarObj != null && ghostAmigo != null && ghostAmigo.frames != null && ghostAmigo.frames.Count > 0)
         {
             LevelManager lm = FindFirstObjectByType<LevelManager>();
@@ -115,10 +111,27 @@ public class GhostManager : MonoBehaviour
         if (jugadorTransform == null || data == null || data.frames == null || data.frames.Count == 0) return;
 
         
+        int colorOriginalJugador = PlayerPrefs.GetInt("CarColorIndex", 0);
+
         ghostCarObj = Instantiate(jugadorTransform.gameObject, data.frames[0].p, Quaternion.Euler(data.frames[0].r));
         ghostCarObj.name = "Fantasma_Amigo";
+        ghostCarObj.tag = "Untagged"; 
 
         
+        AudioSource[] audios = ghostCarObj.GetComponentsInChildren<AudioSource>();
+        foreach (AudioSource a in audios)
+        {
+            a.Stop();
+            Destroy(a);
+        }
+
+        AudioListener[] listeners = ghostCarObj.GetComponentsInChildren<AudioListener>();
+        foreach (AudioListener l in listeners)
+        {
+            Destroy(l);
+        }
+
+        // 3. Destruir Colliders
         Collider[] cols = ghostCarObj.GetComponentsInChildren<Collider>();
         foreach (Collider col in cols)
         {
@@ -126,7 +139,7 @@ public class GhostManager : MonoBehaviour
             Destroy(col);
         }
 
-        
+       
         Rigidbody[] rbs = ghostCarObj.GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rb in rbs)
         {
@@ -146,6 +159,18 @@ public class GhostManager : MonoBehaviour
         }
 
         
+        CarColorController colorCtrl = ghostCarObj.GetComponent<CarColorController>();
+        if (colorCtrl != null)
+        {
+            colorCtrl.AplicarMaterial(data.colorCarro);
+            Destroy(colorCtrl);
+        }
+
+       
+        PlayerPrefs.SetInt("CarColorIndex", colorOriginalJugador);
+        PlayerPrefs.Save();
+
+       
         Renderer[] renderers = ghostCarObj.GetComponentsInChildren<Renderer>();
         foreach (Renderer rend in renderers)
         {
@@ -155,19 +180,11 @@ public class GhostManager : MonoBehaviour
             }
         }
 
-        
-        CarColorController colorCtrl = ghostCarObj.GetComponent<CarColorController>();
-        if (colorCtrl != null)
-        {
-            colorCtrl.AplicarMaterial(data.colorCarro);
-        }
-
         reproducirFantasma = true;
     }
 
     private void HacerMaterialTransparente(Material mat, float alpha)
     {
-        
         if (mat.HasProperty("_Color"))
         {
             Color c = mat.color;
@@ -181,13 +198,11 @@ public class GhostManager : MonoBehaviour
             mat.SetColor("_BaseColor", c);
         }
 
-        
         if (mat.HasProperty("_Surface"))
         {
             mat.SetFloat("_Surface", 1.0f); 
         }
 
-      
         mat.SetFloat("_Mode", 3);
         mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
         mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);

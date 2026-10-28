@@ -74,10 +74,14 @@ public class WebBridgeManager : MonoBehaviour
     public void AplicarColorGuardado()
     {
         int colorGuardado = PlayerPrefs.GetInt("CarColorIndex", 0);
-        CarColorController controlador = FindObjectOfType<CarColorController>();
-        if (controlador != null)
+        GameObject jugadorObj = GameObject.FindWithTag("Player");
+        if (jugadorObj != null)
         {
-            controlador.AplicarMaterial(colorGuardado);
+            CarColorController controlador = jugadorObj.GetComponent<CarColorController>();
+            if (controlador != null)
+            {
+                controlador.AplicarMaterial(colorGuardado);
+            }
         }
     }
 
@@ -100,11 +104,22 @@ public class WebBridgeManager : MonoBehaviour
         PlayerPrefs.SetInt("CarColorIndex", indiceColor);
         PlayerPrefs.Save();
     
-        
-        CarColorController controlador = FindObjectOfType<CarColorController>();
-        if (controlador != null)
+        GameObject jugadorObj = GameObject.FindWithTag("Player");
+        if (jugadorObj != null)
         {
-            controlador.AplicarMaterial(indiceColor);
+            CarColorController controlador = jugadorObj.GetComponent<CarColorController>();
+            if (controlador != null)
+            {
+                controlador.AplicarMaterial(indiceColor);
+            }
+        }
+        else
+        {
+            CarColorController controlador = FindObjectOfType<CarColorController>();
+            if (controlador != null)
+            {
+                controlador.AplicarMaterial(indiceColor);
+            }
         }
     }
     

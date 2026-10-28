@@ -1236,7 +1236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43afd18a6b14df048a948cd4a774dec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
-  data: {fileID: 11400000, guid: aa3f8a1a58f366941922b3e680d0bec8, type: 2}
+  data: {fileID: 11400000, guid: 905ae8eec43d78e4f97313ba413b5604, type: 2}
   feedbackObtenerPuntos: {fileID: 1966553617}
 --- !u!4 &664143921
 Transform:
