@@ -45,6 +45,18 @@ public class WebBridgeManager : MonoBehaviour
                 btn.onClick.AddListener(BotonPausaPulsado);
             }
         }
+        
+        AplicarColorGuardado();
+    }
+    
+    public void AplicarColorGuardado()
+    {
+        int colorGuardado = PlayerPrefs.GetInt("CarColorIndex", 0);
+        CarColorController controlador = FindObjectOfType<CarColorController>();
+        if (controlador != null)
+        {
+            controlador.AplicarMaterial(colorGuardado);
+        }
     }
 
     public void CargarNivelDesdeWeb(int indiceNivel)
@@ -61,11 +73,25 @@ public class WebBridgeManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     
+    public void CambiarColorCarro(int indiceColor)
+    {
+        PlayerPrefs.SetInt("CarColorIndex", indiceColor);
+        PlayerPrefs.Save();
+    
+        
+        CarColorController controlador = FindObjectOfType<CarColorController>();
+        if (controlador != null)
+        {
+            controlador.AplicarMaterial(indiceColor);
+        }
+    }
+    
     public void PausarJuego()
     {
         Time.timeScale = 0f;
         AudioListener.pause = true;
     }
+    
     
     public void ReanudarJuego()
     {

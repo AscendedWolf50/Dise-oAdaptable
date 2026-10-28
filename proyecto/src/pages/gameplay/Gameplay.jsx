@@ -191,11 +191,31 @@ export default function Gameplay() {
           window.unityInstance = unityInstance;
           console.log("¡Unity WebGL cargado con éxito!");
 
+          // 1. Obtener color elegido desde localStorage
+          const savedColor = parseInt(localStorage.getItem('VoxelDriftCarColor') || '0', 10);
+
+          // 2. Establecer el color en Unity inmediatamente
+          setTimeout(() => {
+            if (window.unityInstance) {
+              window.unityInstance.SendMessage('WebBridgeManager', 'CambiarColorCarro', savedColor);
+            }
+          }, 100);
+
+          // 3. Cargar el nivel seleccionado si existe
           const nivelSeleccionado = location.state?.nivelSeleccionado;
           if (nivelSeleccionado !== undefined && nivelSeleccionado !== 0) {
             setTimeout(() => {
-              unityInstance.SendMessage('WebBridgeManager', 'CargarNivelDesdeWeb', nivelSeleccionado);
-            }, 100);
+              if (window.unityInstance) {
+                unityInstance.SendMessage('WebBridgeManager', 'CargarNivelDesdeWeb', nivelSeleccionado);
+              }
+            }, 250);
+
+            // 4. Re-aplicar el color tras cargar la nueva escena
+            setTimeout(() => {
+              if (window.unityInstance) {
+                window.unityInstance.SendMessage('WebBridgeManager', 'CambiarColorCarro', savedColor);
+              }
+            }, 600);
           }
         })
         .catch((error) => {

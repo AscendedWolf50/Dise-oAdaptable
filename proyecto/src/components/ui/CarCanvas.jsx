@@ -2,8 +2,38 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-export default function CarCanvas() {
+export default function CarCanvas({ colorIndex = 0 }) {
   const mountRef = useRef(null);
+  const carModelRef = useRef(null);
+
+  const baseUrl = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+
+  // Función para aplicar la textura según el índice de color recibido
+  const aplicarTexturaAlModelo = (index) => {
+    if (!carModelRef.current) return;
+
+    const texturePath = `${baseUrl}models/textures/car_${index}.png`;
+    const textureLoader = new THREE.TextureLoader();
+
+    textureLoader.load(
+      texturePath,
+      (newTexture) => {
+        newTexture.flipY = false; // Mantiene la alineación correcta en el GLB
+        newTexture.colorSpace = THREE.SRGBColorSpace;
+
+        carModelRef.current.traverse((child) => {
+          if (child.isMesh && child.material) {
+            child.material.map = newTexture;
+            child.material.needsUpdate = true;
+          }
+        });
+      },
+      undefined,
+      (err) => console.error("Error al cargar textura de color:", err)
+    );
+  };
 
   useEffect(() => {
     const container = mountRef.current;
@@ -18,7 +48,6 @@ export default function CarCanvas() {
       0.1,
       1000
     );
-    
     camera.position.set(0, 0.7, 4);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -38,18 +67,14 @@ export default function CarCanvas() {
     scene.add(dirLight);
 
     // 3. Cargar Modelo 3D
-    let carModel = null;
     const loader = new GLTFLoader();
-
-    const baseUrl = import.meta.env.BASE_URL.endsWith('/')
-      ? import.meta.env.BASE_URL
-      : `${import.meta.env.BASE_URL}/`;
     const modelUrl = `${baseUrl}models/carro.glb`;
 
     loader.load(
       modelUrl,
       (gltf) => {
-        carModel = gltf.scene;
+        const carModel = gltf.scene;
+        carModelRef.current = carModel;
 
         // Centrar el modelo en su origen
         const box = new THREE.Box3().setFromObject(carModel);
@@ -63,6 +88,9 @@ export default function CarCanvas() {
         carModel.scale.set(1.2, 1.2, 1.2);
 
         scene.add(carModel);
+
+        // Aplicar la textura seleccionada
+        aplicarTexturaAlModelo(colorIndex);
       },
       undefined,
       (error) => {
@@ -81,12 +109,12 @@ export default function CarCanvas() {
     };
 
     const handlePointerMove = (e) => {
-      if (!isDragging || !carModel) return;
+      if (!isDragging || !carModelRef.current) return;
       const deltaX = e.clientX - previousPointerX;
       previousPointerX = e.clientX;
       
       // Rotar únicamente en el eje Y (izquierda/derecha)
-      carModel.rotation.y += deltaX * 0.008;
+      carModelRef.current.rotation.y += deltaX * 0.008;
     };
 
     const handlePointerUp = () => {
@@ -106,8 +134,8 @@ export default function CarCanvas() {
       animationFrameId = requestAnimationFrame(animate);
 
       // Si el usuario no lo está arrastrando, rota automáticamente
-      if (carModel && !isDragging) {
-        carModel.rotation.y += 0.008;
+      if (carModelRef.current && !isDragging) {
+        carModelRef.current.rotation.y += 0.008;
       }
 
       renderer.render(scene, camera);
@@ -136,6 +164,11 @@ export default function CarCanvas() {
       renderer.dispose();
     };
   }, []);
+
+  // Actualizar la textura si cambia la prop colorIndex
+  useEffect(() => {
+    aplicarTexturaAlModelo(colorIndex);
+  }, [colorIndex]);
 
   return <div ref={mountRef} className="h-full w-full" />;
 }
