@@ -131,13 +131,13 @@ const Login = () => {
   };
 
   return (
-    <div className="flex h-full min-h-full w-full justify-center bg-[#1B384B] p-4 font-sans lg:p-6">
+    <div className="flex h-full min-h-full w-full justify-center bg-[#142A3A] p-4 font-sans lg:p-6">
       <div 
         ref={containerRef}
-        className="relative flex h-full w-full max-w-md flex-col justify-between border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-xl md:p-8 lg:grid lg:max-w-none lg:grid-cols-2 lg:items-center lg:gap-8 lg:p-10"
+        className="relative flex h-full w-full max-w-md flex-col justify-between border-2 border-[#0D0D0D] bg-[#D8E4E6] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-xl md:p-8 lg:grid lg:max-w-none lg:grid-cols-2 lg:items-center lg:gap-8 lg:p-10"
       >
         {/* Version Label */}
-        <div className="text-right text-xs font-black tracking-widest text-[#FF7800] lg:col-span-2">
+        <div className="text-right text-xs font-black tracking-widest text-[#963C00] lg:col-span-2">
           V 1.0
         </div>
 
@@ -153,7 +153,7 @@ const Login = () => {
           {/* Decorative Diamond Separator */}
           <div className="mt-4 flex items-center justify-center gap-2 text-[#0D0D0D] lg:justify-start">
             <div className="h-0.5 w-16 bg-[#0D0D0D]"></div>
-            <div className="h-3 w-3 rotate-45 border-2 border-[#0D0D0D] bg-[#FF7800]"></div>
+            <div className="h-3 w-3 rotate-45 border-2 border-[#0D0D0D] bg-[#F4A340]"></div>
             <div className="h-0.5 w-16 bg-[#0D0D0D]"></div>
           </div>
         </div>
@@ -161,11 +161,11 @@ const Login = () => {
         {/* Form and Message Section */}
         <div className="my-auto flex flex-col gap-4 lg:col-start-2">
           {/* Message Box */}
-          <div className="relative border-2 border-[#0D0D0D] bg-[#8BA3A7] p-3 shadow-[2px_2px_0px_0px_#0D0D0D]">
-            <div className="absolute -top-1.5 -left-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#FF7800]"></div>
-            <div className="absolute -top-1.5 -right-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#FF7800]"></div>
-            <div className="absolute -bottom-1.5 -left-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#FF7800]"></div>
-            <div className="absolute -bottom-1.5 -right-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#FF7800]"></div>
+          <div className="relative border-2 border-[#0D0D0D] bg-[#D8E4E6] p-3 shadow-[2px_2px_0px_0px_#0D0D0D]">
+            <div className="absolute -top-1.5 -left-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#F4A340]"></div>
+            <div className="absolute -top-1.5 -right-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#F4A340]"></div>
+            <div className="absolute -bottom-1.5 -left-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#F4A340]"></div>
+            <div className="absolute -bottom-1.5 -right-1.5 h-3 w-3 border-2 border-[#0D0D0D] bg-[#F4A340]"></div>
             
             <p className="text-center text-xs font-bold uppercase tracking-widest text-[#0D0D0D]">
               {isRegistering ? 'REGISTRAR NUEVA CUENTA' : 'PREPÁRATE PARA LA AVENTURA...'}
@@ -174,14 +174,14 @@ const Login = () => {
 
           {/* Caja de Error */}
           {errorMsg && (
-            <div className="border-2 border-[#0D0D0D] bg-[#FF4444] p-2 text-center text-xs font-bold uppercase tracking-widest text-white shadow-[2px_2px_0px_0px_#0D0D0D]">
+            <div className="border-2 border-[#0D0D0D] bg-[#B42318] p-2 text-center text-xs font-bold uppercase tracking-widest text-white shadow-[2px_2px_0px_0px_#0D0D0D]">
               {errorMsg}
             </div>
           )}
 
           {/* Caja de Éxito */}
           {successMsg && (
-            <div className="border-2 border-[#0D0D0D] bg-[#1B384B] p-2 text-center text-xs font-bold uppercase tracking-widest text-[#FF7800] shadow-[2px_2px_0px_0px_#0D0D0D]">
+            <div className="border-2 border-[#0D0D0D] bg-[#142A3A] p-2 text-center text-xs font-bold uppercase tracking-widest text-[#FF7800] shadow-[2px_2px_0px_0px_#0D0D0D]">
               {successMsg}
             </div>
           )}
@@ -194,7 +194,7 @@ const Login = () => {
                 placeholder="nombre de usuario..."
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full border-2 border-[#0D0D0D] bg-[#FFFFFF] p-3 font-bold uppercase tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] placeholder:text-[#8BA3A7] focus:outline-none focus:ring-2 focus:ring-[#FF7800]"
+                className="w-full border-2 border-[#0D0D0D] bg-[#FFFFFF] p-3 font-bold uppercase tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] placeholder:text-[#53636B] focus:outline-none focus:ring-2 focus:ring-[#142A3A]"
                 required
               />
             )}
@@ -204,7 +204,7 @@ const Login = () => {
               placeholder="correo electrónico..."
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border-2 border-[#0D0D0D] bg-[#FFFFFF] p-3 font-bold tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] placeholder:text-[#8BA3A7] focus:outline-none focus:ring-2 focus:ring-[#FF7800]"
+              className="w-full border-2 border-[#0D0D0D] bg-[#FFFFFF] p-3 font-bold tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] placeholder:text-[#53636B] focus:outline-none focus:ring-2 focus:ring-[#142A3A]"
               required
             />
 
@@ -213,7 +213,7 @@ const Login = () => {
               placeholder="contraseña..."
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border-2 border-[#0D0D0D] bg-[#FFFFFF] p-3 font-bold tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] placeholder:text-[#8BA3A7] focus:outline-none focus:ring-2 focus:ring-[#FF7800]"
+              className="w-full border-2 border-[#0D0D0D] bg-[#FFFFFF] p-3 font-bold tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] placeholder:text-[#53636B] focus:outline-none focus:ring-2 focus:ring-[#142A3A]"
               required
             />
 
@@ -224,7 +224,7 @@ const Login = () => {
                   type="button"
                   onClick={handleForgotPassword}
                   disabled={loading}
-                  className="text-[10px] font-bold uppercase tracking-widest text-[#0D0D0D] underline hover:text-[#FF7800] transition-colors disabled:opacity-50"
+                  className="text-[10px] font-bold uppercase tracking-widest text-[#0D0D0D] underline hover:text-[#963C00] transition-colors disabled:opacity-50"
                 >
                   ¿OLVIDASTE TU CONTRASEÑA?
                 </button>
@@ -244,7 +244,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() => { setIsRegistering(!isRegistering); setErrorMsg(''); setSuccessMsg(''); }}
-            className="text-center text-xs font-bold uppercase tracking-widest text-[#0D0D0D] underline hover:text-[#FF7800] transition-colors"
+            className="text-center text-xs font-bold uppercase tracking-widest text-[#0D0D0D] underline hover:text-[#963C00] transition-colors"
           >
             {isRegistering ? '¿YA TIENES CUENTA? INICIA SESIÓN' : '¿NO TIENES CUENTA? REGÍSTRATE AQUÍ'}
           </button>
@@ -256,9 +256,9 @@ const Login = () => {
             <div 
               key={stat.id}
               ref={el => statsRef.current[index] = el}
-              className="flex flex-col items-center justify-center border-2 border-[#0D0D0D] bg-[#8BA3A7] p-2.5 text-center shadow-[2px_2px_0px_0px_#0D0D0D]"
+              className="flex flex-col items-center justify-center border-2 border-[#0D0D0D] bg-[#D8E4E6] p-2.5 text-center shadow-[2px_2px_0px_0px_#0D0D0D]"
             >
-              <div className="mb-0.5 text-lg font-black text-[#FF7800]">{stat.valor}</div>
+              <div className="mb-0.5 text-lg font-black text-[#963C00]">{stat.valor}</div>
               <div className="text-[9px] font-bold uppercase leading-tight tracking-widest text-[#0D0D0D]">{stat.etiqueta}</div>
             </div>
           ))}

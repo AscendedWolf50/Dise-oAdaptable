@@ -459,8 +459,8 @@ export default function Amigos() {
             onClick={() => setActiveTab('lista')}
             className={`py-2 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border-2 border-[#0D0D0D] ${
               activeTab === 'lista'
-                ? 'bg-[#FF7800] text-white shadow-[2px_2px_0px_0px_#0D0D0D]'
-                : 'bg-[#8BA3A7] hover:bg-white/50'
+                ? 'bg-[#F4A340] text-[#0D0D0D] shadow-[2px_2px_0px_0px_#0D0D0D]'
+                : 'bg-[#D8E4E6] hover:bg-white/50'
             }`}
           >
             LISTA ({amigosList.length})
@@ -471,8 +471,8 @@ export default function Amigos() {
             onClick={() => setActiveTab('buscar')}
             className={`py-2 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border-2 border-[#0D0D0D] ${
               activeTab === 'buscar'
-                ? 'bg-[#FF7800] text-white shadow-[2px_2px_0px_0px_#0D0D0D]'
-                : 'bg-[#8BA3A7] hover:bg-white/50'
+                ? 'bg-[#F4A340] text-[#0D0D0D] shadow-[2px_2px_0px_0px_#0D0D0D]'
+                : 'bg-[#D8E4E6] hover:bg-white/50'
             }`}
           >
             🔍 BUSCAR
@@ -483,8 +483,8 @@ export default function Amigos() {
             onClick={() => setActiveTab('solicitudes')}
             className={`relative py-2 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border-2 border-[#0D0D0D] ${
               activeTab === 'solicitudes'
-                ? 'bg-[#FF7800] text-white shadow-[2px_2px_0px_0px_#0D0D0D]'
-                : 'bg-[#8BA3A7] hover:bg-white/50'
+                ? 'bg-[#F4A340] text-[#0D0D0D] shadow-[2px_2px_0px_0px_#0D0D0D]'
+                : 'bg-[#D8E4E6] hover:bg-white/50'
             }`}
           >
             SOLICITUDES
@@ -500,12 +500,12 @@ export default function Amigos() {
         {activeTab === 'lista' && (
           <div data-friends-enter className="flex flex-col gap-3 min-h-[260px] max-h-[340px] overflow-y-auto pr-1">
             {amigosList.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-10 border-2 border-dashed border-[#0D0D0D]/40 text-center">
+              <div className="flex flex-col items-center justify-center py-10 border-2 border-dashed border-[#0D0D0D] text-center">
                 <span className="text-3xl mb-2">👥</span>
                 <p className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
                   AÚN NO TIENES AMIGOS AGREGADOS
                 </p>
-                <p className="mt-1 text-[10px] font-bold text-[#0D0D0D]/70 uppercase">
+                <p className="mt-1 text-[10px] font-bold text-[#3A4548] uppercase">
                   Usa la pestaña "BUSCAR" para enviar solicitudes
                 </p>
               </div>
@@ -513,7 +513,7 @@ export default function Amigos() {
               amigosList.map((amigo) => (
                 <div
                   key={amigo.uid}
-                  className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#8BA3A7] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]"
+                  className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#D8E4E6] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]"
                 >
                   <button
                     type="button"
@@ -521,7 +521,7 @@ export default function Amigos() {
                     title="Ver perfil del jugador"
                     className="group flex items-center gap-3 min-w-0 flex-1 text-left cursor-pointer focus:outline-none"
                   >
-                    <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] font-black text-[#FF7800] group-hover:border-[#FF7800] transition-colors">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#142A3A] font-black text-[#FF7800] group-hover:border-[#FF7800] transition-colors">
                       {amigo.photoURL ? (
                         <img src={amigo.photoURL} alt={amigo.username} className="h-full w-full object-cover" />
                       ) : (
@@ -529,10 +529,10 @@ export default function Amigos() {
                       )}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-black uppercase tracking-widest truncate group-hover:text-[#FF7800] transition-colors">
+                      <p className="text-xs font-black uppercase tracking-widest truncate group-hover:text-[#963C00] transition-colors">
                         {amigo.username}
                       </p>
-                      <p className="text-[9px] font-bold text-[#0D0D0D]/70 uppercase truncate">{amigo.nickname || 'SIN APODO'}</p>
+                      <p className="text-[9px] font-bold text-[#3A4548] uppercase truncate">{amigo.nickname || 'SIN APODO'}</p>
                     </div>
                   </button>
 
@@ -568,7 +568,7 @@ export default function Amigos() {
                 placeholder="INGRESA EL USUARIO EXACTO"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 border-2 border-[#0D0D0D] bg-white px-3 py-2 text-xs font-bold uppercase tracking-widest text-[#0D0D0D] focus:border-[#FF7800] focus:outline-none placeholder:text-[#0D0D0D]/50"
+                className="flex-1 border-2 border-[#0D0D0D] bg-white px-3 py-2 text-xs font-bold uppercase tracking-widest text-[#0D0D0D] focus:border-[#142A3A] focus:outline-none focus:ring-2 focus:ring-[#142A3A] placeholder:text-[#53636B]"
               />
               <button
                 type="submit"
@@ -581,20 +581,20 @@ export default function Amigos() {
             </form>
 
             {searchResults === null ? (
-              <div className="flex flex-col items-center justify-center py-8 text-center text-[#0D0D0D]/60">
+              <div className="flex flex-col items-center justify-center py-8 text-center text-[#3A4548]">
                 <p className="text-xs font-bold uppercase tracking-widest">
                   Busca a tus amigos por su nombre de usuario registrado
                 </p>
               </div>
             ) : searchResults ? (
-              <div className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#8BA3A7] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]">
+              <div className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#D8E4E6] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]">
                 <button
                   type="button"
                   onClick={() => handleViewProfile(searchResults.uid)}
                   title="Ver perfil del jugador"
                   className="group flex items-center gap-3 min-w-0 flex-1 text-left cursor-pointer focus:outline-none"
                 >
-                  <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] font-black text-[#FF7800] group-hover:border-[#FF7800] transition-colors">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#142A3A] font-black text-[#FF7800] group-hover:border-[#FF7800] transition-colors">
                     {searchResults.photoURL ? (
                       <img src={searchResults.photoURL} alt={searchResults.username} className="h-full w-full object-cover" />
                     ) : (
@@ -602,15 +602,15 @@ export default function Amigos() {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-black uppercase tracking-widest truncate group-hover:text-[#FF7800] transition-colors">
+                    <p className="text-xs font-black uppercase tracking-widest truncate group-hover:text-[#963C00] transition-colors">
                       {searchResults.username}
                     </p>
-                    <p className="text-[9px] font-bold text-[#0D0D0D]/70 uppercase truncate">{searchResults.nickname || 'SIN APODO'}</p>
+                    <p className="text-[9px] font-bold text-[#3A4548] uppercase truncate">{searchResults.nickname || 'SIN APODO'}</p>
                   </div>
                 </button>
 
                 {requestStatus === 'self' ? (
-                  <span className="text-[9px] font-black text-[#0D0D0D]/60 uppercase tracking-widest px-2">
+                  <span className="text-[9px] font-black text-[#3A4548] uppercase tracking-widest px-2">
                     ES TU USUARIO
                   </span>
                 ) : requestStatus === 'already_friends' ? (
@@ -618,7 +618,7 @@ export default function Amigos() {
                     ✓ YA ES TU AMIGO
                   </span>
                 ) : requestStatus === 'already_sent' || requestStatus === 'sent' ? (
-                  <span className="text-[9px] font-black text-[#FF7800] uppercase tracking-widest px-2">
+                  <span className="text-[9px] font-black text-[#963C00] uppercase tracking-widest px-2">
                     ✓ ENVIADA
                   </span>
                 ) : (
@@ -644,7 +644,7 @@ export default function Amigos() {
         {activeTab === 'solicitudes' && (
           <div data-friends-enter className="flex flex-col gap-3 min-h-[260px] max-h-[340px] overflow-y-auto pr-1">
             {solicitudesList.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-10 border-2 border-dashed border-[#0D0D0D]/40 text-center">
+              <div className="flex flex-col items-center justify-center py-10 border-2 border-dashed border-[#0D0D0D] text-center">
                 <span className="text-3xl mb-2">📩</span>
                 <p className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
                   NO TIENES SOLICITUDES PENDIENTES
@@ -654,7 +654,7 @@ export default function Amigos() {
               solicitudesList.map((solicitud) => (
                 <div
                   key={solicitud.id}
-                  className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#8BA3A7] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]"
+                  className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#D8E4E6] p-3 shadow-[3px_3px_0px_0px_#0D0D0D]"
                 >
                   <button
                     type="button"
@@ -662,10 +662,10 @@ export default function Amigos() {
                     title="Ver perfil del remitente"
                     className="group min-w-0 flex-1 pr-2 text-left cursor-pointer focus:outline-none"
                   >
-                    <p className="text-xs font-black uppercase tracking-widest truncate group-hover:text-[#FF7800] transition-colors">
+                    <p className="text-xs font-black uppercase tracking-widest truncate group-hover:text-[#963C00] transition-colors">
                       {solicitud.fromUsername}
                     </p>
-                    <p className="text-[9px] font-bold text-[#0D0D0D]/70 uppercase">TE ENVIÓ UNA SOLICITUD</p>
+                    <p className="text-[9px] font-bold text-[#3A4548] uppercase">TE ENVIÓ UNA SOLICITUD</p>
                   </button>
 
                   <div className="flex gap-2 shrink-0">
@@ -695,7 +695,7 @@ export default function Amigos() {
       {/* INDICADOR DE CARGA DE PERFIL */}
       {isLoadingProfile && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/70 p-4">
-          <div className="border-2 border-[#0D0D0D] bg-[#8BA3A7] p-4 text-xs font-black uppercase tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D]">
+          <div className="border-2 border-[#0D0D0D] bg-[#D8E4E6] p-4 text-xs font-black uppercase tracking-widest text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D]">
             CARGANDO PERFIL...
           </div>
         </div>
@@ -704,7 +704,7 @@ export default function Amigos() {
       {/* OVERLAY DE VISTA DE PERFIL DE JUGADOR */}
       {selectedUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/80 p-4">
-          <div className="relative flex w-full max-w-md flex-col gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 font-sans shadow-[4px_4px_0px_0px_#0D0D0D]">
+          <div className="relative flex w-full max-w-md flex-col gap-4 border-2 border-[#0D0D0D] bg-[#D8E4E6] p-5 font-sans shadow-[4px_4px_0px_0px_#0D0D0D]">
             
             <div className="flex items-center justify-between border-b-2 border-[#0D0D0D] pb-3">
               <span className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
@@ -713,14 +713,14 @@ export default function Amigos() {
               <button
                 type="button"
                 onClick={() => setSelectedUser(null)}
-                className="text-sm font-black text-[#0D0D0D] hover:text-[#FF7800]"
+                className="text-sm font-black text-[#0D0D0D] hover:text-[#963C00]"
               >
                 ✕
               </button>
             </div>
 
-            <div className="flex items-center gap-4 border-2 border-[#0D0D0D] bg-[#1B384B] p-3 text-white shadow-[3px_3px_0px_0px_#0D0D0D]">
-              <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] text-2xl font-black text-[#FF7800]">
+            <div className="flex items-center gap-4 border-2 border-[#0D0D0D] bg-[#142A3A] p-3 text-white shadow-[3px_3px_0px_0px_#0D0D0D]">
+              <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#D8E4E6] text-2xl font-black text-[#963C00]">
                 {selectedUser.photoURL ? (
                   <img src={selectedUser.photoURL} alt={selectedUser.username} className="h-full w-full object-cover" />
                 ) : (
@@ -729,7 +729,7 @@ export default function Amigos() {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-black uppercase tracking-widest truncate">{selectedUser.username}</p>
-                <p className="text-[10px] font-bold text-[#FF7800] uppercase tracking-widest truncate">
+                <p className="text-[10px] font-bold text-[#963C00] uppercase tracking-widest truncate">
                   {selectedUser.nickname || 'SIN APODO'}
                 </p>
                 <p className="mt-1 text-[9px] font-bold text-gray-300 uppercase tracking-wider">
@@ -741,14 +741,14 @@ export default function Amigos() {
             <div className="grid grid-cols-2 gap-3">
               <div className="flex flex-col border-2 border-[#0D0D0D] bg-white p-3 shadow-[2px_2px_0px_0px_#0D0D0D]">
                 <span className="text-[9px] font-black uppercase tracking-widest text-[#0D0D0D]">COMPLETADO</span>
-                <strong className="text-lg font-black text-[#FF7800]">{selectedStats.completionPercent}%</strong>
-                <span className="text-[8px] font-bold text-[#0D0D0D]/70">{selectedStats.completedLevels} / 10 NIVELES</span>
+                <strong className="text-lg font-black text-[#963C00]">{selectedStats.completionPercent}%</strong>
+                <span className="text-[8px] font-bold text-[#3A4548]">{selectedStats.completedLevels} / 10 NIVELES</span>
               </div>
 
               <div className="flex flex-col border-2 border-[#0D0D0D] bg-white p-3 shadow-[2px_2px_0px_0px_#0D0D0D]">
                 <span className="text-[9px] font-black uppercase tracking-widest text-[#0D0D0D]">ESTRELLAS</span>
-                <strong className="text-lg font-black text-[#FF7800]">{selectedStats.stars} ★</strong>
-                <span className="text-[8px] font-bold text-[#0D0D0D]/70">DE 30 POSIBLES</span>
+                <strong className="text-lg font-black text-[#963C00]">{selectedStats.stars} ★</strong>
+                <span className="text-[8px] font-bold text-[#3A4548]">DE 30 POSIBLES</span>
               </div>
 
               <div className="flex flex-col border-2 border-[#0D0D0D] bg-white p-3 shadow-[2px_2px_0px_0px_#0D0D0D]">
@@ -814,21 +814,21 @@ export default function Amigos() {
       {/* MODAL DE SELECCIÓN DE NIVEL PARA RETAR AL FANTASMA */}
       {challengeFriend && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/80 p-4">
-          <div className="relative flex w-full max-w-md flex-col gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 font-sans shadow-[4px_4px_0px_0px_#0D0D0D]">
+          <div className="relative flex w-full max-w-md flex-col gap-4 border-2 border-[#0D0D0D] bg-[#D8E4E6] p-5 font-sans shadow-[4px_4px_0px_0px_#0D0D0D]">
             
             <div className="flex items-center justify-between border-b-2 border-[#0D0D0D] pb-3">
               <div>
                 <h3 className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
                   DESAFÍO FANTASMA 👻
                 </h3>
-                <p className="text-[10px] font-bold text-[#FF7800] uppercase tracking-wider">
+                <p className="text-[10px] font-bold text-[#963C00] uppercase tracking-wider">
                   RETANDO A: {challengeFriend.username || challengeFriend.fromUsername}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setChallengeFriend(null)}
-                className="text-sm font-black text-[#0D0D0D] hover:text-[#FF7800]"
+                className="text-sm font-black text-[#0D0D0D] hover:text-[#963C00]"
               >
                 ✕
               </button>
@@ -844,13 +844,13 @@ export default function Amigos() {
                 <p className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
                   ESTE JUGADOR AÚN NO HA COMPLETADO NINGÚN NIVEL
                 </p>
-                <p className="mt-1 text-[10px] font-bold text-[#0D0D0D]/70 uppercase">
+                <p className="mt-1 text-[10px] font-bold text-[#3A4548] uppercase">
                   Dile a tu amigo que juegue un nivel para poder competir contra su fantasma.
                 </p>
               </div>
             ) : (
               <div className="flex flex-col gap-2.5 max-h-[280px] overflow-y-auto pr-1">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-[#0D0D0D]/80">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#3A4548]">
                   Selecciona un nivel jugado por {challengeFriend.username || challengeFriend.fromUsername} para superar su récord:
                 </p>
                 
@@ -873,7 +873,7 @@ export default function Amigos() {
                         <p className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
                           NIVEL {numNivel}
                         </p>
-                        <p className="text-[10px] font-bold text-[#FF7800] uppercase tracking-wider">
+                        <p className="text-[10px] font-bold text-[#963C00] uppercase tracking-wider">
                           MEJOR TIEMPO: {tiempoFormateado}
                         </p>
                       </div>
@@ -908,12 +908,12 @@ export default function Amigos() {
       {/* SUB-OVERLAY DE CHAT DE TEXTO E IMÁGENES EN TIEMPO REAL */}
       {activeChatFriend && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/80 p-3 sm:p-4">
-          <div className="relative flex h-[420px] sm:h-[460px] max-h-[85vh] w-full max-w-sm sm:max-w-md flex-col border-2 border-[#0D0D0D] bg-[#8BA3A7] font-sans shadow-[4px_4px_0px_0px_#0D0D0D] overflow-hidden">
+          <div className="relative flex h-[420px] sm:h-[460px] max-h-[85vh] w-full max-w-sm sm:max-w-md flex-col border-2 border-[#0D0D0D] bg-[#D8E4E6] font-sans shadow-[4px_4px_0px_0px_#0D0D0D] overflow-hidden">
             
             {/* ENCABEZADO DEL CHAT */}
-            <div className="flex items-center justify-between border-b-2 border-[#0D0D0D] bg-[#1B384B] p-2.5 sm:p-3 text-white">
+            <div className="flex items-center justify-between border-b-2 border-[#0D0D0D] bg-[#142A3A] p-2.5 sm:p-3 text-white">
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] font-black text-[#FF7800]">
+                <div className="grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#D8E4E6] font-black text-[#963C00]">
                   {activeChatFriend.photoURL ? (
                     <img src={activeChatFriend.photoURL} alt={activeChatFriend.username} className="h-full w-full object-cover" />
                   ) : (
@@ -922,7 +922,7 @@ export default function Amigos() {
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs font-black uppercase tracking-widest truncate">{activeChatFriend.username}</p>
-                  <p className="text-[8px] font-bold text-[#FF7800] uppercase tracking-widest">CHAT DE TEXTO</p>
+                  <p className="text-[8px] font-bold text-[#963C00] uppercase tracking-widest">CHAT DE TEXTO</p>
                 </div>
               </div>
 
@@ -941,10 +941,10 @@ export default function Amigos() {
             {/* CAJA DE MENSAJES */}
             <div 
               ref={chatScrollRef}
-              className="flex-1 overflow-y-auto p-3 flex flex-col gap-2.5 bg-[#8BA3A7]"
+              className="flex-1 overflow-y-auto p-3 flex flex-col gap-2.5 bg-[#D8E4E6]"
             >
               {chatMessages.length === 0 ? (
-                <div className="flex flex-1 flex-col items-center justify-center text-center text-[#0D0D0D]/60 my-auto">
+                <div className="flex flex-1 flex-col items-center justify-center text-center text-[#3A4548] my-auto">
                   <span className="text-2xl mb-1">💬</span>
                   <p className="text-xs font-bold uppercase tracking-widest">
                     Inicia la conversación enviando un mensaje
@@ -961,7 +961,7 @@ export default function Amigos() {
                       <div
                         className={`max-w-[80%] border-2 border-[#0D0D0D] p-2 text-xs font-bold shadow-[2px_2px_0px_0px_#0D0D0D] ${
                           isMine
-                            ? 'bg-[#FF7800] text-white'
+                            ? 'bg-[#F4A340] text-[#0D0D0D]'
                             : 'bg-white text-[#0D0D0D]'
                         }`}
                       >
@@ -982,7 +982,7 @@ export default function Amigos() {
 
             {/* VISTA PREVIA DE IMAGEN ADJUNTA */}
             {previewImage && (
-              <div className="relative flex items-center gap-2 border-t-2 border-[#0D0D0D] bg-[#8BA3A7] px-3 py-1.5">
+              <div className="relative flex items-center gap-2 border-t-2 border-[#0D0D0D] bg-[#D8E4E6] px-3 py-1.5">
                 <img src={previewImage} alt="Adjunto" className="h-10 w-10 border border-[#0D0D0D] object-cover" />
                 <span className="text-[9px] font-black uppercase text-[#0D0D0D]">Imagen adjuntada</span>
                 <button
@@ -996,7 +996,7 @@ export default function Amigos() {
             )}
 
             {/* FORMULARIO PARA ENVIAR MENSAJE */}
-            <form onSubmit={handleSendMessage} className="flex gap-1.5 border-t-2 border-[#0D0D0D] bg-[#1B384B] p-2 sm:p-2.5">
+            <form onSubmit={handleSendMessage} className="flex gap-1.5 border-t-2 border-[#0D0D0D] bg-[#142A3A] p-2 sm:p-2.5">
               <input
                 type="file"
                 ref={chatFileInputRef}
@@ -1018,7 +1018,7 @@ export default function Amigos() {
                 placeholder="MENSAJE..."
                 value={newMessageText}
                 onChange={(e) => setNewMessageText(e.target.value)}
-                className="flex-1 min-w-0 border-2 border-[#0D0D0D] bg-white px-2.5 py-1.5 text-xs font-bold uppercase tracking-widest text-[#0D0D0D] focus:border-[#FF7800] focus:outline-none placeholder:text-[#0D0D0D]/50"
+                className="flex-1 min-w-0 border-2 border-[#0D0D0D] bg-white px-2.5 py-1.5 text-xs font-bold uppercase tracking-widest text-[#0D0D0D] focus:border-[#142A3A] focus:outline-none focus:ring-2 focus:ring-[#142A3A] placeholder:text-[#53636B]"
               />
               <button
                 type="submit"

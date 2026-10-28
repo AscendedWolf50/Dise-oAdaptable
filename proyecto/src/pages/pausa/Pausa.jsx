@@ -47,16 +47,16 @@ export default function Pausa() {
       onClose={null}
     >
       <div ref={pageRef} className="flex flex-col gap-3 text-[#0D0D0D] lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
-        <div data-pause-enter className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#8BA3A7] px-4 py-3 lg:col-span-1 lg:row-span-2 lg:flex-col lg:items-stretch lg:gap-4 lg:p-6">
+        <div data-pause-enter className="flex items-center justify-between border-2 border-[#0D0D0D] bg-[#D8E4E6] px-4 py-3 lg:col-span-1 lg:row-span-2 lg:flex-col lg:items-stretch lg:gap-4 lg:p-6">
           <div><p className="text-xs font-bold tracking-widest">NIVEL 12</p><p aria-label="3 estrellas" className="text-lg leading-none">★★★</p></div>
-          <div className="w-20"><p className="mb-1 text-right text-[9px] font-bold tracking-widest">PROGRESO</p><div className="h-3 border-2 border-[#0D0D0D] bg-white"><div className="h-full w-3/5 bg-[#FF7800]" /></div></div>
+          <div className="w-20"><p className="mb-1 text-right text-[9px] font-bold tracking-widest">PROGRESO</p><div className="h-3 border-2 border-[#0D0D0D] bg-white"><div className="h-full w-3/5 bg-[#F4A340]" /></div></div>
         </div>
           
         <button 
           {...gsapButtonMotion} 
           data-pause-enter 
           onClick={handleReanudar} 
-          className="button-primary !bg-[#FF7800] !opacity-100 py-4 text-base font-black tracking-widest lg:col-start-2 lg:row-start-1 lg:py-6 lg:text-lg"
+          className="button-primary !bg-[#F4A340] !opacity-100 py-4 text-base font-black tracking-widest lg:col-start-2 lg:row-start-1 lg:py-6 lg:text-lg"
         >
           ▶ REANUDAR
         </button>

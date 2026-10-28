@@ -286,7 +286,7 @@ export default function Perfil() {
               type="button"
               onClick={() => setShowAvatarMenu(true)}
               title="Opciones de foto de perfil"
-              className="group relative grid h-16 w-16 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] text-2xl font-black text-[#FF7800] shadow-[3px_3px_0px_0px_#0D0D0D] cursor-pointer focus:outline-none"
+              className="group relative grid h-16 w-16 shrink-0 place-items-center overflow-hidden border-2 border-[#0D0D0D] bg-[#142A3A] text-2xl font-black text-[#FF7800] shadow-[3px_3px_0px_0px_#0D0D0D] cursor-pointer focus:outline-none"
             >
               {photoURL ? (
                 <img src={photoURL} alt={username} className="h-full w-full object-cover" />
@@ -310,7 +310,7 @@ export default function Perfil() {
                 onChange={handleNicknameChange}
                 onBlur={handleNicknameBlur}
                 onKeyDown={(e) => { if (e.key === 'Enter') e.target.blur(); }}
-                className="mt-1 w-full bg-transparent text-[10px] font-bold tracking-widest uppercase text-[#0D0D0D] border-b border-dashed border-[#0D0D0D]/40 focus:border-[#FF7800] focus:outline-none placeholder:text-[#0D0D0D]/60 placeholder:font-bold"
+                className="mt-1 w-full bg-transparent text-[10px] font-bold tracking-widest uppercase text-[#0D0D0D] border-b border-dashed border-[#0D0D0D] focus:border-[#142A3A] focus:outline-none focus:ring-2 focus:ring-[#142A3A] placeholder:text-[#53636B] placeholder:font-bold"
                 title="Haz clic para ingresar o cambiar tu apodo"
               />
             </div>
@@ -319,7 +319,7 @@ export default function Perfil() {
 
         <div className="flex flex-col gap-3 lg:col-start-2 lg:row-start-2 lg:row-span-2 lg:gap-4">
           <div data-profile-enter className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em]">
-            <span className="h-2 w-2 border border-[#0D0D0D]" />PROGRESO<span className="flex-1 border-t-2 border-dashed border-[#8BA3A7]" />
+            <span className="h-2 w-2 border border-[#0D0D0D]" />PROGRESO<span className="flex-1 border-t-2 border-dashed border-[#D8E4E6]" />
           </div>
 
           <div data-profile-enter className="border-2 border-[#0D0D0D] p-3">
@@ -331,7 +331,7 @@ export default function Perfil() {
             </div>
             <div className="h-3 w-full border-2 border-[#0D0D0D] bg-white">
               <div
-                className="h-full bg-[#FF7800] transition-all duration-500"
+                className="h-full bg-[#F4A340] transition-all duration-500"
                 style={{ width: `${completionPercent}%` }}
               />
             </div>
@@ -345,7 +345,7 @@ export default function Perfil() {
             </div>
             <div className="h-3 w-full border-2 border-[#0D0D0D] bg-white">
               <div 
-                className="h-full bg-[#FF7800] transition-all duration-500" 
+                className="h-full bg-[#F4A340] transition-all duration-500"
                 style={{ width: `${Math.min(100, Math.round((stars / TOTAL_ESTRELLAS_POSIBLES) * 100))}%` }} 
               />
             </div>
@@ -382,14 +382,14 @@ export default function Perfil() {
       {/* MODAL CON OPCIONES DE FOTO DE PERFIL */}
       {showAvatarMenu && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/70 p-4">
-          <div className="w-full max-w-xs border-2 border-[#0D0D0D] bg-[#8BA3A7] p-4 shadow-[4px_4px_0px_0px_#0D0D0D] font-sans">
+          <div className="w-full max-w-xs border-2 border-[#0D0D0D] bg-[#D8E4E6] p-4 shadow-[4px_4px_0px_0px_#0D0D0D] font-sans">
             <div className="mb-3 flex items-center justify-between border-b-2 border-[#0D0D0D] pb-2">
               <span className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
                 FOTO DE PERFIL
               </span>
               <button 
                 onClick={() => setShowAvatarMenu(false)}
-                className="text-sm font-black text-[#0D0D0D] hover:text-[#FF7800]"
+                className="text-sm font-black text-[#0D0D0D] hover:text-[#963C00]"
               >
                 ✕
               </button>
@@ -425,14 +425,14 @@ export default function Perfil() {
       {/* MODAL DE VISTA PREVIA / AMPLIAR FOTO */}
       {showImagePreview && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/80 p-4">
-          <div className="relative flex w-full max-w-sm flex-col items-center gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] font-sans">
+          <div className="relative flex w-full max-w-sm flex-col items-center gap-4 border-2 border-[#0D0D0D] bg-[#D8E4E6] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] font-sans">
             <div className="flex w-full items-center justify-between border-b-2 border-[#0D0D0D] pb-2">
               <span className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
                 {username}
               </span>
               <button 
                 onClick={() => setShowImagePreview(false)}
-                className="text-sm font-black text-[#0D0D0D] hover:text-[#FF7800]"
+                className="text-sm font-black text-[#0D0D0D] hover:text-[#963C00]"
               >
                 ✕
               </button>
@@ -446,7 +446,7 @@ export default function Perfil() {
                   className="max-h-64 w-64 border-2 border-[#0D0D0D] object-cover shadow-[3px_3px_0px_0px_#0D0D0D]" 
                 />
               ) : (
-                <div className="grid h-40 w-40 place-items-center border-2 border-[#0D0D0D] bg-[#1B384B] text-6xl font-black text-[#FF7800] shadow-[3px_3px_0px_0px_#0D0D0D]">
+                <div className="grid h-40 w-40 place-items-center border-2 border-[#0D0D0D] bg-[#142A3A] text-6xl font-black text-[#FF7800] shadow-[3px_3px_0px_0px_#0D0D0D]">
                   {username.slice(0, 1).toUpperCase()}
                 </div>
               )}

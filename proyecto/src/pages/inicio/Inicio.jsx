@@ -68,10 +68,10 @@ const Inicio = () => {
   const buttonPressStyle = "active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-100";
 
   return (
-    <div className="flex h-full min-h-full w-full justify-center bg-[#1B384B] p-4 font-sans lg:p-6">
+    <div className="flex h-full min-h-full w-full justify-center bg-[#142A3A] p-4 font-sans lg:p-6">
       <div 
         ref={containerRef}
-        className="grid h-full w-full max-w-md content-center grid-cols-1 gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:grid-cols-2 md:gap-5 md:p-8 lg:max-w-5xl lg:items-center lg:gap-8 lg:p-10"
+        className="grid h-full w-full max-w-md content-center grid-cols-1 gap-4 border-2 border-[#0D0D0D] bg-[#D8E4E6] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:grid-cols-2 md:gap-5 md:p-8 lg:max-w-5xl lg:items-center lg:gap-8 lg:p-10"
       >
         {/* Modelo 3D con Paleta Vertical Lateral en el lado izquierdo */}
         <div ref={addToRefs} className="relative flex h-40 w-full items-center justify-center overflow-hidden md:col-span-2 md:h-52 lg:col-span-1 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:h-full lg:min-h-[240px]">

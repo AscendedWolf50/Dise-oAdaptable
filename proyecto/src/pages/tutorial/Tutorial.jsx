@@ -58,7 +58,7 @@ export default function Tutorial() {
     >
       <section ref={pageRef} className="flex flex-col text-[#0D0D0D] lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-6">
         {/* Panel de Demostración / Video */}
-        <div data-tutorial-enter className="mb-4 flex min-h-[160px] items-center justify-center border-2 border-[#0D0D0D] bg-[#8BA3A7] lg:col-start-1 lg:mb-0 lg:h-full lg:min-h-[300px]">
+        <div data-tutorial-enter className="mb-4 flex min-h-[160px] items-center justify-center border-2 border-[#0D0D0D] bg-[#D8E4E6] lg:col-start-1 lg:mb-0 lg:h-full lg:min-h-[300px]">
           <button 
             {...gsapButtonMotion} 
             onClick={() => setDemoPlaying((playing) => !playing)} 
@@ -72,10 +72,10 @@ export default function Tutorial() {
         {/* Panel Contenido e Instrucciones */}
         <div className="flex flex-col justify-between lg:col-start-2">
           <div data-step-content className="flex flex-col gap-2">
-            <span data-tutorial-enter className="w-fit border-2 border-[#0D0D0D] bg-[#8BA3A7] px-2 py-1 text-[10px] font-black tracking-[0.18em] shadow-[2px_2px_0px_0px_#0D0D0D]">
+            <span data-tutorial-enter className="w-fit border-2 border-[#0D0D0D] bg-[#D8E4E6] px-2 py-1 text-[10px] font-black tracking-[0.18em] shadow-[2px_2px_0px_0px_#0D0D0D]">
               {step.tag}
             </span>
-            <h2 data-tutorial-enter className="text-xl font-black tracking-wide md:text-2xl [text-shadow:2px_2px_0px_#8BA3A7]">
+            <h2 data-tutorial-enter className="text-xl font-black tracking-wide md:text-2xl [text-shadow:2px_2px_0px_#D8E4E6]">
               {step.title}
             </h2>
             <p data-tutorial-enter className="mt-1 text-xs font-semibold leading-relaxed text-[#0D0D0D] md:text-sm">
@@ -86,7 +86,7 @@ export default function Tutorial() {
             </p>
             <div className="mt-2 flex gap-2" aria-label={`Paso ${stepIndex + 1} de ${steps.length}`}>
               {steps.map((item, index) => (
-                <span key={item.tag} className={`h-2 flex-1 border border-[#0D0D0D] ${index === stepIndex ? 'bg-[#FF7800]' : 'bg-white'}`} />
+                <span key={item.tag} className={`h-2 flex-1 border border-[#0D0D0D] ${index === stepIndex ? 'bg-[#F4A340]' : 'bg-white'}`} />
               ))}
             </div>
           </div>

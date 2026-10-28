@@ -118,7 +118,7 @@ const Victoria = () => {
               >
                 {i < estrellasObtenidas ? (
                   <svg
-                    className="h-12 w-12 text-[#FF7800]"
+                    className="h-12 w-12 text-[#963C00]"
                     fill="currentColor"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

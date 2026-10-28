@@ -49,13 +49,13 @@ export default function Configuracion() {
     <ModalOverlay title="CONFIGURACIÓN" onClose={handleClose}>
       <div ref={pageRef} className="flex flex-col gap-4 text-[#0D0D0D] md:gap-6 lg:grid lg:grid-cols-2 lg:items-center lg:gap-8">
 
-        <div data-enter className="relative flex h-24 items-center justify-center overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] lg:col-start-1 lg:row-span-4 lg:h-full lg:w-full">
+        <div data-enter className="relative flex h-24 items-center justify-center overflow-hidden border-2 border-[#0D0D0D] bg-[#D8E4E6] lg:col-start-1 lg:row-span-4 lg:h-full lg:w-full">
           
           {/* Esquinas decorativas (Se añade z-10 para que queden sobre la imagen) */}
-          <span className="absolute left-1 top-1 z-10 text-[#8BA3A7]">┌</span>
-          <span className="absolute right-1 top-1 z-10 text-[#8BA3A7]">┐</span>
-          <span className="absolute bottom-1 left-1 z-10 text-[#8BA3A7]">└</span>
-          <span className="absolute bottom-1 right-1 z-10 text-[#8BA3A7]">┘</span>
+          <span className="absolute left-1 top-1 z-10 text-[#D8E4E6]">┌</span>
+          <span className="absolute right-1 top-1 z-10 text-[#D8E4E6]">┐</span>
+          <span className="absolute bottom-1 left-1 z-10 text-[#D8E4E6]">└</span>
+          <span className="absolute bottom-1 right-1 z-10 text-[#D8E4E6]">┘</span>
 
           {/* Imagen Mobile/Tablet (Apaisada - Visible por defecto, oculta en desktop lg) */}
           <img 
@@ -82,13 +82,13 @@ export default function Configuracion() {
         <label data-enter className="border-2 border-[#0D0D0D] p-3 shadow-[3px_3px_0px_0px_#0D0D0D] lg:col-start-2 lg:row-start-2">
           <span className="flex items-center justify-between text-xs font-black tracking-widest"><span>♫ VOLUMEN DE MÚSICA</span><output>{music}%</output></span>
           <input aria-label="Volumen de música" type="range" min="0" max="100" value={music} onChange={(event) => { setMusic(Number(event.target.value)); setSaved(false); }} className="mt-4 w-full accent-[#0D0D0D]" />
-          <span className="flex justify-between text-[9px] font-bold text-[#8BA3A7]"><span>0</span><span>50</span><span>100</span></span>
+          <span className="flex justify-between text-[9px] font-bold text-[#D8E4E6]"><span>0</span><span>50</span><span>100</span></span>
         </label>
 
         <label data-enter className="border-2 border-[#0D0D0D] p-3 shadow-[3px_3px_0px_0px_#0D0D0D] lg:col-start-2 lg:row-start-3">
           <span className="flex items-center justify-between text-xs font-black tracking-widest"><span>✧ EFECTOS VISUALES</span><output>{effects}%</output></span>
           <input aria-label="Intensidad de efectos visuales" type="range" min="0" max="100" value={effects} onChange={(event) => { setEffects(Number(event.target.value)); setSaved(false); }} className="mt-4 w-full accent-[#0D0D0D]" />
-          <span className="flex justify-between text-[9px] font-bold text-[#8BA3A7]"><span>0</span><span>50</span><span>100</span></span>
+          <span className="flex justify-between text-[9px] font-bold text-[#D8E4E6]"><span>0</span><span>50</span><span>100</span></span>
         </label>
 
         <button {...gsapButtonMotion} data-apply onClick={applySettings} className="button-primary py-3 text-lg font-black tracking-widest lg:col-start-2 lg:row-start-4">

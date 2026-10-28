@@ -32,8 +32,8 @@ export default function App() {
     : location;
 
   return (
-    <div className="voxel-grid-surface flex min-h-screen w-full flex-col items-center justify-center bg-[#1B384B] p-4">
-      <div className="pixel-edge relative flex h-[800px] w-full max-h-[90vh] max-w-[390px] shrink-0 flex-col overflow-hidden border-[3px] border-[#0D0D0D] bg-[#8BA3A7] shadow-[6px_6px_0px_0px_#0D0D0D] md:h-[960px] md:max-w-[768px] lg:h-auto lg:aspect-video lg:w-full lg:max-w-5xl xl:max-w-6xl">
+    <div className="voxel-grid-surface flex min-h-screen w-full flex-col items-center justify-center bg-[#142A3A] p-4">
+      <div className="pixel-edge relative flex h-[800px] w-full max-h-[90vh] max-w-[390px] shrink-0 flex-col overflow-hidden border-[3px] border-[#0D0D0D] bg-[#D8E4E6] shadow-[6px_6px_0px_0px_#0D0D0D] md:h-[960px] md:max-w-[768px] lg:h-auto lg:aspect-video lg:w-full lg:max-w-5xl xl:max-w-6xl">
         
         <div className="relative min-h-0 flex-1 overflow-y-auto">
           <Routes location={backgroundLocation}>

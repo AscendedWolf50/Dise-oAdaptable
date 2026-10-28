@@ -143,10 +143,10 @@ const SelectorNiveles = () => {
   const completedCount = levels.filter(l => l.status === 'completed').length;
 
   return (
-    <div className="flex h-full min-h-full w-full items-center justify-center bg-[#1B384B] p-4 font-sans uppercase tracking-widest text-[#0D0D0D] lg:p-6">
+    <div className="flex h-full min-h-full w-full items-center justify-center bg-[#142A3A] p-4 font-sans uppercase tracking-widest text-[#0D0D0D] lg:p-6">
       <div
         ref={containerRef}
-        className="w-full max-w-md overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:p-7 lg:grid lg:max-w-5xl lg:grid-cols-12 lg:gap-6 lg:p-8"
+        className="w-full max-w-md overflow-hidden border-2 border-[#0D0D0D] bg-[#D8E4E6] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] md:max-w-2xl md:p-7 lg:grid lg:max-w-5xl lg:grid-cols-12 lg:gap-6 lg:p-8"
       >
         <div className="mb-6 flex items-center gap-3 lg:col-span-12 lg:mb-0">
           <button onClick={() => navigate('/')} className="button-secondary px-3 py-1 text-xs font-bold transition-all">
@@ -159,7 +159,7 @@ const SelectorNiveles = () => {
           <div className="voxel-grid-surface bg-[#0D0D0D] px-3 py-1 text-sm font-bold text-white">
             {completedCount}/{TOTAL_NIVELES_EN_BUILD} NIVELES
           </div>
-          <div className="font-bold text-lg text-[#FF7800]">
+          <div className="font-bold text-lg text-[#963C00]">
             ★ {totalStars}
           </div>
         </div>

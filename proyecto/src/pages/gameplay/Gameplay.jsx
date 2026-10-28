@@ -299,10 +299,10 @@ export default function Gameplay() {
   }, []);
 
   return (
-    <div className="flex h-full min-h-0 justify-center bg-[#1B384B] p-4 font-sans selection:bg-[#FF7800] selection:text-white lg:p-0">
+    <div className="flex h-full min-h-0 justify-center bg-[#142A3A] p-4 font-sans selection:bg-[#F4A340] selection:text-[#0D0D0D] lg:p-0">
       
       {/* Mensaje obligatorio para girar el dispositivo en celulares/tablets en posición vertical */}
-      <div className="fixed inset-0 z-50 hidden portrait:flex flex-col items-center justify-center bg-[#1B384B] p-6 text-center text-white">
+      <div className="fixed inset-0 z-50 hidden portrait:flex flex-col items-center justify-center bg-[#142A3A] p-6 text-center text-white">
         <svg className="mb-6 h-20 w-20 animate-pulse text-[#FF7800]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
         </svg>
@@ -313,11 +313,11 @@ export default function Gameplay() {
       {/* Contenedor Principal */}
       <div 
         ref={containerRef}
-        className="relative flex portrait:hidden h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#1B384B] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl lg:h-full lg:min-h-0 lg:max-w-none"
+        className="relative flex portrait:hidden h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#142A3A] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl lg:h-full lg:min-h-0 lg:max-w-none"
       >
         
         {/* Área del Canvas del Juego */}
-        <div ref={canvasRef} className="relative z-0 flex min-h-0 flex-1 w-full items-center justify-center overflow-hidden bg-[#1B384B]">
+        <div ref={canvasRef} className="relative z-0 flex min-h-0 flex-1 w-full items-center justify-center overflow-hidden bg-[#142A3A]">
           <canvas 
             ref={unityCanvasRef}
             id="unity-canvas" 
