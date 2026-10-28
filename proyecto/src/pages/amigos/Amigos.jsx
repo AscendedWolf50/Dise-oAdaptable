@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { gsapButtonMotion } from '../../utils/gsapButtonMotion.js';
 import ModalOverlay from '../../components/ui/ModalOverlay.jsx';
+import { useAppNavigation } from '../../utils/useAppNavigation.js';
 
 // IMPORTACIONES DE FIREBASE
 import { auth, db } from '../../firebase/config.js';
@@ -22,6 +23,8 @@ import {
 } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 
+const OFFSET_ESCENAS_UNITY = -1;
+
 const getCurrentUser = () => {
   return new Promise((resolve) => {
     if (auth.currentUser) {
@@ -40,6 +43,7 @@ const getChatId = (uid1, uid2) => {
 };
 
 export default function Amigos() {
+  const navigate = useAppNavigation();
   const containerRef = useRef(null);
   const chatScrollRef = useRef(null);
   const chatFileInputRef = useRef(null);
@@ -64,6 +68,11 @@ export default function Amigos() {
   const [chatMessages, setChatMessages] = useState([]);
   const [newMessageText, setNewMessageText] = useState('');
   const [previewImage, setPreviewImage] = useState(null);
+
+  // ESTADOS DEL MODAL DE DESAFÍO FANTASMA
+  const [challengeFriend, setChallengeFriend] = useState(null);
+  const [challengeLevels, setChallengeLevels] = useState([]);
+  const [isLoadingChallenge, setIsLoadingChallenge] = useState(false);
 
   // 1. Obtener usuario actual y escuchar solicitudes + amigos en tiempo real
   useEffect(() => {
@@ -245,7 +254,56 @@ export default function Amigos() {
     }
   };
 
-  // 7. Buscar usuario por username
+  // 7. Abrir modal para elegir nivel a retar contra el fantasma
+  const handleOpenChallengeModal = async (amigo) => {
+    if (!amigo || !amigo.uid) return;
+    setIsLoadingChallenge(true);
+    setChallengeFriend(amigo);
+    setChallengeLevels([]);
+
+    try {
+      const userDoc = await getDoc(doc(db, 'users', amigo.uid));
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        let prog = data.progress;
+        if (typeof prog === 'string') {
+          try { prog = JSON.parse(prog); } catch (e) {}
+        }
+
+        if (prog && Array.isArray(prog.niveles)) {
+          // Filtrar niveles completados por el amigo
+          const nivelesJugados = prog.niveles.filter(n => n.estrellaCompletado);
+          setChallengeLevels(nivelesJugados);
+        }
+      }
+    } catch (error) {
+      console.error("Error al obtener datos de desafío:", error);
+    } finally {
+      setIsLoadingChallenge(false);
+    }
+  };
+
+  // 8. Iniciar partida contra el fantasma (se mapea idNivel exacto a la escena de Unity)
+  const handleStartGhostChallenge = (nivelProgress) => {
+    if (!nivelProgress || !challengeFriend) return;
+
+    let numNivel = parseInt(nivelProgress.idNivel, 10);
+    if (isNaN(numNivel)) {
+      numNivel = parseInt(String(nivelProgress.idNivel).replace(/\D/g, ''), 10) || 1;
+    }
+
+    const indiceEscenaUnity = numNivel + OFFSET_ESCENAS_UNITY;
+
+    navigate('/gameplay', {
+      state: {
+        nivelSeleccionado: indiceEscenaUnity,
+        ghostData: nivelProgress.ghostData || null,
+        friendName: challengeFriend.username || challengeFriend.fromUsername || 'Amigo'
+      }
+    });
+  };
+
+  // 9. Buscar usuario por username
   const handleSearch = async (e) => {
     e.preventDefault();
     const queryTerm = searchQuery.trim();
@@ -295,7 +353,7 @@ export default function Amigos() {
     }
   };
 
-  // 8. Enviar solicitud de amistad
+  // 10. Enviar solicitud de amistad
   const handleSendRequest = async () => {
     if (!searchResults || !currentUserData) return;
     setRequestStatus('sending');
@@ -322,7 +380,7 @@ export default function Amigos() {
     }
   };
 
-  // 9. Aceptar solicitud
+  // 11. Aceptar solicitud
   const handleAcceptRequest = async (solicitud) => {
     if (!currentUserData) return;
 
@@ -351,7 +409,7 @@ export default function Amigos() {
     }
   };
 
-  // 10. Rechazar solicitud
+  // 12. Rechazar solicitud
   const handleRejectRequest = async (solicitudId) => {
     try {
       const requestRef = doc(db, 'friend_requests', solicitudId);
@@ -489,7 +547,7 @@ export default function Amigos() {
                     </button>
                     <button
                       {...gsapButtonMotion}
-                      onClick={() => alert(`Próximamente retarás al fantasma de ${amigo.username}`)}
+                      onClick={() => handleOpenChallengeModal(amigo)}
                       className="button-primary px-2.5 py-1.5 text-[10px] font-black uppercase tracking-widest"
                     >
                       👻 RETAR
@@ -728,8 +786,9 @@ export default function Amigos() {
                     type="button"
                     {...gsapButtonMotion}
                     onClick={() => {
-                      alert(`Iniciando duelo contra el fantasma de ${selectedUser.username}`);
+                      const fData = { ...selectedUser };
                       setSelectedUser(null);
+                      handleOpenChallengeModal(fData);
                     }}
                     className="button-primary flex-1 py-2 text-xs font-black uppercase tracking-widest"
                   >
@@ -747,6 +806,100 @@ export default function Amigos() {
                 CERRAR
               </button>
             </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE SELECCIÓN DE NIVEL PARA RETAR AL FANTASMA */}
+      {challengeFriend && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0D0D]/80 p-4">
+          <div className="relative flex w-full max-w-md flex-col gap-4 border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 font-sans shadow-[4px_4px_0px_0px_#0D0D0D]">
+            
+            <div className="flex items-center justify-between border-b-2 border-[#0D0D0D] pb-3">
+              <div>
+                <h3 className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
+                  DESAFÍO FANTASMA 👻
+                </h3>
+                <p className="text-[10px] font-bold text-[#FF7800] uppercase tracking-wider">
+                  RETANDO A: {challengeFriend.username || challengeFriend.fromUsername}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setChallengeFriend(null)}
+                className="text-sm font-black text-[#0D0D0D] hover:text-[#FF7800]"
+              >
+                ✕
+              </button>
+            </div>
+
+            {isLoadingChallenge ? (
+              <div className="py-8 text-center text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
+                OBTENIENDO NIVELES DE TU AMIGO...
+              </div>
+            ) : challengeLevels.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <span className="text-3xl mb-2">🚗</span>
+                <p className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
+                  ESTE JUGADOR AÚN NO HA COMPLETADO NINGÚN NIVEL
+                </p>
+                <p className="mt-1 text-[10px] font-bold text-[#0D0D0D]/70 uppercase">
+                  Dile a tu amigo que juegue un nivel para poder competir contra su fantasma.
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2.5 max-h-[280px] overflow-y-auto pr-1">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#0D0D0D]/80">
+                  Selecciona un nivel jugado por {challengeFriend.username || challengeFriend.fromUsername} para superar su récord:
+                </p>
+                
+                {challengeLevels.map((nivel) => {
+                  let numNivel = parseInt(nivel.idNivel, 10);
+                  if (isNaN(numNivel)) {
+                    numNivel = parseInt(String(nivel.idNivel).replace(/\D/g, ''), 10) || 1;
+                  }
+
+                  const tiempoFormateado = nivel.mejorTiempo && nivel.mejorTiempo < 9999
+                    ? `${nivel.mejorTiempo.toFixed(2)}s`
+                    : 'COMPLETADO';
+
+                  return (
+                    <div
+                      key={nivel.idNivel}
+                      className="flex items-center justify-between border-2 border-[#0D0D0D] bg-white p-3 shadow-[2px_2px_0px_0px_#0D0D0D]"
+                    >
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-widest text-[#0D0D0D]">
+                          NIVEL {numNivel}
+                        </p>
+                        <p className="text-[10px] font-bold text-[#FF7800] uppercase tracking-wider">
+                          MEJOR TIEMPO: {tiempoFormateado}
+                        </p>
+                      </div>
+
+                      <button
+                        type="button"
+                        {...gsapButtonMotion}
+                        onClick={() => handleStartGhostChallenge(nivel)}
+                        className="button-primary px-3 py-1.5 text-[10px] font-black uppercase tracking-widest"
+                      >
+                        ¡COMPETIR! 👻
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            <button
+              type="button"
+              {...gsapButtonMotion}
+              onClick={() => setChallengeFriend(null)}
+              className="button-secondary w-full py-2 text-xs font-black uppercase tracking-widest mt-1"
+            >
+              CANCELAR
+            </button>
 
           </div>
         </div>

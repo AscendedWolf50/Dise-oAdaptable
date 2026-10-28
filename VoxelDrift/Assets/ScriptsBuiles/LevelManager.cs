@@ -79,6 +79,15 @@ public class LevelManager : MonoBehaviour
             progresoActual.estrellaPuntos = true;
         }
         
+        if (tiempoActual < progresoActual.mejorTiempo || progresoActual.mejorTiempo <= 0 || progresoActual.ghostData == null)
+        {
+            progresoActual.mejorTiempo = tiempoActual;
+            if (GhostManager.Instancia != null)
+            {
+                progresoActual.ghostData = GhostManager.Instancia.ObtenerGrabacionActual(data.idNivel, tiempoActual);
+            }
+        }
+        
         GuardarDatos(datosGuardados);
         
         int estrellas = CalcularEstrellas();

@@ -201,21 +201,38 @@ export default function Gameplay() {
             }
           }, 100);
 
-          // 3. Cargar el nivel seleccionado si existe
+          // 3. Cargar el fantasma del amigo si fue recibido desde el estado
+          const ghostData = location.state?.ghostData;
+          if (ghostData) {
+            const jsonGhost = typeof ghostData === 'string' ? ghostData : JSON.stringify(ghostData);
+            setTimeout(() => {
+              if (window.unityInstance) {
+                window.unityInstance.SendMessage('WebBridgeManager', 'CargarFantasma', jsonGhost);
+              }
+            }, 180);
+          } else {
+            setTimeout(() => {
+              if (window.unityInstance) {
+                window.unityInstance.SendMessage('WebBridgeManager', 'CargarFantasma', '');
+              }
+            }, 180);
+          }
+
+          // 4. Cargar el nivel seleccionado si existe
           const nivelSeleccionado = location.state?.nivelSeleccionado;
           if (nivelSeleccionado !== undefined && nivelSeleccionado !== 0) {
             setTimeout(() => {
               if (window.unityInstance) {
                 unityInstance.SendMessage('WebBridgeManager', 'CargarNivelDesdeWeb', nivelSeleccionado);
               }
-            }, 250);
+            }, 300);
 
-            // 4. Re-aplicar el color tras cargar la nueva escena
+            // Re-aplicar el color tras cargar la nueva escena
             setTimeout(() => {
               if (window.unityInstance) {
                 window.unityInstance.SendMessage('WebBridgeManager', 'CambiarColorCarro', savedColor);
               }
-            }, 600);
+            }, 650);
           }
         })
         .catch((error) => {

@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 public class WebBridgeManager : MonoBehaviour
 {
     public static WebBridgeManager Instancia { get; private set; }
+    
+    public LevelGhostData ghostDataActual { get; private set; }
 
     void Awake()
     {
@@ -47,6 +49,26 @@ public class WebBridgeManager : MonoBehaviour
         }
         
         AplicarColorGuardado();
+    }
+    
+    public void CargarFantasma(string jsonGhostData)
+    {
+        if (string.IsNullOrEmpty(jsonGhostData))
+        {
+            ghostDataActual = null;
+            return;
+        }
+
+        try
+        {
+            ghostDataActual = JsonUtility.FromJson<LevelGhostData>(jsonGhostData);
+            Debug.Log("¡Fantasma cargado con éxito en Unity!");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Error al parsear fantasma: " + e.Message);
+            ghostDataActual = null;
+        }
     }
     
     public void AplicarColorGuardado()

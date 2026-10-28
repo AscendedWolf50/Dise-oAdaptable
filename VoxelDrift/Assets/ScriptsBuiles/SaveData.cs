@@ -11,6 +11,8 @@ public class LevelProgress
     public bool estrellaCompletado;
     public bool estrellaTiempo;
     public bool estrellaPuntos;
+    public float mejorTiempo = 999999f;
+    public LevelGhostData ghostData;
 }
 
 [Serializable]
