@@ -10,7 +10,7 @@ export default function CarCanvas({ colorIndex = 0 }) {
     ? import.meta.env.BASE_URL
     : `${import.meta.env.BASE_URL}/`;
 
-  // Función para aplicar la textura según el índice de color recibido
+  // Función para cargar la textura .png y aplicarla con filtro nítido (Point Filter / Nearest)
   const aplicarTexturaAlModelo = (index) => {
     if (!carModelRef.current) return;
 
@@ -20,13 +20,26 @@ export default function CarCanvas({ colorIndex = 0 }) {
     textureLoader.load(
       texturePath,
       (newTexture) => {
-        newTexture.flipY = false; // Mantiene la alineación correcta en el GLB
+        newTexture.flipY = false;
         newTexture.colorSpace = THREE.SRGBColorSpace;
+
+        // Mantener nitidez estilo Pixel Art / Voxel sin difuminar bordes
+        newTexture.magFilter = THREE.NearestFilter;
+        newTexture.minFilter = THREE.NearestFilter;
+        newTexture.generateMipmaps = false;
+        newTexture.needsUpdate = true;
 
         carModelRef.current.traverse((child) => {
           if (child.isMesh && child.material) {
-            child.material.map = newTexture;
-            child.material.needsUpdate = true;
+            if (Array.isArray(child.material)) {
+              child.material.forEach((mat) => {
+                mat.map = newTexture;
+                mat.needsUpdate = true;
+              });
+            } else {
+              child.material.map = newTexture;
+              child.material.needsUpdate = true;
+            }
           }
         });
       },
@@ -53,9 +66,10 @@ export default function CarCanvas({ colorIndex = 0 }) {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    
+
     const domElement = renderer.domElement;
     domElement.style.cursor = 'grab';
+    domElement.style.touchAction = 'none';
     container.appendChild(domElement);
 
     // 2. Iluminación
@@ -76,26 +90,20 @@ export default function CarCanvas({ colorIndex = 0 }) {
         const carModel = gltf.scene;
         carModelRef.current = carModel;
 
-        // Centrar el modelo en su origen
+        // Centrar y escalar el modelo
         const box = new THREE.Box3().setFromObject(carModel);
         const center = box.getCenter(new THREE.Vector3());
         carModel.position.sub(center);
-
-        // Desplazar el carro hacia arriba
         carModel.position.y += 0.35;
-
-        // Escala general del carro
         carModel.scale.set(1.2, 1.2, 1.2);
 
         scene.add(carModel);
 
-        // Aplicar la textura seleccionada
+        // Aplicar la textura inicial
         aplicarTexturaAlModelo(colorIndex);
       },
       undefined,
-      (error) => {
-        console.error('Error al cargar el modelo 3D:', error, 'en ruta:', modelUrl);
-      }
+      (error) => console.error('Error al cargar el modelo 3D:', error, 'en ruta:', modelUrl)
     );
 
     // 4. Control de interacción con Puntero (Mouse / Touch)
@@ -106,6 +114,11 @@ export default function CarCanvas({ colorIndex = 0 }) {
       isDragging = true;
       previousPointerX = e.clientX;
       domElement.style.cursor = 'grabbing';
+      if (e.pointerId !== undefined && domElement.setPointerCapture) {
+        try {
+          domElement.setPointerCapture(e.pointerId);
+        } catch (err) {}
+      }
     };
 
     const handlePointerMove = (e) => {
@@ -113,14 +126,18 @@ export default function CarCanvas({ colorIndex = 0 }) {
       const deltaX = e.clientX - previousPointerX;
       previousPointerX = e.clientX;
       
-      // Rotar únicamente en el eje Y (izquierda/derecha)
       carModelRef.current.rotation.y += deltaX * 0.008;
     };
 
-    const handlePointerUp = () => {
+    const handlePointerUp = (e) => {
       if (isDragging) {
         isDragging = false;
         domElement.style.cursor = 'grab';
+        if (e && e.pointerId !== undefined && domElement.releasePointerCapture) {
+          try {
+            domElement.releasePointerCapture(e.pointerId);
+          } catch (err) {}
+        }
       }
     };
 
@@ -128,12 +145,11 @@ export default function CarCanvas({ colorIndex = 0 }) {
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('pointerup', handlePointerUp);
 
-    // 5. Animación de Rotación
+    // 5. Animación de Rotación Automática
     let animationFrameId;
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      // Si el usuario no lo está arrastrando, rota automáticamente
       if (carModelRef.current && !isDragging) {
         carModelRef.current.rotation.y += 0.008;
       }
@@ -157,7 +173,7 @@ export default function CarCanvas({ colorIndex = 0 }) {
       window.removeEventListener('pointerup', handlePointerUp);
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
-      
+
       if (container.contains(domElement)) {
         container.removeChild(domElement);
       }
@@ -165,7 +181,7 @@ export default function CarCanvas({ colorIndex = 0 }) {
     };
   }, []);
 
-  // Actualizar la textura si cambia la prop colorIndex
+  // Actualizar la textura si cambia el color seleccionado en la paleta
   useEffect(() => {
     aplicarTexturaAlModelo(colorIndex);
   }, [colorIndex]);
