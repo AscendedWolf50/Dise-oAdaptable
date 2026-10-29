@@ -94,6 +94,7 @@ export default function Perfil() {
       await signOut(auth);
       localStorage.removeItem('VoxelDriftProgress');
       localStorage.removeItem('VoxelDriftUser');
+      localStorage.removeItem('VoxelDriftCarColor');
       navigate('/login');
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
