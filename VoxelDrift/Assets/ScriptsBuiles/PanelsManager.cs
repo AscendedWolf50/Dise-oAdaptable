@@ -37,9 +37,9 @@ public class PanelsManager : MonoBehaviour
     void Update()
     {
         float tiempoParaMostrar = levelManager.tiempoActual;
-        textoCronometro.text = "Tiempo:" + tiempoParaMostrar.ToString("F2"); //Mostar solo dos decimales
+        textoCronometro.text = $"Tiempo:<mspace=0.55em>{tiempoParaMostrar:F2}</mspace>"; //Mostar solo dos decimales
 
         float puntajeParaMostrar = levelManager.puntosTotales;
-        textoPuntos.text = "Puntos:" + puntajeParaMostrar.ToString("F2");
+        textoPuntos.text = "Puntos:" + puntajeParaMostrar.ToString("F0");
     }
 }

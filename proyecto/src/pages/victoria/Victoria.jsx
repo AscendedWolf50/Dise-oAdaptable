@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { gsapButtonMotion } from '../../utils/gsapButtonMotion.js';
 import ModalOverlay from '../../components/ui/ModalOverlay.jsx';
 import { useAppNavigation } from '../../utils/useAppNavigation.js';
+import imagenVictoria from '../../assets/victoriaImagenFinal.png';
 
 const Victoria = () => {
   const containerRef = useRef(null);
@@ -19,10 +20,10 @@ const Victoria = () => {
   useEffect(() => {
     // 1. Aseguramos que el juego se pause cuando aparece la pantalla de victoria
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'PausarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
     }
 
-    // 2. Animaciones de entrada GSAP para el contenedor, las estrellas y los botones
+    // 2. Animaciones de entrada GSAP
     const context = gsap.context(() => {
       const timeline = gsap.timeline();
       timeline
@@ -51,21 +52,22 @@ const Victoria = () => {
   // Handlers para la interacción con Unity y navegación
   const handleMenu = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
     }
     navigate('/');
   };
 
   const handleRestart = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'ReiniciarNivelActual');
+      window.unityInstance.SendMessage('WebBridgeManager', 'ReiniciarNivelActual');
+      window.unityInstance.SendMessage('WebBridgeManager', 'ReanudarJuego');
     }
     navigate('/gameplay');
   };
 
   const handleNext = () => {
     if (window.unityInstance) {
-      window.unityInstance.SendMessage('WebBridge', 'ReanudarJuego');
+      window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
     }
     navigate('/niveles');
   };
@@ -84,13 +86,18 @@ const Victoria = () => {
         ref={containerRef}
         className="flex flex-col items-center gap-4 font-sans md:gap-5 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6"
       >
-        {/* Ilustración / Placeholder */}
-        <div className="relative flex h-36 w-full items-center justify-center border-2 border-[#0D0D0D] bg-[#8BA3A7] lg:col-start-1 lg:row-start-1 lg:h-full lg:min-h-[180px]">
-          <div className="absolute top-0 left-0 h-2 w-2 bg-[#0D0D0D]"></div>
-          <div className="absolute top-0 right-0 h-2 w-2 bg-[#0D0D0D]"></div>
-          <div className="absolute bottom-0 left-0 h-2 w-2 bg-[#0D0D0D]"></div>
-          <div className="absolute bottom-0 right-0 h-2 w-2 bg-[#0D0D0D]"></div>
-          <span className="font-bold tracking-widest text-[#0D0D0D]">ILUSTRACIÓN</span>
+        {/* Ilustración / Imagen de Victoria */}
+        <div className="relative flex h-32 w-full items-center justify-center overflow-hidden border-2 border-[#0D0D0D] bg-[#0D0D0D] lg:col-start-1 lg:row-start-1 lg:h-40 xl:h-48">
+          <div className="absolute top-0 left-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+          <div className="absolute top-0 right-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+          <div className="absolute bottom-0 left-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+          <div className="absolute bottom-0 right-0 z-10 h-2 w-2 bg-[#0D0D0D]"></div>
+          
+          <img 
+            src={imagenVictoria} 
+            alt="Ilustración de victoria" 
+            className="absolute inset-0 h-full w-full object-fill" 
+          />
         </div>
 
         {/* Banner de Victoria */}
@@ -110,9 +117,8 @@ const Victoria = () => {
                 className="text-5xl"
               >
                 {i < estrellasObtenidas ? (
-                  // Estrella Llena
                   <svg
-                    className="h-12 w-12 text-[#FF7800]"
+                    className="h-12 w-12 text-[#963C00]"
                     fill="currentColor"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -125,7 +131,6 @@ const Victoria = () => {
                     />
                   </svg>
                 ) : (
-                  // Estrella Vacía
                   <svg
                     className="h-12 w-12 text-[#0D0D0D]"
                     fill="none"
@@ -148,7 +153,7 @@ const Victoria = () => {
           </div>
         </div>
 
-        {/* Fila de 3 Botones */}
+        {/* Botones */}
         <div className="mt-2 grid w-full grid-cols-1 gap-3 sm:grid-cols-3 lg:col-start-2 lg:row-start-2">
           <button
             {...gsapButtonMotion}

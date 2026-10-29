@@ -3,34 +3,166 @@ import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { useAppNavigation } from '../../utils/useAppNavigation.js';
 
+// IMPORTACIONES DE FIREBASE
+import { doc, setDoc, increment, getDoc } from 'firebase/firestore';
+import { auth, db } from '../../firebase/config.js';
+import { onAuthStateChanged } from 'firebase/auth';
+
+const getCurrentUser = () => {
+  return new Promise((resolve) => {
+    if (auth.currentUser) {
+      resolve(auth.currentUser);
+      return;
+    }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user);
+    });
+  });
+};
+
+const formatearTiempo = (totalSegundos) => {
+  const horas = Math.floor(totalSegundos / 3600);
+  const minutos = Math.floor((totalSegundos % 3600) / 60);
+  return `${horas}h ${minutos}m`;
+};
+
+// FUNCIÓN PERSISTENTE GLOBAL: Se ejecuta al recibir señal de Unity
+window.ReactBridge_GuardarProgreso = async (jsonString) => {
+  try {
+    let parsedData = typeof jsonString === 'string' ? JSON.parse(jsonString) : jsonString;
+    
+    // 1. Guardar en localStorage
+    localStorage.setItem('VoxelDriftProgress', typeof jsonString === 'string' ? jsonString : JSON.stringify(jsonString));
+
+    // 2. Actualizar caché de usuario local
+    const userCached = localStorage.getItem('VoxelDriftUser');
+    if (userCached) {
+      try {
+        const parsedUser = JSON.parse(userCached);
+        parsedUser.progress = parsedData;
+        localStorage.setItem('VoxelDriftUser', JSON.stringify(parsedUser));
+      } catch (e) {}
+    }
+
+    // 3. Guardar en Firestore garantizando persistencia con merge: true
+    const user = await getCurrentUser();
+    if (user) {
+      const userRef = doc(db, 'users', user.uid);
+      await setDoc(userRef, { progress: parsedData }, { merge: true });
+      console.log("¡Progreso del juego guardado con éxito en Firestore!");
+    }
+  } catch (e) {
+    console.error("Error al sincronizar progreso con Firestore:", e);
+  }
+};
+
 export default function Gameplay() {
   const navigate = useAppNavigation();
   const location = useLocation();
 
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
-  const controlsRef = useRef(null);
-
-  // Referencia directa al canvas donde se renderizará Unity
   const unityCanvasRef = useRef(null);
+
+  const startTimeRef = useRef(Date.now());
+  const hasHandledFailureRef = useRef(false);
+
+  // Referencia persistente del estado de la partida actual
+  const locationRef = useRef(location.state);
+
+  useEffect(() => {
+    locationRef.current = location.state;
+    if (location.state) {
+      localStorage.setItem('VoxelDriftCurrentLevelState', JSON.stringify(location.state));
+    }
+  }, [location.state]);
+
+  const acumularTiempoYGuardar = async () => {
+    if (!startTimeRef.current) return;
+    
+    const segundosJugados = Math.floor((Date.now() - startTimeRef.current) / 1000);
+    startTimeRef.current = Date.now();
+
+    if (segundosJugados <= 0) return;
+
+    try {
+      const user = await getCurrentUser();
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+        
+        let totalSegundosPrevios = 0;
+        if (userSnap.exists()) {
+          totalSegundosPrevios = userSnap.data().playedSeconds || 0;
+        }
+
+        const nuevoTotalSegundos = totalSegundosPrevios + segundosJugados;
+        const nuevoTiempoFormateado = formatearTiempo(nuevoTotalSegundos);
+
+        await setDoc(userRef, {
+          playedSeconds: nuevoTotalSegundos,
+          playedTime: nuevoTiempoFormateado
+        }, { merge: true });
+
+        const userCached = localStorage.getItem('VoxelDriftUser');
+        if (userCached) {
+          const parsedUser = JSON.parse(userCached);
+          parsedUser.playedSeconds = nuevoTotalSegundos;
+          parsedUser.playedTime = nuevoTiempoFormateado;
+          localStorage.setItem('VoxelDriftUser', JSON.stringify(parsedUser));
+        }
+      }
+    } catch (e) {
+      console.error("Error al actualizar tiempo en Firestore:", e);
+    }
+  };
 
   // Lógica de comunicación con Unity (Escuchando a Unity)
   useEffect(() => {
+    hasHandledFailureRef.current = false;
+
     window.ReactBridge_AbrirPausa = () => {
       console.log("Unity solicitó abrir la pausa");
-      navigate('/pausa');
+      navigate('/pausa', { state: locationRef.current });
     };
 
-    window.ReactBridge_NivelCompletado = (estrellas) => {
+    window.ReactBridge_NivelCompletado = async (estrellas) => {
       console.log("Unity finalizó el nivel con estrellas:", estrellas);
+      await acumularTiempoYGuardar();
       navigate('/victoria', { state: { estrellasTotales: estrellas } });
     };
 
-    window.ReactBridge_NivelFallido = () => {
+    window.ReactBridge_NivelFallido = async () => {
+      if (hasHandledFailureRef.current) return;
+      hasHandledFailureRef.current = true;
+
+      await acumularTiempoYGuardar();
+
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          const userRef = doc(db, 'users', user.uid);
+          await setDoc(userRef, {
+            failedAttempts: increment(1)
+          }, { merge: true });
+
+          const userCached = localStorage.getItem('VoxelDriftUser');
+          if (userCached) {
+            const parsedUser = JSON.parse(userCached);
+            parsedUser.failedAttempts = (parsedUser.failedAttempts || 0) + 1;
+            localStorage.setItem('VoxelDriftUser', JSON.stringify(parsedUser));
+          }
+        }
+      } catch (e) {
+        console.error("Error al actualizar intentos fallidos en Firestore:", e);
+      }
+
       navigate('/derrota');
     };
 
     return () => {
+      acumularTiempoYGuardar();
       delete window.ReactBridge_AbrirPausa;
       delete window.ReactBridge_NivelCompletado;
       delete window.ReactBridge_NivelFallido;
@@ -62,19 +194,53 @@ export default function Gameplay() {
 
     const inicializarUnity = () => {
       if (window.createUnityInstance && unityCanvasRef.current) {
-        window.createUnityInstance(unityCanvasRef.current, config, (progreso) => {
-          // Opcional: progreso de carga
-        })
+        window.createUnityInstance(unityCanvasRef.current, config, (progreso) => {})
         .then((unityInstance) => {
           window.unityInstance = unityInstance;
           console.log("¡Unity WebGL cargado con éxito!");
 
-          // Solo se fuerza cambio de escena si el nivel seleccionado NO es el nivel por defecto (0)
+          // 1. Obtener color elegido desde localStorage
+          const savedColor = parseInt(localStorage.getItem('VoxelDriftCarColor') || '0', 10);
+
+          // 2. Establecer el color en Unity inmediatamente
+          setTimeout(() => {
+            if (window.unityInstance) {
+              window.unityInstance.SendMessage('WebBridgeManager', 'CambiarColorCarro', savedColor);
+            }
+          }, 100);
+
+          // 3. Cargar el fantasma del amigo si fue recibido desde el estado
+          const ghostData = location.state?.ghostData;
+          if (ghostData) {
+            const jsonGhost = typeof ghostData === 'string' ? ghostData : JSON.stringify(ghostData);
+            setTimeout(() => {
+              if (window.unityInstance) {
+                window.unityInstance.SendMessage('WebBridgeManager', 'CargarFantasma', jsonGhost);
+              }
+            }, 180);
+          } else {
+            setTimeout(() => {
+              if (window.unityInstance) {
+                window.unityInstance.SendMessage('WebBridgeManager', 'CargarFantasma', '');
+              }
+            }, 180);
+          }
+
+          // 4. Cargar el nivel seleccionado si existe
           const nivelSeleccionado = location.state?.nivelSeleccionado;
           if (nivelSeleccionado !== undefined && nivelSeleccionado !== 0) {
             setTimeout(() => {
-              unityInstance.SendMessage('WebBridge', 'CargarNivelDesdeWeb', nivelSeleccionado);
-            }, 100);
+              if (window.unityInstance) {
+                unityInstance.SendMessage('WebBridgeManager', 'CargarNivelDesdeWeb', nivelSeleccionado);
+              }
+            }, 300);
+
+            // Re-aplicar el color tras cargar la nueva escena
+            setTimeout(() => {
+              if (window.unityInstance) {
+                window.unityInstance.SendMessage('WebBridgeManager', 'CambiarColorCarro', savedColor);
+              }
+            }, 650);
           }
         })
         .catch((error) => {
@@ -83,7 +249,6 @@ export default function Gameplay() {
       }
     };
 
-    // Manejo correcto de carga síncrona/asíncrona del script
     if (!script) {
       script = document.createElement("script");
       script.src = loaderUrl;
@@ -99,6 +264,22 @@ export default function Gameplay() {
     return () => {
       if (script) {
         script.removeEventListener('load', inicializarUnity);
+      }
+      if (window.unityInstance) {
+        try {
+          window.unityInstance.SendMessage('WebBridgeManager', 'PausarJuego');
+          if (typeof window.unityInstance.Quit === 'function') {
+            window.unityInstance.Quit().then(() => {
+              window.unityInstance = null;
+            }).catch(() => {
+              window.unityInstance = null;
+            });
+          } else {
+            window.unityInstance = null;
+          }
+        } catch (e) {
+          console.error("Error al limpiar la instancia de Unity:", e);
+        }
       }
     };
   }, []);
@@ -120,32 +301,31 @@ export default function Gameplay() {
         delay: 0.2,
         ease: 'power2.out'
       });
-
-      if (controlsRef.current) {
-        gsap.from(controlsRef.current.children, {
-          opacity: 0,
-          y: 30,
-          duration: 0.5,
-          stagger: 0.1,
-          delay: 0.3,
-          ease: 'back.out(1.5)'
-        });
-      }
     });
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <div className="flex h-full min-h-0 justify-center bg-[#1B384B] p-4 font-sans selection:bg-[#FF7800] selection:text-white lg:p-0">
+    <div className="flex h-full min-h-0 justify-center bg-[#142A3A] p-4 font-sans selection:bg-[#F4A340] selection:text-[#0D0D0D] lg:p-0">
+      
+      {/* Mensaje obligatorio para girar el dispositivo en celulares/tablets en posición vertical */}
+      <div className="fixed inset-0 z-50 hidden portrait:flex flex-col items-center justify-center bg-[#142A3A] p-6 text-center text-white">
+        <svg className="mb-6 h-20 w-20 animate-pulse text-[#FF7800]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <h2 className="mb-2 text-2xl font-black uppercase tracking-widest text-[#FF7800]">Gira tu dispositivo</h2>
+        <p className="text-lg text-gray-300">Este juego requiere que juegues en modo horizontal.</p>
+      </div>
+
       {/* Contenedor Principal */}
       <div 
         ref={containerRef}
-        className="relative flex h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#8BA3A7] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl lg:h-full lg:min-h-0 lg:max-w-none"
+        className="relative flex portrait:hidden h-[min(70dvh,640px)] min-h-[420px] w-full max-w-md flex-col overflow-hidden border-2 border-[#0D0D0D] bg-[#142A3A] shadow-[4px_4px_0px_0px_#0D0D0D] md:h-[min(76dvh,760px)] md:max-w-2xl lg:h-full lg:min-h-0 lg:max-w-none"
       >
         
-        {/* Área del Canvas del Juego (Ahora toma todo el espacio superior) */}
-        <div ref={canvasRef} className="relative z-0 flex min-h-0 flex-1 w-full items-center justify-center overflow-hidden bg-[#1B384B]">
+        {/* Área del Canvas del Juego */}
+        <div ref={canvasRef} className="relative z-0 flex min-h-0 flex-1 w-full items-center justify-center overflow-hidden bg-[#142A3A]">
           <canvas 
             ref={unityCanvasRef}
             id="unity-canvas" 
@@ -154,24 +334,6 @@ export default function Gameplay() {
           />
         </div>
 
-        {/* Controles Táctiles Inferiores */}
-        <div ref={controlsRef} className="z-10 flex shrink-0 gap-3 bg-[#8BA3A7] p-4 border-t-2 border-[#0D0D0D] lg:hidden">
-          <button className="voxel-grid-surface flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-
-          <button className="button-primary flex h-14 flex-1 items-center justify-center text-lg font-black uppercase tracking-widest transition-all md:h-16 md:text-xl">
-            ACCIÓN
-          </button>
-
-          <button className="voxel-grid-surface flex h-14 w-14 items-center justify-center border-2 border-[#0D0D0D] bg-[#1B384B] text-white shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#8BA3A7] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-all md:h-16 md:w-16">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
-        </div>
       </div>
     </div>
   );

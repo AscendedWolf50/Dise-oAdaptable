@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Nivel2
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   idNivel: Nivel_2
-  tiempoParaEstrella: 0
-  puntosParaEstrella: 1200
+  tiempoParaEstrella: 100
+  puntosParaEstrella: 900

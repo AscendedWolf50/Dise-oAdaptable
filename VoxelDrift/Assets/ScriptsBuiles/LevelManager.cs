@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour
         
         SaveData datosGuardados = CargarDatos();
         
-        LevelProgress progresoActual = datosGuardados.niveles.Find(n => n.idNivel == data.idNivel); //Buscar si ya tiene un registro en el nivel
+        LevelProgress progresoActual = datosGuardados.niveles.Find(n => n.idNivel == data.idNivel); 
 
         if (progresoActual == null)
         {
@@ -79,13 +79,31 @@ public class LevelManager : MonoBehaviour
             progresoActual.estrellaPuntos = true;
         }
         
+        if (tiempoActual < progresoActual.mejorTiempo || progresoActual.mejorTiempo <= 0 || progresoActual.ghostData == null)
+        {
+            progresoActual.mejorTiempo = tiempoActual;
+            if (GhostManager.Instancia != null)
+            {
+                progresoActual.ghostData = GhostManager.Instancia.ObtenerGrabacionActual(data.idNivel, tiempoActual);
+            }
+        }
+        
         GuardarDatos(datosGuardados);
         
-        Debug.Log($"=== RESUMEN NIVEL: {data.idNivel} ===\n" +
-                  $" Estrella 1 (Completar): {(progresoActual.estrellaCompletado ? "CONSEGUIDA" : "NO")}\n" +
-                  $" Estrella 2 (Tiempo): {(progresoActual.estrellaTiempo ? "CONSEGUIDA" : "FALLADA")} " +
-                  $"({tiempoActual:F2}s / {data.tiempoParaEstrella:F2}s Objetivo)\n" +
-                  $" Estrella 3 (Puntos): {(progresoActual.estrellaPuntos ? "CONSEGUIDA" : "NO")}");
+        int estrellas = CalcularEstrellas();
+
+    #if UNITY_WEBGL && !UNITY_EDITOR
+                if (WebBridgeManager.Instancia != null)
+                {
+                    WebBridgeManager.Instancia.FinalizarNivel(estrellas);
+                }
+    #else
+            Debug.Log($"=== RESUMEN NIVEL: {data.idNivel} ===\n" +
+                      $" Estrella 1 (Completar): {(progresoActual.estrellaCompletado ? "CONSEGUIDA" : "NO")}\n" +
+                      $" Estrella 2 (Tiempo): {(progresoActual.estrellaTiempo ? "CONSEGUIDA" : "FALLADA")} " +
+                      $"({tiempoActual:F2}s / {data.tiempoParaEstrella:F2}s Objetivo)\n" +
+                      $" Estrella 3 (Puntos): {(progresoActual.estrellaPuntos ? "CONSEGUIDA" : "NO")}");
+    #endif
         
         
     }

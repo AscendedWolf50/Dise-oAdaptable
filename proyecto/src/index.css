@@ -14,7 +14,7 @@
   }
 
   body {
-    @apply bg-[#1B384B] text-[#0D0D0D] font-sans antialiased;
+    @apply bg-[#142A3A] text-[#0D0D0D] font-sans antialiased;
     overflow-x: hidden;
   }
 
@@ -23,7 +23,7 @@
   #root {
     min-height: 100%;
     margin: 0;
-    background-color: #1B384B;
+    background-color: #142A3A;
   }
 
   /* Scrollbar styling for neo-brutalist feel */
@@ -32,15 +32,15 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-[#1B384B];
+    @apply bg-[#142A3A];
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-[#8BA3A7] border border-[#0D0D0D];
+    @apply bg-[#D8E4E6] border border-[#0D0D0D];
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-[#FF7800];
+    @apply bg-[#F4A340];
   }
 }
 
@@ -57,12 +57,14 @@
   }
 
   button:focus-visible {
-    @apply outline outline-2 outline-offset-2 outline-[#FF7800];
+    outline: 3px solid #0D0D0D;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px #FFFFFF;
   }
 
   h1,
   h2 {
-    text-shadow: 1px 1px 0 #8BA3A7;
+    text-shadow: 1px 1px 0 #D8E4E6;
   }
 
   /* Neo-brutalist button base */
@@ -81,9 +83,9 @@
 
   .voxel-grid-surface {
     background-image:
-      linear-gradient(rgba(139, 163, 167, 0.09) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(139, 163, 167, 0.09) 1px, transparent 1px),
-      linear-gradient(rgba(13, 13, 13, 0.08) 50%, transparent 50%);
+      linear-gradient(rgba(216, 228, 230, 0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(216, 228, 230, 0.12) 1px, transparent 1px),
+      linear-gradient(rgba(13, 13, 13, 0.04) 50%, transparent 50%);
     background-size: 16px 16px, 16px 16px, 100% 4px;
   }
 
@@ -109,8 +111,8 @@
     z-index: 1;
     background-image: repeating-linear-gradient(
       to bottom,
-      rgba(13, 13, 13, 0.22) 0,
-      rgba(13, 13, 13, 0.22) 2px,
+      rgba(13, 13, 13, 0.08) 0,
+      rgba(13, 13, 13, 0.08) 2px,
       transparent 2px,
       transparent 6px
     );
@@ -120,7 +122,7 @@
 
   .crt-overlay::after {
     z-index: 2;
-    background: radial-gradient(ellipse at center, transparent 62%, rgba(13, 13, 13, 0.12) 100%);
+    background: radial-gradient(ellipse at center, transparent 62%, rgba(13, 13, 13, 0.04) 100%);
   }
 
   @keyframes crt-scan {
@@ -135,10 +137,10 @@
   }
 
   .button-primary {
-    @apply border-2 border-[#0D0D0D] bg-[#FF7800] text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D];
+    @apply border-2 border-[#0D0D0D] bg-[#F4A340] text-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D];
   }
 
   .button-secondary {
-    @apply border-2 border-[#0D0D0D] bg-[#1B384B] text-[#FFFFFF] shadow-[4px_4px_0px_0px_#0D0D0D];
+    @apply border-2 border-[#0D0D0D] bg-[#142A3A] text-[#FFFFFF] shadow-[4px_4px_0px_0px_#0D0D0D];
   }
 }

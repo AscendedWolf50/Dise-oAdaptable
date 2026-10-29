@@ -257,6 +257,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5288404407184104348, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
+      propertyPath: miraUI
+      value: 
+      objectReference: {fileID: 889305930}
     - target: {fileID: 7353404011956246953, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.2
@@ -308,12 +312,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
 --- !u!4 &125337060 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 5610029216110354448, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
-  m_PrefabInstance: {fileID: 125337059}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &156627958 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7353404011956246953, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6548952171350974710, guid: db4cc7195be920b47ba3b50f77039ec0, type: 3}
   m_PrefabInstance: {fileID: 125337059}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &179457752
@@ -327,7 +326,7 @@ GameObject:
   - component: {fileID: 179457754}
   - component: {fileID: 179457753}
   m_Layer: 0
-  m_Name: WebBridge
+  m_Name: WebBridgeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -398,6 +397,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 311704533098164385, guid: c1a2979d33fca8b44975ebe9e0c2af62, type: 3}
   m_PrefabInstance: {fileID: 1777737984}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &406902157
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5994245750833498262, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.51128
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994245750833498262, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.5849
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994245750833498262, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.22772
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994245750833498262, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994245750833498262, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994245750833498262, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994245750833498262, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994245750833498262, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994245750833498262, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994245750833498262, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717698478082401108, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
+      propertyPath: m_Name
+      value: GhostManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ec989a1cafb762747bcdfdb085fff952, type: 3}
 --- !u!1001 &426852502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1368,6 +1424,27 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d243c636f06439c43ad27f682d66244a, type: 3}
+--- !u!1 &889305930 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2429615306866208523, guid: d243c636f06439c43ad27f682d66244a, type: 3}
+  m_PrefabInstance: {fileID: 889305929}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &889305931 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8619532051571350727, guid: d243c636f06439c43ad27f682d66244a, type: 3}
+  m_PrefabInstance: {fileID: 889305929}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!224 &889305932 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2650394490723510367, guid: d243c636f06439c43ad27f682d66244a, type: 3}
+  m_PrefabInstance: {fileID: 889305929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &905944227 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 311704533098164385, guid: c1a2979d33fca8b44975ebe9e0c2af62, type: 3}
@@ -1679,7 +1756,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 156627958}
+    TrackingTarget: {fileID: 125337060}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -2150,8 +2227,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 54.078278, y: 8.398508, z: 21.806252}
-  m_Center: {x: 3.0472493, y: -8.04425, z: 13.9699135}
+  m_Size: {x: 284.30664, y: 8.398508, z: 21.806252}
+  m_Center: {x: 118.161354, y: -8.04425, z: 13.9699135}
 --- !u!4 &1373583924
 Transform:
   m_ObjectHideFlags: 0
@@ -2684,7 +2761,7 @@ MonoBehaviour:
           ButtonText: 
         Owner: {fileID: 1966553617}
         DebugActive: 0
-        TargetTMPText: {fileID: 0}
+        TargetTMPText: {fileID: 889305931}
         ColorMode: 2
         Duration: 0.4
         InstantColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -2828,7 +2905,7 @@ MonoBehaviour:
         Owner: {fileID: 1966553617}
         DebugActive: 0
         Mode: 0
-        AnimateScaleTarget: {fileID: 0}
+        AnimateScaleTarget: {fileID: 889305932}
         MovementMode: 0
         AnimateScaleDuration: 0.2
         AnimatePositionSpeed: 1
@@ -3572,3 +3649,4 @@ SceneRoots:
   - {fileID: 671317194}
   - {fileID: 2135968864}
   - {fileID: 2053628562}
+  - {fileID: 406902157}

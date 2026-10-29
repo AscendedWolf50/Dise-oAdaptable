@@ -3,7 +3,8 @@ import gsap from 'gsap';
 import { useDismissModal } from '../../utils/useAppNavigation.js';
 import { gsapButtonMotion } from '../../utils/gsapButtonMotion.js';
 
-export default function ModalOverlay({ title, children, panelClassName = '' }) {
+// 1. Agregamos onClose a las propiedades que recibe el componente
+export default function ModalOverlay({ title, children, panelClassName = '', onClose }) {
   const backdropRef = useRef(null);
   const panelRef = useRef(null);
   const closeButtonRef = useRef(null);
@@ -12,8 +13,9 @@ export default function ModalOverlay({ title, children, panelClassName = '' }) {
   const dismiss = useDismissModal();
 
   useEffect(() => {
-    dismissRef.current = dismiss;
-  }, [dismiss]);
+    // 2. Si onClose existe, lo usamos. Si no (como en otras pantallas), usamos dismiss por defecto.
+    dismissRef.current = onClose || dismiss;
+  }, [dismiss, onClose]);
 
   useEffect(() => {
     openerRef.current = document.activeElement;
@@ -48,9 +50,9 @@ export default function ModalOverlay({ title, children, panelClassName = '' }) {
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`relative max-h-full w-full max-w-[360px] overflow-y-auto border-2 border-[#0D0D0D] bg-[#8BA3A7] p-5 pt-14 shadow-[6px_6px_0px_0px_#0D0D0D] md:max-w-[640px] md:p-8 md:pt-16 lg:max-w-4xl xl:max-w-5xl ${panelClassName}`}
+        className={`relative max-h-full w-full max-w-[360px] overflow-y-auto border-2 border-[#0D0D0D] bg-[#D8E4E6] p-5 pt-14 shadow-[6px_6px_0px_0px_#0D0D0D] md:max-w-[640px] md:p-8 md:pt-16 lg:max-w-4xl xl:max-w-5xl ${panelClassName}`}
       >
-        <h1 data-modal-enter className="voxel-grid-surface absolute left-5 right-16 top-3 w-fit max-w-[calc(100%-5rem)] truncate border-2 border-[#0D0D0D] bg-[#FF7800] px-3 py-2 text-sm font-black uppercase tracking-widest shadow-[3px_3px_0px_0px_#0D0D0D] [text-shadow:1px_1px_0px_#FFFFFF] md:left-8 md:top-4 md:text-base">{title}</h1>
+        <h1 data-modal-enter className="voxel-grid-surface absolute left-5 right-16 top-3 w-fit max-w-[calc(100%-5rem)] truncate border-2 border-[#0D0D0D] bg-[#F4A340] px-3 py-2 text-sm font-black uppercase tracking-widest shadow-[3px_3px_0px_0px_#0D0D0D] [text-shadow:1px_1px_0px_#FFFFFF] md:left-8 md:top-4 md:text-base">{title}</h1>
         <button
           {...gsapButtonMotion}
           ref={closeButtonRef}
