@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour
         
         SaveData datosGuardados = CargarDatos();
         
-        LevelProgress progresoActual = datosGuardados.niveles.Find(n => n.idNivel == data.idNivel); //Buscar si ya tiene un registro en el nivel
+        LevelProgress progresoActual = datosGuardados.niveles.Find(n => n.idNivel == data.idNivel); 
 
         if (progresoActual == null)
         {

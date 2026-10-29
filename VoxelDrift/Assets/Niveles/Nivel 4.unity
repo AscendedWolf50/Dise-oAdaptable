@@ -1996,6 +1996,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2429615306866208523, guid: d243c636f06439c43ad27f682d66244a, type: 3}
   m_PrefabInstance: {fileID: 889305929}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &889305931 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8619532051571350727, guid: d243c636f06439c43ad27f682d66244a, type: 3}
+  m_PrefabInstance: {fileID: 889305929}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!224 &889305932 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2650394490723510367, guid: d243c636f06439c43ad27f682d66244a, type: 3}
+  m_PrefabInstance: {fileID: 889305929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &905944227 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 311704533098164385, guid: c1a2979d33fca8b44975ebe9e0c2af62, type: 3}
@@ -4093,7 +4109,7 @@ MonoBehaviour:
           ButtonText: 
         Owner: {fileID: 1966553617}
         DebugActive: 0
-        TargetTMPText: {fileID: 0}
+        TargetTMPText: {fileID: 889305931}
         ColorMode: 2
         Duration: 0.4
         InstantColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -4237,7 +4253,7 @@ MonoBehaviour:
         Owner: {fileID: 1966553617}
         DebugActive: 0
         Mode: 0
-        AnimateScaleTarget: {fileID: 0}
+        AnimateScaleTarget: {fileID: 889305932}
         MovementMode: 0
         AnimateScaleDuration: 0.2
         AnimatePositionSpeed: 1
