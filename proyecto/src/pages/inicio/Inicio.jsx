@@ -114,22 +114,22 @@ const Inicio = () => {
         {/* Modelo 3D con Paleta Vertical Lateral en el lado izquierdo */}
         <div ref={addToRefs} className="relative flex h-40 w-full items-center justify-center overflow-hidden md:col-span-2 md:h-52 lg:col-span-1 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:h-full lg:min-h-[240px]">
           
-          {/* Paleta Vertical de los 8 Colores */}
-          <div className="absolute left-2 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-1.5 rounded border-2 border-[#0D0D0D] bg-[#0D0D0D]/70 p-1.5 backdrop-blur-sm">
-            {PALETA_COLORES.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => handleSeleccionarColor(c.id)}
-                title={c.nombre}
-                style={{ backgroundColor: c.hex }}
-                className={`h-4 w-4 rounded-sm border border-[#0D0D0D] transition-transform sm:h-5 sm:w-5 ${
-                  selectedColor === c.id
-                    ? 'scale-125 border-2 border-white shadow-[0_0_6px_rgba(255,255,255,0.8)]'
-                    : 'opacity-80 hover:scale-110 hover:opacity-100'
-                }`}
-              />
-            ))}
-          </div>
+          {/* Paleta de Colores Responsive */}
+<div className="absolute bottom-2 left-1/2 z-20 flex -translate-x-1/2 flex-row gap-1.5 rounded border-2 border-[#0D0D0D] bg-[#0D0D0D]/70 p-1.5 backdrop-blur-sm lg:bottom-auto lg:left-2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-0 lg:flex-col">
+  {PALETA_COLORES.map((c) => (
+    <button
+      key={c.id}
+      onClick={() => handleSeleccionarColor(c.id)}
+      title={c.nombre}
+      style={{ backgroundColor: c.hex }}
+      className={`h-4 w-4 rounded-sm border border-[#0D0D0D] transition-transform sm:h-5 sm:w-5 ${
+        selectedColor === c.id
+          ? 'scale-125 border-2 border-white shadow-[0_0_6px_rgba(255,255,255,0.8)]'
+          : 'opacity-80 hover:scale-110 hover:opacity-100'
+      }`}
+    />
+  ))}
+</div>
 
           <CarCanvas colorIndex={selectedColor} />
         </div>
