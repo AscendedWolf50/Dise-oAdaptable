@@ -45,3 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostManager
   intervaloGrabacion: 0.08
+  shaderTransparenteFantasma: {fileID: -6465566751694194690, guid: 805145bdd23e99a449608ba982401acc, type: 3}
+  opacidadFantasma: 0.3

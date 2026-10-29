@@ -5,7 +5,7 @@ import LevelCard from '../../components/ui/LevelCard.jsx';
 
 // IMPORTACIONES DE FIREBASE
 import { auth, db } from '../../firebase/config.js';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const TOTAL_NIVELES_EN_BUILD = 10; 
@@ -24,6 +24,63 @@ const getCurrentUser = () => {
   });
 };
 
+// Extraer el array de niveles de cualquier formato (JSON o Objeto)
+const extraerNiveles = (raw) => {
+  if (!raw) return [];
+  let prog = raw;
+  if (typeof prog === 'string') {
+    try { prog = JSON.parse(prog); } catch(e) { return []; }
+  }
+  if (prog && Array.isArray(prog.niveles)) return prog.niveles;
+  if (Array.isArray(prog)) return prog;
+  return [];
+};
+
+// Función para fusionar progreso local y remoto manteniendo los mejores resultados
+const fusionarNiveles = (listaA, listaB) => {
+  const mapa = new Map();
+
+  const procesarItem = (item) => {
+    if (!item || item.idNivel === undefined || item.idNivel === null) return;
+    const strId = String(item.idNivel).trim();
+    const numId = parseInt(strId.replace(/\D/g, ''), 10);
+    if (isNaN(numId)) return;
+
+    const existente = mapa.get(numId);
+    if (!existente) {
+      mapa.set(numId, { ...item, numId });
+    } else {
+      // Unir estrellas y conservar el mejor tiempo
+      const estrellaCompletado = Boolean(existente.estrellaCompletado || item.estrellaCompletado);
+      const estrellaTiempo = Boolean(existente.estrellaTiempo || item.estrellaTiempo);
+      const estrellaPuntos = Boolean(existente.estrellaPuntos || item.estrellaPuntos);
+
+      let mejorTiempo = existente.mejorTiempo || 999999;
+      if (item.mejorTiempo && item.mejorTiempo > 0 && item.mejorTiempo < mejorTiempo) {
+        mejorTiempo = item.mejorTiempo;
+      }
+
+      const ghostData = item.ghostData || existente.ghostData || null;
+
+      mapa.set(numId, {
+        ...existente,
+        ...item,
+        numId,
+        estrellaCompletado,
+        estrellaTiempo,
+        estrellaPuntos,
+        mejorTiempo,
+        ghostData
+      });
+    }
+  };
+
+  listaA.forEach(procesarItem);
+  listaB.forEach(procesarItem);
+
+  return Array.from(mapa.values());
+};
+
 const SelectorNiveles = () => {
   const navigate = useNavigate();
   const containerRef = useRef(null);
@@ -32,61 +89,51 @@ const SelectorNiveles = () => {
 
   useEffect(() => {
     const obtenerProgreso = async () => {
-      let nivelesCompletados = [];
+      // 1. Cargar datos del almacenamiento local (Caché reciente de Unity)
+      let nivelesLocal = [];
+      const progresoLocalRaw = localStorage.getItem('VoxelDriftProgress');
+      if (progresoLocalRaw) {
+        nivelesLocal = extraerNiveles(progresoLocalRaw);
+      }
 
-      // 1. Cargar desde Firestore
+      // 2. Cargar datos de Firestore
+      let nivelesFirestore = [];
+      let currentUser = null;
       try {
-        const user = await getCurrentUser();
-        if (user) {
-          const userDoc = await getDoc(doc(db, 'users', user.uid));
+        currentUser = await getCurrentUser();
+        if (currentUser) {
+          const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
           if (userDoc.exists()) {
             const data = userDoc.data();
-            let prog = data.progress;
-            
-            if (typeof prog === 'string') {
-              try { prog = JSON.parse(prog); } catch(e) {}
-            }
-
-            if (prog && Array.isArray(prog.niveles)) {
-              nivelesCompletados = prog.niveles;
-              localStorage.setItem('VoxelDriftProgress', JSON.stringify(prog));
-              localStorage.setItem('VoxelDriftUser', JSON.stringify(data));
-            }
+            nivelesFirestore = extraerNiveles(data.progress);
           }
         }
       } catch (e) {
         console.error("Error al obtener progreso de Firestore en SelectorNiveles:", e);
       }
 
-      // 2. Respaldo desde LocalStorage
-      if (nivelesCompletados.length === 0) {
-        const progresoGuardado = localStorage.getItem('VoxelDriftProgress');
-        if (progresoGuardado) {
-          try {
-            let data = JSON.parse(progresoGuardado);
-            if (typeof data === 'string') data = JSON.parse(data);
-            if (data && Array.isArray(data.niveles)) {
-              nivelesCompletados = data.niveles;
-            }
-          } catch (e) {
-            console.error("Error al parsear progreso local", e);
-          }
+      // 3. Fusionar ambas fuentes conservando el progreso máximo
+      const nivelesCompletados = fusionarNiveles(nivelesLocal, nivelesFirestore);
+
+      // 4. Actualizar las fuentes para mantenerlas 100% sincronizadas
+      const estructuraProgreso = { niveles: nivelesCompletados };
+      localStorage.setItem('VoxelDriftProgress', JSON.stringify(estructuraProgreso));
+
+      if (currentUser && nivelesCompletados.length > 0) {
+        try {
+          const userRef = doc(db, 'users', currentUser.uid);
+          await setDoc(userRef, { progress: estructuraProgreso }, { merge: true });
+        } catch (e) {
+          console.error("Error al sincronizar datos fusionados en Firestore:", e);
         }
       }
 
-      // 3. Generar la lista de niveles con mapeo numérico estricto 1:1
+      // 5. Generar la lista de niveles con mapeo numérico estricto 1:1
       const nivelesGenerados = [];
       let nivelAnteriorCompletado = true;
 
       for (let i = 1; i <= TOTAL_NIVELES_EN_BUILD; i++) {
-        const progresoNivel = nivelesCompletados.find(n => {
-          if (!n || n.idNivel === undefined || n.idNivel === null) return false;
-          const strId = String(n.idNivel).trim();
-          
-          // Extraer número exacto del string (Ej: "Nivel_1" -> 1, "Nivel_2" -> 2)
-          const numId = parseInt(strId.replace(/\D/g, ''), 10);
-          return numId === i;
-        });
+        const progresoNivel = nivelesCompletados.find(n => n.numId === i);
 
         let status = 'locked';
         let stars = 0;

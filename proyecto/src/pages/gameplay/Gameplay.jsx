@@ -63,12 +63,20 @@ export default function Gameplay() {
 
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
-
-  // Referencia directa al canvas donde se renderizará Unity
   const unityCanvasRef = useRef(null);
 
   const startTimeRef = useRef(Date.now());
   const hasHandledFailureRef = useRef(false);
+
+  // Referencia persistente del estado de la partida actual
+  const locationRef = useRef(location.state);
+
+  useEffect(() => {
+    locationRef.current = location.state;
+    if (location.state) {
+      localStorage.setItem('VoxelDriftCurrentLevelState', JSON.stringify(location.state));
+    }
+  }, [location.state]);
 
   const acumularTiempoYGuardar = async () => {
     if (!startTimeRef.current) return;
@@ -116,7 +124,7 @@ export default function Gameplay() {
 
     window.ReactBridge_AbrirPausa = () => {
       console.log("Unity solicitó abrir la pausa");
-      navigate('/pausa');
+      navigate('/pausa', { state: locationRef.current });
     };
 
     window.ReactBridge_NivelCompletado = async (estrellas) => {

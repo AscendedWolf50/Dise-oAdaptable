@@ -3,7 +3,8 @@ import gsap from 'gsap';
 import { useAppNavigation } from '../../utils/useAppNavigation.js';
 import CarCanvas from '../../components/ui/CarCanvas.jsx';
 import { auth, db } from '../../firebase/config.js';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 
 // Paleta con los 8 colores solicitados: Azul, Rojo, Verde, Rosado, Morado, Naranjado, Blanco, Negro
 const PALETA_COLORES = [
@@ -17,16 +18,53 @@ const PALETA_COLORES = [
   { id: 7, hex: '#222222', nombre: 'Negro' },
 ];
 
+const getCurrentUser = () => {
+  return new Promise((resolve) => {
+    if (auth.currentUser) {
+      resolve(auth.currentUser);
+      return;
+    }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user);
+    });
+  });
+};
+
 const Inicio = () => {
   const navigate = useAppNavigation();
   const containerRef = useRef(null);
   const elementsRef = useRef([]);
 
-  // Carga del color activo desde localStorage (por defecto 0 = Azul)
+  // Carga del color activo desde localStorage como valor inicial temporal
   const [selectedColor, setSelectedColor] = useState(() => {
     const saved = localStorage.getItem('VoxelDriftCarColor');
     return saved !== null ? parseInt(saved, 10) : 0;
   });
+
+  // Cargar y equipar prioritariamente el color guardado en el perfil de Firebase
+  useEffect(() => {
+    const cargarColorDesdeFirebase = async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            if (data.carColorIndex !== undefined && data.carColorIndex !== null) {
+              const firestoreColor = parseInt(data.carColorIndex, 10);
+              setSelectedColor(firestoreColor);
+              localStorage.setItem('VoxelDriftCarColor', firestoreColor.toString());
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error al cargar el color del carro desde Firestore:", error);
+      }
+    };
+
+    cargarColorDesdeFirebase();
+  }, []);
 
   useEffect(() => {
     // Fade in container
