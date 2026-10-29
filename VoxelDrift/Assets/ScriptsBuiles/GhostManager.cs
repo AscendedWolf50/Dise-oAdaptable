@@ -8,6 +8,10 @@ public class GhostManager : MonoBehaviour
     [Header("Configuración de Grabación")]
     [SerializeField] private float intervaloGrabacion = 0.08f; 
 
+    [Header("Configuración de Fantasma")]
+    [SerializeField] private Shader shaderTransparenteFantasma; // Casilla para asignar tu Shader transparente en el Inspector
+    [SerializeField] [Range(0f, 1f)] private float opacidadFantasma = 0.3f; // Opacidad por defecto en 0.3
+
     private Transform jugadorTransform;
     private List<GhostFrame> framesGrabados = new List<GhostFrame>();
     private float temporizadorGrabacion = 0f;
@@ -110,14 +114,14 @@ public class GhostManager : MonoBehaviour
     {
         if (jugadorTransform == null || data == null || data.frames == null || data.frames.Count == 0) return;
 
-        
+        // 1. Respaldar el color del jugador
         int colorOriginalJugador = PlayerPrefs.GetInt("CarColorIndex", 0);
 
         ghostCarObj = Instantiate(jugadorTransform.gameObject, data.frames[0].p, Quaternion.Euler(data.frames[0].r));
         ghostCarObj.name = "Fantasma_Amigo";
         ghostCarObj.tag = "Untagged"; 
 
-        
+        // 2. Destruir Audios y Listeners del fantasma para evitar loops de sonido
         AudioSource[] audios = ghostCarObj.GetComponentsInChildren<AudioSource>();
         foreach (AudioSource a in audios)
         {
@@ -139,7 +143,7 @@ public class GhostManager : MonoBehaviour
             Destroy(col);
         }
 
-       
+        // 4. Destruir Rigidbodies
         Rigidbody[] rbs = ghostCarObj.GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rb in rbs)
         {
@@ -147,7 +151,7 @@ public class GhostManager : MonoBehaviour
             Destroy(rb);
         }
 
-        
+        // 5. Destruir MonoBehaviours excepto el CarColorController
         MonoBehaviour[] scripts = ghostCarObj.GetComponentsInChildren<MonoBehaviour>();
         foreach (MonoBehaviour script in scripts)
         {
@@ -158,7 +162,7 @@ public class GhostManager : MonoBehaviour
             }
         }
 
-        
+        // 6. Aplicar el color del amigo al fantasma
         CarColorController colorCtrl = ghostCarObj.GetComponent<CarColorController>();
         if (colorCtrl != null)
         {
@@ -166,51 +170,74 @@ public class GhostManager : MonoBehaviour
             Destroy(colorCtrl);
         }
 
-       
+        // 7. Restaurar el color original del jugador en PlayerPrefs
         PlayerPrefs.SetInt("CarColorIndex", colorOriginalJugador);
         PlayerPrefs.Save();
 
-       
-        Renderer[] renderers = ghostCarObj.GetComponentsInChildren<Renderer>();
-        foreach (Renderer rend in renderers)
-        {
-            foreach (Material mat in rend.materials)
-            {
-                HacerMaterialTransparente(mat, 0.45f);
-            }
-        }
+        // 8. Aplicar Shader Transparente a los renderers del fantasma
+        AplicarTransparenciaAFantasma(ghostCarObj);
 
         reproducirFantasma = true;
     }
 
-    private void HacerMaterialTransparente(Material mat, float alpha)
+    private void AplicarTransparenciaAFantasma(GameObject fantasma)
     {
-        if (mat.HasProperty("_Color"))
-        {
-            Color c = mat.color;
-            c.a = alpha;
-            mat.color = c;
-        }
-        if (mat.HasProperty("_BaseColor"))
-        {
-            Color c = mat.GetColor("_BaseColor");
-            c.a = alpha;
-            mat.SetColor("_BaseColor", c);
-        }
+        Shader shaderTarget = shaderTransparenteFantasma;
 
-        if (mat.HasProperty("_Surface"))
+        Renderer[] renderers = fantasma.GetComponentsInChildren<Renderer>();
+        foreach (Renderer rend in renderers)
         {
-            mat.SetFloat("_Surface", 1.0f); 
-        }
+            Material[] matsOriginales = rend.materials;
+            Material[] nuevosMats = new Material[matsOriginales.Length];
 
-        mat.SetFloat("_Mode", 3);
-        mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        mat.SetInt("_ZWrite", 0);
-        mat.DisableKeyword("_ALPHATEST_ON");
-        mat.EnableKeyword("_ALPHABLEND_ON");
-        mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            for (int i = 0; i < matsOriginales.Length; i++)
+            {
+                Material matOld = matsOriginales[i];
+                if (matOld == null) continue;
+
+                // 1. Clonar el material original para mantener intactos sus colores y propiedades
+                Material matNuevo = new Material(matOld);
+
+                // 2. Si asignaste un shader transparente en el Inspector, cambiar únicamente la referencia del shader
+                if (shaderTarget != null)
+                {
+                    matNuevo.shader = shaderTarget;
+                }
+
+                // 3. Configurar opciones de transparencia URP
+                if (matNuevo.HasProperty("_Surface")) matNuevo.SetFloat("_Surface", 1.0f); // 1 = Transparent
+                if (matNuevo.HasProperty("_Blend")) matNuevo.SetFloat("_Blend", 0.0f);
+                matNuevo.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                matNuevo.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                matNuevo.SetInt("_ZWrite", 0);
+                matNuevo.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                matNuevo.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+                // 4. Asignar la propiedad específica de tu Shader Graph (_Alpha_Multiplier)
+                if (matNuevo.HasProperty("_Alpha_Multiplier"))
+                {
+                    matNuevo.SetFloat("_Alpha_Multiplier", opacidadFantasma);
+                }
+
+                // 5. Asignar Alfa en las propiedades de color base si existen
+                if (matNuevo.HasProperty("_BaseColor"))
+                {
+                    Color c = matNuevo.GetColor("_BaseColor");
+                    c.a = opacidadFantasma;
+                    matNuevo.SetColor("_BaseColor", c);
+                }
+                else if (matNuevo.HasProperty("_Color"))
+                {
+                    Color c = matNuevo.color;
+                    c.a = opacidadFantasma;
+                    matNuevo.color = c;
+                }
+
+                nuevosMats[i] = matNuevo;
+            }
+
+            rend.materials = nuevosMats;
+        }
     }
 
     public LevelGhostData ObtenerGrabacionActual(string idNivel, float tiempoFinal)
