@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
-import profileData from '../../data/playerProfile.json';
 import { gsapButtonMotion } from '../../utils/gsapButtonMotion.js';
 import ModalOverlay from '../../components/ui/ModalOverlay.jsx';
 
@@ -237,8 +236,8 @@ export default function Perfil() {
     if (n.estrellaPuntos) stars += 1;
   });
 
-  const username = userData?.username || profileData.username;
-  const joinDate = userData?.joinDate || profileData.joinDate;
+  const username = userData?.username || 'Jugador';
+  const joinDate = userData?.joinDate || 'N/A';
   const photoURL = userData?.photoURL || null;
   const failedAttempts = userData?.failedAttempts ?? 0;
   const playedTime = userData?.playedTime || "0h 0m";
@@ -258,7 +257,7 @@ export default function Perfil() {
             CERRAR SESIÓN
           </button>
 
-          {/* NUEVO BOTÓN DE AMIGOS (Reemplaza al botón '↗' de compartir) */}
+          {/* BOTÓN DE AMIGOS */}
           <button 
             {...gsapButtonMotion} 
             aria-label="Ver amigos" 
